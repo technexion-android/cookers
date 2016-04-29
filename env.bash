@@ -5,6 +5,7 @@ PATH_UBOOT="${PWD}/bootable/bootloader/uboot-imx"
 export PATH="${PATH_UBOOT}/tools:${PATH}"
 export ARCH=arm
 export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi-"
+#export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
 
 # TARGET support: wandboard,edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"
@@ -19,8 +20,9 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
         if [[ "$BASEBOARD" == "wandboard" ]]; then
             UBOOT_CONFIG='wandboard_defconfig'
             KERNEL_IMAGE='zImage'
-            KERNEL_CONFIG='wandboard_defconfig'
+            KERNEL_CONFIG='wandboard_android_defconfig'
             DTB_TARGET='imx6q-wandboard.dtb imx6dl-wandboard.dtb'
+            TARGET_DEVICE=wandboard
         fi
 
     elif [[ "$CPU_MODULE" == "edm1cf-nand" ]]; then
@@ -99,13 +101,12 @@ heat() {
     case "${PWD}" in
         "${TOP}")
             cd "${TMP_PWD}"
-            cd ${PATH_UBOOT} && heat "$@" || return $?
-            cd ${PATH_KERNEL} && heat "$@" || return $?
+            #cd ${PATH_UBOOT} && heat "$@" || return $?
+            #cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-eng
             make "$@" || return $?
-
             ;;
         "${PATH_KERNEL}"*)
             cd "${PATH_KERNEL}"
@@ -211,10 +212,10 @@ flashcard() {
         elif [[ "$TARGET_DEVICE" == "pico_6qdl" ]]; then
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-picosom.dtb $IMX_PATH/imx6q-picosom.dtb; sync
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-picosom.dtb $IMX_PATH/imx6dl-picosom.dtb; sync
-        elif [[ "$TARGET" == "wandboard" ]]; then
+        elif [[ "$TARGET_DEVICE" == "wandboard" ]]; then
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-wandboard.dtb $IMX_PATH/imx6q-wandboard.dtb; sync
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-wandboard.dtb $IMX_PATH/imx6dl-wandboard.dtb;sync
-        elif [[ "$TARGET" == "tek3_6qdl" ]]; then
+        elif [[ "$TARGET_DEVICE" == "tek3_6qdl" ]]; then
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-tek3.dtb $IMX_PATH/imx6q-tek3.dtb; sync
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-tek3.dtb $IMX_PATH/imx6dl-tek3.dtb;sync
        fi

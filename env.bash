@@ -1,11 +1,16 @@
+#############################
+# Author
+# Wig Cheng@TW
+#############################
+
 TOP="${PWD}"
 PATH_KERNEL="${PWD}/kernel_imx"
 PATH_UBOOT="${PWD}/bootable/bootloader/uboot-imx"
 
 export PATH="${PATH_UBOOT}/tools:${PATH}"
 export ARCH=arm
-export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi-"
 #export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
+export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"
 
 # TARGET support: wandboard,edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"
@@ -14,6 +19,8 @@ CPU_TYPE=$(echo $MODULE | awk -F. '{print $3}')
 CPU_MODULE=$(echo $MODULE | awk -F. '{print $4}')
 BASEBOARD=$(echo $MODULE | awk -F. '{print $5}')
 OUTPUT_DISPLAY=$(echo $MODULE | awk -F. '{print $6}')
+KERNEL_CFLAGS='KCFLAGS=-mno-android'
+KERNEL_CONFIG='tn_imx_android_defconfig'
 
 if [[ "$CPU_TYPE" == "imx6" ]]; then
     if [[ "$CPU_MODULE" == "edm1cf-sd" ]]; then
@@ -21,61 +28,47 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
             UBOOT_CONFIG='wandboard_defconfig'
             KERNEL_IMAGE='zImage'
             KERNEL_CONFIG='wandboard_android_defconfig'
-            DTB_TARGET='imx6q-wandboard.dtb imx6dl-wandboard.dtb'
+            DTB_TARGET='imx6q-wandboard-revc1.dtb imx6dl-wandboard-revc1.dtb imx6q-wandboard-revb1.dtb imx6dl-wandboard-revb1.dtb'
             TARGET_DEVICE=wandboard
         fi
 
     elif [[ "$CPU_MODULE" == "edm1cf-nand" ]]; then
         if [[ "$BASEBOARD" == "fairy" ]]; then
-            UBOOT_CONFIG='edm-cf-imx6-android_defconfig'
-            KERNEL_IMAGE='zImage'
-            KERNEL_CONFIG='edm-cf-imx_android_defconfig'
-            DTB_TARGET='imx6q-edm1-cf.dtb imx6dl-edm1-cf.dtb'
-            TARGET_DEVICE=edm1cf_6qdl
+            UBOOT_CONFIG='edm-cf-imx6_defconfig'
+            KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+            DTB_TARGET='imx6q-edm1-cf_fairy.dtb imx6dl-edm1-cf_fairy.dtb imx6q-edm1-cf-pmic_fairy.dtb imx6dl-edm1-cf-pmic_fairy.dtb imx6qp-edm1-cf-pmic_fairy.dtb'
+            TARGET_DEVICE=edm1cf_6dq
         elif [[ "$BASEBOARD" == "tc0700" ]]; then
-            UBOOT_CONFIG='edm-cf-imx6-android-no-console_defconfig'
-            KERNEL_IMAGE='zImage'
-            KERNEL_CONFIG='edm-cf-imx_android_defconfig'
-            DTB_TARGET='imx6q-edm1-cf.dtb imx6dl-edm1-cf.dtb'
-            TARGET_DEVICE=edm1cf_6qdl
-        elif [[ "$BASEBOARD" == "tek3" ]]; then
-            UBOOT_CONFIG='edm-cf-imx6-android_defconfig'
-            KERNEL_IMAGE='zImage'
-            KERNEL_CONFIG='edm-cf-imx_android_defconfig'
-            DTB_TARGET='imx6q-tek3.dtb imx6dl-tek3.dtb'
-            TARGET_DEVICE=tek3_6qdl
+            UBOOT_CONFIG='edm-cf-imx6-no-console_defconfig'
+            KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+            DTB_TARGET='imx6q-edm1-cf_tc0700.dtb imx6dl-edm1-cf_tc0700.dtb imx6q-edm1-cf-pmic_tc0700.dtb imx6dl-edm1-cf-pmic_tc0700.dtb imx6qp-edm1-cf-pmic_tc0700.dtb'
+            TARGET_DEVICE=edm1cf_6dq
         fi
 
-    elif [[ "$CPU_MODULE" == "picosom-sd" ]]; then
-        if [[ "$BASEBOARD" == "dwarf" ]]; then
-            UBOOT_CONFIG='picosom-imx6-android_defconfig'
-            KERNEL_IMAGE='zImage'
-            KERNEL_CONFIG='picosom-imx6_android_defconfig'
-            DTB_TARGET='imx6q-picosom.dtb imx6dl-picosom.dtb'
-            TARGET_DEVICE=pico_6qdl
+    elif [[ "$CPU_MODULE" == "edm1cf-nand-pmic" ]]; then
+        if [[ "$BASEBOARD" == "fairy" ]]; then
+            UBOOT_CONFIG='edm-cf-imx6_defconfig'
+        elif [[ "$BASEBOARD" == "tc0700" ]]; then
+            UBOOT_CONFIG='edm-cf-imx6-no-console_defconfig'
         fi
+        KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+        DTB_TARGET='imx6q-edm1-cf_fairy.dtb imx6dl-edm1-cf_fairy.dtb imx6q-edm1-cf-pmic_fairy.dtb imx6dl-edm1-cf-pmic_fairy.dtb imx6qp-edm1-cf-pmic_fairy.dtb'
+        TARGET_DEVICE=edm1cf_pmic_6dq
+
+
+    elif [[ "$CPU_MODULE" == "pico-sd" ]]; then
+            UBOOT_CONFIG='pico-imx6_defconfig'
+            KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+            DTB_TARGET='imx6q-pico_dwarf.dtb imx6dl-pico_dwarf.dtb imx6q-pico_hobbit.dtb imx6dl-pico_hobbit.dtb imx6q-pico_nymph.dtb imx6dl-pico_nymph.dtb'
+            TARGET_DEVICE=pico_6dq
+
+    elif [[ "$CPU_MODULE" == "tek3" || "$CPU_MODULE" == "tep" ]]; then
+            UBOOT_CONFIG='tek-imx6_defconfig'
+            KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+            DTB_TARGET='imx6q-tek3.dtb imx6dl-tek3.dtb imx6q-tep5.dtb imx6dl-tep5.dtb'
+            TARGET_DEVICE=tek3_6dq
     fi
 
-elif [[ "$CPU_TYPE" == "imx6sx" ]]; then
-    if [[ "$CPU_MODULE" == "edm1cf-nand" ]]; then
-        if [[ "$BASEBOARD" == "goblin_lvds" ]]; then
-            UBOOT_CONFIG='edm1-cf-imx6sx_defconfig'
-            KERNEL_IMAGE='zImage'
-            KERNEL_CONFIG='edm-cf-imx_defconfig'
-            DTB_TARGET='imx6sx-edm1-cf.dtb'
-        fi
-    fi
-
-elif [[ "$CPU_TYPE" == "imx7" ]]; then
-    if [[ "$CPU_MODULE" == "picosom-sd" ]]; then
-        if [[ "$BASEBOARD" == "dwarf" ]]; then
-            UBOOT_CONFIG='pico-imx7d_android_defconfig'
-            KERNEL_IMAGE='uImage LOADADDR=0x80008000'
-            KERNEL_CONFIG='picosom-imx6_android_defconfig'
-            DTB_TARGET='imx7d-pico.dtb'
-            TARGET_DEVICE=pico_7d
-        fi
-    fi
 fi
 
 
@@ -101,20 +94,23 @@ heat() {
     case "${PWD}" in
         "${TOP}")
             cd "${TMP_PWD}"
-            #cd ${PATH_UBOOT} && heat "$@" || return $?
-            #cd ${PATH_KERNEL} && heat "$@" || return $?
+            cd ${PATH_UBOOT} && heat "$@" || return $?
+            cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-eng
             make "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
+#            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
             cd "${PATH_KERNEL}"
-            make "$@" $KERNEL_IMAGE || return $?
+#            make "$@" $KERNEL_IMAGE LOADADDR=0x10008000 $KERNEL_CFLAGS || return $?
+            make "$@" $KERNEL_IMAGE LOADADDR=0x10008000 || return $?
             make "$@" modules || return $?
             make "$@" $DTB_TARGET || return $?
             ;;
         "${PATH_UBOOT}"*)
+#            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"
             cd "${PATH_UBOOT}"
             make "$@" || return $?
             ;;
@@ -129,6 +125,7 @@ heat() {
 
 cook() {
     local TMP_PWD="${PWD}"
+    echo "$TMP_PWD"
 
     case "${PWD}" in
         "${TOP}")
@@ -141,11 +138,13 @@ cook() {
             make "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
+#            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
             cd "${PATH_KERNEL}"
             make "$@" $KERNEL_CONFIG || return $?
             heat "$@" || return $?
             ;;
         "${PATH_UBOOT}"*)
+#            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"
             cd "${PATH_UBOOT}"
             make "$@" $UBOOT_CONFIG || return $?
             heat "$@" || return $?
@@ -206,35 +205,29 @@ flashcard() {
         sudo cp $PATH_UBOOT/u-boot.img $IMX_PATH/; sync
         sudo cp $PATH_KERNEL/arch/arm/boot/zImage $IMX_PATH/zImage; sync
 
-        if [[ "$TARGET_DEVICE" == "edm1cf_6qdl" ]]; then
-            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-edm1-cf.dtb $IMX_PATH/imx6q-edm1-cf.dtb; sync
-            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-edm1-cf.dtb $IMX_PATH/imx6dl-edm1-cf.dtb;sync
-        elif [[ "$TARGET_DEVICE" == "pico_6qdl" ]]; then
-            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-picosom.dtb $IMX_PATH/imx6q-picosom.dtb; sync
-            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-picosom.dtb $IMX_PATH/imx6dl-picosom.dtb; sync
-        elif [[ "$TARGET_DEVICE" == "wandboard" ]]; then
-            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-wandboard.dtb $IMX_PATH/imx6q-wandboard.dtb; sync
-            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-wandboard.dtb $IMX_PATH/imx6dl-wandboard.dtb;sync
-        elif [[ "$TARGET_DEVICE" == "tek3_6qdl" ]]; then
+        if [[ "$TARGET_DEVICE" == "edm1cf_6dq" || "$TARGET_DEVICE" == "edm1cf_pmic_6dq"  ]]; then
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-edm1-cf_"$BASEBOARD".dtb $IMX_PATH/imx6q-edm1-cf_"$BASEBOARD".dtb; sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-edm1-cf_"$BASEBOARD".dtb $IMX_PATH/imx6dl-edm1-cf_"$BASEBOARD".dtb;sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-edm1-cf-pmic_"$BASEBOARD".dtb $IMX_PATH/imx6q-edm1-cf-pmic_"$BASEBOARD".dtb; sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-edm1-cf-pmic_"$BASEBOARD".dtb $IMX_PATH/imx6dl-edm1-cf-pmic_"$BASEBOARD".dtb;sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6qp-edm1-cf-pmic_"$BASEBOARD".dtb $IMX_PATH/imx6qp-edm1-cf-pmic_"$BASEBOARD".dtb; sync
+        elif [[ "$TARGET_DEVICE" == "pico_6dq" ]]; then
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-pico_"$BASEBOARD".dtb $IMX_PATH/imx6q-pico_"$BASEBOARD".dtb; sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-pico_"$BASEBOARD".dtb $IMX_PATH/imx6dl-pico_"$BASEBOARD".dtb; sync
+        elif [[ "$TARGET_DEVICE" == "tek3_6dq" ]]; then
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-tek3.dtb $IMX_PATH/imx6q-tek3.dtb; sync
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-tek3.dtb $IMX_PATH/imx6dl-tek3.dtb;sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-tep5.dtb $IMX_PATH/imx6q-tep5.dtb; sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-tep5.dtb $IMX_PATH/imx6dl-tep5.dtb;sync
        fi
 
         # donwload the environment settings
-        echo == download the environment ==i
-
-        if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-            sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt.hdmi $IMX_PATH/uEnv.txt; sync
-        elif [[ "$OUTPUT_DISPLAY" == "lvds" ]]; then
-            if [[ "$BASEBOARD" == "tc0700" ]]; then
-                sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt.tc0700 $IMX_PATH/uEnv.txt; sync
-            else
-                sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt.lvds $IMX_PATH/uEnv.txt; sync
-            fi
+        echo == download the environment - Display: "$OUTPUT_DISPLAY" ==
+        if [[ "$TARGET_DEVICE" == "pico_6dq" ]]; then
+             sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt."$BASEBOARD"."$OUTPUT_DISPLAY" $IMX_PATH/uEnv.txt; sync
         else
-            sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt.hdmi $IMX_PATH/uEnv.txt; sync
+            sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt."$OUTPUT_DISPLAY" $IMX_PATH/uEnv.txt; sync
         fi
-
         # download the ramdisk
         echo == download the ramdisk ==
         sudo mkimage -A arm -O linux -T ramdisk -C none -a 0x10800800 -n "Android Root Filesystem" -d ./out/target/product/$TARGET_DEVICE/ramdisk.img ./out/target/product/$TARGET_DEVICE/uramdisk.img
@@ -264,35 +257,6 @@ flashcard() {
     fi
 
     echo "Flash Done!!!"
-
-    cd "${TMP_PWD}"
-}
-
-git_check() {
-    local TMP_PWD="${PWD}"
-
-    if [[ "$TARGET" == "edm1cf_6sx" ]]; then
-        cd ${PATH_UBOOT} && git checkout tn-mx6-patches-2014.04_3.10.53_1.1.0_ga
-        cd "${TMP_PWD}"
-        cd ./hardware/libhardware_legacy && git checkout master
-        cd "${TMP_PWD}"
-        cd ./hardware/broadcom/libbt && git checkout tn-mx6-3.10.53-1.1.0-lp.5.0.0-ga-edm1sx
-        cd "${TMP_PWD}"
-    elif [[ "$TARGET" == "picosom" ]]; then
-        cd ${PATH_UBOOT} && git checkout tn-mx6-patches-2014.10_3.10.53_1.1.0_ga
-        cd "${TMP_PWD}"
-        cd ./hardware/libhardware_legacy && git checkout tn-mx6-3.10.53-1.1.0-lp.5.0.0-ga-pico
-        cd "${TMP_PWD}"
-        cd ./hardware/broadcom/libbt && git checkout tn-mx6-3.10.53-1.1.0-lp.5.0.0-ga-pico
-        cd "${TMP_PWD}"
-    else
-        cd ${PATH_UBOOT} && git checkout tn-mx6-patches-2014.10_3.10.53_1.1.0_ga
-        cd "${TMP_PWD}"
-        cd ./hardware/libhardware_legacy && git checkout master
-        cd "${TMP_PWD}"
-        cd ./hardware/broadcom/libbt && git checkout master
-        cd "${TMP_PWD}"
-    fi
 
     cd "${TMP_PWD}"
 }

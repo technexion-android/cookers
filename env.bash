@@ -63,11 +63,16 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
             DTB_TARGET='imx6q-pico_dwarf.dtb imx6dl-pico_dwarf.dtb imx6q-pico_hobbit.dtb imx6dl-pico_hobbit.dtb imx6q-pico_nymph.dtb imx6dl-pico_nymph.dtb'
             TARGET_DEVICE=pico_6dq
 
-    elif [[ "$CPU_MODULE" == "tek3" || "$CPU_MODULE" == "tep" ]]; then
+    elif [[ "$CPU_MODULE" == "tek3" ]]; then
             UBOOT_CONFIG='tek-imx6_defconfig'
             KERNEL_IMAGE='uImage LOADADDR=0x10008000'
             DTB_TARGET='imx6q-tek3.dtb imx6dl-tek3.dtb imx6q-tep5.dtb imx6dl-tep5.dtb'
             TARGET_DEVICE=tek3_6dq
+    elif [[ "$CPU_MODULE" == "tep5" ]]; then
+	    UBOOT_CONFIG='tek-imx6_defconfig'
+            KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+            DTB_TARGET='imx6q-tep5.dtb imx6dl-tep5.dtb'
+            TARGET_DEVICE=tep5_6dq	    	
     fi
 
 fi
@@ -218,6 +223,7 @@ flashcard() {
         elif [[ "$TARGET_DEVICE" == "tek3_6dq" ]]; then
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-tek3.dtb $IMX_PATH/imx6q-tek3.dtb; sync
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-tek3.dtb $IMX_PATH/imx6dl-tek3.dtb;sync
+        elif [[ "$TARGET_DEVICE" == "tep5_6dq" ]]; then
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-tep5.dtb $IMX_PATH/imx6q-tep5.dtb; sync
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-tep5.dtb $IMX_PATH/imx6dl-tep5.dtb;sync
        fi

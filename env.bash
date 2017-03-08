@@ -14,6 +14,7 @@ export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-ea
 
 # TARGET support: wandboard,edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"
+SYS_PATH="./tmp"
 MODULE=$(basename $BASH_SOURCE)
 CPU_TYPE=$(echo $MODULE | awk -F. '{print $3}')
 CPU_MODULE=$(echo $MODULE | awk -F. '{print $4}')
@@ -237,6 +238,16 @@ flashcard() {
     echo == download the system ==
     sudo dd if=./out/target/product/$TARGET_DEVICE/system_raw.img of=${dev_node}5;sync
     sleep 1
+    # donwload the audio settings
+    if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+    echo == download the audio setting for "$OUTPUT_DISPLAY" ==
+      mkdir $SYS_PATH
+      sudo mount ${dev_node}5 $SYS_PATH;
+      sudo cp ./device/fsl/"$TARGET_DEVICE"/audio_policy_"$OUTPUT_DISPLAY".conf $SYS_PATH/etc/audio_policy.conf; sync
+      sudo umount ${dev_node}5
+      sudo rm -rf $SYS_PATH
+    fi
+
     echo == download the recovery ==
     sudo dd if=./out/target/product/$TARGET_DEVICE/recovery.img of=${dev_node}2; sync
     sleep 1

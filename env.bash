@@ -74,6 +74,13 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
             DTB_TARGET='imx6q-tep5.dtb imx6dl-tep5.dtb'
             TARGET_DEVICE=tep5_6dq	    	
     fi
+elif [[ "$CPU_TYPE" == "imx7" ]]; then
+    if [[ "$CPU_MODULE" == "pico-sd" ]]; then
+            UBOOT_CONFIG='pico-imx7d_spl_defconfig'
+            KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+            DTB_TARGET='imx7d-pico_dwarf.dtb imx7d-pico_hobbit.dtb imx7d-pico_nymph.dtb imx7d-pico_pi.dtb'
+            TARGET_DEVICE=pico_7d	
+	fi
 
 fi
 
@@ -104,7 +111,7 @@ heat() {
             cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
             source build/envsetup.sh
-            lunch "$TARGET_DEVICE"-eng
+            lunch "$TARGET_DEVICE"-user
             make "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
@@ -140,7 +147,7 @@ cook() {
 
             cd "${TMP_PWD}"
             source build/envsetup.sh
-            lunch "$TARGET_DEVICE"-eng
+            lunch "$TARGET_DEVICE"-user
             make "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
@@ -202,10 +209,6 @@ flashcard() {
     sync
     sudo mkfs.vfat -F 32 ${dev_node}1 -n boot;sync
 
-    if [[ "$CPU_TYPE" == "imx7" ]]; then
-        sudo dd if=./out/target/product/$TARGET_DEVICE/boot.img of=${dev_node}1; sync
-        sleep 1
-    else
         mkdir $IMX_PATH
         sudo mount ${dev_node}1 $IMX_PATH;
         sudo cp $PATH_UBOOT/u-boot.img $IMX_PATH/; sync
@@ -226,16 +229,26 @@ flashcard() {
         elif [[ "$TARGET_DEVICE" == "tep5_6dq" ]]; then
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6q-tep5.dtb $IMX_PATH/imx6q-tep5.dtb; sync
             sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx6dl-tep5.dtb $IMX_PATH/imx6dl-tep5.dtb;sync
-       fi
+        elif [[ "$TARGET_DEVICE" == "pico_7d" ]]; then
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx7d-pico_dwarf.dtb $IMX_PATH/imx7d-pico_dwarf.dtb; sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx7d-pico_hobbit.dtb $IMX_PATH/imx7d-pico_hobbit.dtb; sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx7d-pico_nymph.dtb $IMX_PATH/imx7d-pico_nymph.dtb; sync
+            sudo cp $PATH_KERNEL/arch/arm/boot/dts/imx7d-pico_pi.dtb $IMX_PATH/imx7d-pico_pi.dtb; sync
+        fi
 
         # donwload the environment settings
         echo == download the environment - Display: "$OUTPUT_DISPLAY" ==
-        if [[ "$TARGET_DEVICE" == "pico_6dq" ]]; then
+        if [[ "$TARGET_DEVICE" == "pico_6dq" || "$TARGET_DEVICE" == "pico_7d" ]]; then
              sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt."$BASEBOARD"."$OUTPUT_DISPLAY" $IMX_PATH/uEnv.txt; sync
         else
             sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt."$OUTPUT_DISPLAY" $IMX_PATH/uEnv.txt; sync
         fi
-        # download the ramdisk
+    # download the ramdisk
+    if [[ "$CPU_TYPE" == "imx7" ]]; then
+        echo == download the ramdisk ==
+        sudo mkimage -A arm -O linux -T ramdisk -C none -a 0x83800000 -n "Android Root Filesystem" -d ./out/target/product/$TARGET_DEVICE/ramdisk.img ./out/target/product/$TARGET_DEVICE/uramdisk.img
+        sudo cp ./out/target/product/$TARGET_DEVICE/uramdisk.img $IMX_PATH/;sync
+    else
         echo == download the ramdisk ==
         sudo mkimage -A arm -O linux -T ramdisk -C none -a 0x10800800 -n "Android Root Filesystem" -d ./out/target/product/$TARGET_DEVICE/ramdisk.img ./out/target/product/$TARGET_DEVICE/uramdisk.img
         sudo cp ./out/target/product/$TARGET_DEVICE/uramdisk.img $IMX_PATH/;sync
@@ -263,15 +276,10 @@ flashcard() {
     sync
     sleep 1
 
-    if [[ "$CPU_TYPE" == "imx7" ]]; then
-        sudo dd if=$PATH_UBOOT/u-boot.imx of="$@" bs=512 seek=2; sync
-        echo == flash the u-boot.imx finish ==
-        sleep 1
-    else
-        sudo dd if=$PATH_UBOOT/SPL of="$@" bs=1k seek=1; sync
-        echo == flash the spl finish ==
-        sleep 1
-    fi
+    sudo dd if=$PATH_UBOOT/SPL of="$@" bs=1k seek=1; sync
+    echo == flash the spl finish ==
+    sleep 1
+    
 
     echo "Flash Done!!!"
 

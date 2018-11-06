@@ -130,18 +130,27 @@ heat() {
             cd ${PATH_UBOOT} && heat "$@" || return $?
             cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
-            lunch "$TARGET_DEVICE"-user
+            lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
 #           make "$@" PRODUCT-"$TARGET_DEVICE"-user dist || return $?
             ;;
         "${PATH_KERNEL}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
             cd "${PATH_KERNEL}"
-#           make "$@" $KERNEL_IMAGE LOADADDR=0x10008000 $KERNEL_CFLAGS || return $?
-            make "$@" $KERNEL_CFLAGS || return $?
-            make "$@" $KERNEL_IMAGE || return $?
-            make "$@" modules || return $?
-            make "$@" $DTB_TARGET || return $?
+			rm "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/QCA9377/wlan.ko
+			rm -rf ../modules/lib
+#			make "$@" $KERNEL_IMAGE LOADADDR=0x10008000 $KERNEL_CFLAGS || return $?
+			make "$@" $KERNEL_CFLAGS || return $?
+			make "$@" $KERNEL_IMAGE || return $?
+			make "$@" modules || return $?
+			make "$@" $DTB_TARGET || return $?
+			make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
+			cd drivers/net/wireless/qcacld-2.0
+			make "$@" clean || return $?
+			make "$@" || return $?
+			KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
+			cd "${PATH_KERNEL}"
+			cp ../modules/lib/modules/4.9.17-gbc2f5b676f97-dirty/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/QCA9377/
             ;;
         "${PATH_UBOOT}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"
@@ -166,7 +175,7 @@ cook() {
             cd ${PATH_UBOOT} && cook "$@" || return $?
             cd ${PATH_KERNEL} && cook "$@" || return $?
             cd "${TMP_PWD}"
-            lunch "$TARGET_DEVICE"-user
+            lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)

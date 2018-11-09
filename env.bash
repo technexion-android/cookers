@@ -137,7 +137,7 @@ heat() {
         "${PATH_KERNEL}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
             cd "${PATH_KERNEL}"
-			rm "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/QCA9377/wlan.ko
+			rm "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/wlan.ko
 			rm -rf ../modules/lib
 #			make "$@" $KERNEL_IMAGE LOADADDR=0x10008000 $KERNEL_CFLAGS || return $?
 			make "$@" $KERNEL_CFLAGS || return $?
@@ -150,7 +150,7 @@ heat() {
 			make "$@" || return $?
 			KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
 			cd "${PATH_KERNEL}"
-			cp ../modules/lib/modules/4.9.17-gbc2f5b676f97-dirty/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/QCA9377/
+			cp ../modules/lib/modules/4.9.17-g9ed00e7a018f/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"

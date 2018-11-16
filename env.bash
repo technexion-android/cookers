@@ -150,7 +150,7 @@ heat() {
 			make "$@" || return $?
 			KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
 			cd "${PATH_KERNEL}"
-			cp ../modules/lib/modules/4.9.17-g9ed00e7a018f/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
+			cp ../modules/lib/modules/4.9.17-g01ff423c60fa/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"

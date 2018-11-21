@@ -49,7 +49,7 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
 			KERNEL_IMAGE='zImage'
 			KERNEL_CONFIG='tn_imx_android_defconfig'
         	if [[ "$OUTPUT_DISPLAY" == "tc0700" ]]; then
-	            DTB_TARGET='imx6q-edm1-cf_tc0700.dtb imx6dl-edm1-cf_tc0700.dtb imx6q-edm1-cf-pmic_tc0700.dtb imx6dl-edm1-cf-pmic_tc0700.dtb imx6qp-edm1-cf-pmic_tc0700.dtb'
+	            DTB_TARGET='imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb'
         	else
 				DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb'
 			fi
@@ -81,7 +81,7 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
             KERNEL_IMAGE='uImage LOADADDR=0x10008000'
             KERNEL_CONFIG='tn_imx_android_defconfig'
         	if [[ "$OUTPUT_DISPLAY" == "tc0700" ]]; then
-	            DTB_TARGET='imx6q-edm1-cf_tc0700.dtb imx6dl-edm1-cf_tc0700.dtb imx6q-edm1-cf-pmic_tc0700.dtb imx6dl-edm1-cf-pmic_tc0700.dtb imx6qp-edm1-cf-pmic_tc0700.dtb imx6q-edm1-cf-pmic_tc1000.dtb imx6dl-edm1-cf-pmic_tc1000.dtb imx6qp-edm1-cf-pmic_tc1000.dtb'
+	            DTB_TARGET='imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb'
         	else
 				DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb'
 			fi
@@ -150,7 +150,7 @@ heat() {
 			make "$@" || return $?
 			KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
 			cd "${PATH_KERNEL}"
-			cp ../modules/lib/modules/4.9.17-g01ff423c60fa/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
+			cp ../modules/lib/modules/4.9.17-gbc2a95433e15/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"

@@ -113,7 +113,7 @@ heat() {
             make "$@" || return $?
             KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
             cd "${PATH_KERNEL}"
-			cp ../modules/lib/modules/4.9.78/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/QCA9377/
+			cp ../modules/lib/modules/4.9.78-g0f1bf862064a/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/QCA9377/
             ;;
         "${PATH_UBOOT}"*)
             #export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"

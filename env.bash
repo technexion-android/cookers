@@ -47,12 +47,20 @@ PATH_TOOLS="${TOP}/device/fsl/common/tools"
 if [[ "$CPU_TYPE" == "imx8" ]]; then
     if [[ "$CPU_MODULE" == "pico-8m" ]]; then
         if [[ "$BASEBOARD" == "pi" ]]; then
-            UBOOT_CONFIG='pico_8m_android_defconfig'
+
             KERNEL_IMAGE='Image'
             KERNEL_CONFIG='android_defconfig'
-            DTB_TARGET='pico_8m.dtb'
-            TARGET_DEVICE=pico_8m
-            TARGET_DEVICE_NAME=imxpico_8m
+			if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+				UBOOT_CONFIG='pico_8m_android_defconfig'
+				TARGET_DEVICE=pico_8m
+				TARGET_DEVICE_NAME=imxpico_8m
+				DTB_TARGET='pico_8m.dtb'
+			elif [[ "$OUTPUT_DISPLAY" == "lcd" ]]; then
+				UBOOT_CONFIG='pico_8m_lcd_android_defconfig'
+				TARGET_DEVICE=pico_8m_lcd
+				TARGET_DEVICE_NAME=imxpico_8m_lcd
+				DTB_TARGET='pico_8m_lcd.dtb'
+			fi
         elif [[ "$BASEBOARD" == "wanboard" ]]; then
             UBOOT_CONFIG='mx8mq_evk_android_defconfig'
             KERNEL_IMAGE='Image'
@@ -103,7 +111,7 @@ heat() {
         "${PATH_KERNEL}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
             cd "${PATH_KERNEL}"
-			rm "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/QCA9377/wlan.ko
+			rm "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/wlan.ko
 			rm -rf ../modules/lib
             make "$@" $KERNEL_CFLAGS || return $?
             make "$@" || return $?
@@ -113,7 +121,7 @@ heat() {
             make "$@" || return $?
             KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
             cd "${PATH_KERNEL}"
-			cp ../modules/lib/modules/4.9.78-g0f1bf862064a/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/QCA9377/
+			cp ../modules/lib/modules/4.9.78-g446567b074eb/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
             #export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"

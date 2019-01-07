@@ -25,7 +25,7 @@ export DISPLAY=:0
 #sudo apt-get install gcc-arm-linux-gnueabi
 
 export ARCH=arm64
-export CROSS_COMPILE=/usr/bin/aarch64-linux-gnu-
+export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 export CROSS32CC=arm-linux-gnueabi-gcc
 
 export MY_ANDROID=$TOP

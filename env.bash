@@ -125,8 +125,6 @@ heat() {
 			cp ../modules/lib/modules/4.9.78-g446567b074eb/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
-            #export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
-			export CROSS_COMPILE=/usr/bin/aarch64-linux-gnu-
             cd "${PATH_UBOOT}"
             make "$@" || return $?
             ;;

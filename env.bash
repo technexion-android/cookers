@@ -27,6 +27,7 @@ export DISPLAY=:0
 export ARCH=arm64
 export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
 export CROSS32CC=arm-linux-gnueabi-gcc
+export USER=$(whoami)
 
 export MY_ANDROID=$TOP
 export LC_ALL=C

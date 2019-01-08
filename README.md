@@ -79,9 +79,9 @@ Quick way for flashing to board:
 About how to mount your board as mass storage, please refer:
 * [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-to-flash-eMMC)
 
-## Enabling Wifi/BT function
+## Enabling WiFi/BT function
 
-Prepare WIFI/BT firmware
+Prepare WiFi/BT firmware
 
 This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configuration, Because of the license restriction, please contact TechNexion FAE or Sales to get licensed firmware files.
 
@@ -91,8 +91,17 @@ After getting the firmware binary: .. Decompress the tarball and put all the fir
 
     <source folder>/device/fsl/pico_8m/wifi-firmware/
 
-Then take the QCA9377 folder as target path such as: 
+Then take the QCA9377 folder as target path such as:
 
     <source folder>/device/fsl/pico_8m/wifi-firmware/QCA9377
+
+Enabling the WiFi function in Build file:
+
+    hdmi: path: <source folder>/device/fsl/imx8/pico_8m.mk
+    lcd:  path: <source folder>/device/fsl/imx8/pico_8m_lcd.mk
+
+    - BOARD_HAS_QCA9377_WLAN_FIRMWARE := false
+    to
+    + BOARD_HAS_QCA9377_WLAN_FIRMWARE := true
 
 Issue the command cook/heat again as previous Chapter "Compiling Environment Setup", WiFi/BT function will be working! Enjoy!

@@ -122,7 +122,7 @@ heat() {
             make "$@" || return $?
             KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
             cd "${PATH_KERNEL}"
-			cp ../modules/lib/modules/4.9.78-g446567b074eb/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
+			cp ../modules/lib/modules/4.9.78*/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
             cd "${PATH_UBOOT}"

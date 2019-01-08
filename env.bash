@@ -200,15 +200,18 @@ throw() {
 }
 
 flashcard() {
-    local TMP_PWD="${PWD}"
-	PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
-    dev_node="$@"
-    echo "$dev_node start"
-	cd "${PATH_OUT}"
-	sudo $TOP/device/fsl/common/tools/tn-sdcard-partition.sh -f ${TARGET_DEVICE_NAME} -c 7 ${dev_node}
-	sync
-    echo "Flash Done!!!"
-    cd "${TMP_PWD}"
+  local TMP_PWD="${PWD}"
+  PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
+  dev_node="$@"
+  echo "$dev_node start"
+  cd "${PATH_OUT}"
+  sudo $TOP/device/fsl/common/tools/tn-sdcard-partition.sh -f ${TARGET_DEVICE_NAME} -c 7 ${dev_node}
+  sync
+  cd "${PATH_UBOOT}"
+  ./install_uboot_imx8mq.sh -b pico-8m -d ${dev_node}
+  cd -
+  echo "Flash Done!!!"
+  cd "${TMP_PWD}"
 }
 
 flashuboot() {

@@ -21,7 +21,7 @@ Technexion Docker Image Production
 
     $ cd cookers
     $ docker build -t build_droid8 .
-    $ sudo docker run --name mx8_build  -v /home/<user name>/<source folder>:/home/mnt -t -i build_droid8 bash
+    $ sudo docker run --privileged=true --name mx8_build  -v /home/<user name>/<source folder>:/home/mnt -t -i build_droid8 bash
     (first time)
 
     $ sudo docker ps -a

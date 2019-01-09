@@ -102,11 +102,11 @@ heat() {
     case "${PWD}" in
         "${TOP}")
             # cd "${TMP_PWD}"
-            cd ${PATH_UBOOT} && heat "$@" || return $?
             cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
             lunch "$TARGET_DEVICE"-user
             make "$@" || return $?
+            cd ${PATH_UBOOT} && heat "$@" || return $?
 #           make "$@" PRODUCT-"$TARGET_DEVICE"-user dist || return $?
             ;;
         "${PATH_KERNEL}"*)
@@ -143,11 +143,12 @@ cook() {
 
     case "${PWD}" in
         "${TOP}")
-            cd ${PATH_UBOOT} && cook "$@" || return $?
             cd ${PATH_KERNEL} && cook "$@" || return $?
             cd "${TMP_PWD}"
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
+            cd ${PATH_UBOOT} && cook "$@" || return $?
+
             ;;
         "${PATH_KERNEL}"*)
             #export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"

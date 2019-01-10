@@ -101,12 +101,12 @@ heat() {
     local TMP_PWD="${PWD}"
     case "${PWD}" in
         "${TOP}")
-            # cd "${TMP_PWD}"
+            # cd "${TMP_PWD}"'
+            cd ${PATH_UBOOT} && heat "$@" || return $?
             cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
             lunch "$TARGET_DEVICE"-user
             make "$@" || return $?
-            cd ${PATH_UBOOT} && heat "$@" || return $?
 #           make "$@" PRODUCT-"$TARGET_DEVICE"-user dist || return $?
             ;;
         "${PATH_KERNEL}"*)
@@ -125,6 +125,7 @@ heat() {
 			cp ../modules/lib/modules/4.9.78*/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
+            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
             cd "${PATH_UBOOT}"
             make "$@" || return $?
             ;;
@@ -143,21 +144,20 @@ cook() {
 
     case "${PWD}" in
         "${TOP}")
+            cd ${PATH_UBOOT} && cook "$@" || return $?
             cd ${PATH_KERNEL} && cook "$@" || return $?
             cd "${TMP_PWD}"
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
-            cd ${PATH_UBOOT} && cook "$@" || return $?
-
             ;;
         "${PATH_KERNEL}"*)
-            #export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
+            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
             cd "${PATH_KERNEL}"
             make "$@" $KERNEL_CONFIG || return $?
             heat "$@" || return $?
             ;;
         "${PATH_UBOOT}"*)
-            #export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
             cd "${PATH_UBOOT}"
             make "$@" $UBOOT_CONFIG || return $?
             heat "$@" || return $?

@@ -334,3 +334,25 @@ merge_restricted_extras() {
   rm -rf imx8-o8.tar.gz imx-o8.1.0_1.3.0_8m
   sync
 }
+
+
+gen_mp_images() {
+
+  mkdir -p auto_test/device/fsl/common/tools
+  cp -rv device/fsl/common/tools/* auto_test/device/fsl/common/tools/
+
+  mkdir -p auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/boot-*.img auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/partition-table-*.bpt auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/partition-table-*.img auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/partition-table.bpt auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/partition-table.img auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/ramdisk-recovery.img auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/u-boot-*.imx auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/vbmeta-*.img auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/vendor.img auto_test/out/target/product/pico_8m/
+
+  cp -rv cookers auto_test/
+  rm -rf auto_test/cookers/.git
+
+}

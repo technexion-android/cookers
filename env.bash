@@ -100,7 +100,7 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
 			UBOOT_CONFIG='tep1-imx7d_spl_defconfig'
 			KERNEL_IMAGE='uImage LOADADDR=0x10008000'
 			DTB_TARGET='imx7d-tep1.dtb'
-			KERNEL_CONFIG='tn_imx_android_defconfig'
+			KERNEL_CONFIG='tn_tep1_android_defconfig'
 			TARGET_DEVICE=tep1_7d	    	
 		fi
 	fi
@@ -139,7 +139,7 @@ heat() {
             cd "${PATH_KERNEL}"
 			rm "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/wlan.ko
 			rm -rf ../modules/lib
-#			make "$@" $KERNEL_IMAGE LOADADDR=0x10008000 $KERNEL_CFLAGS || return $?
+			make "$@" $KERNEL_IMAGE LOADADDR=0x10008000 $KERNEL_CFLAGS || return $?
 			make "$@" $KERNEL_CFLAGS || return $?
 			make "$@" $KERNEL_IMAGE || return $?
 			make "$@" modules || return $?
@@ -150,7 +150,7 @@ heat() {
 			make "$@" || return $?
 			KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
 			cd "${PATH_KERNEL}"
-			cp ../modules/lib/modules/4.9.17-g22dc313ff6dd/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
+			cp ../modules/lib/modules/4.9.17*/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"
@@ -235,6 +235,91 @@ flashcard() {
     echo "$dev_node start"
 	cd "${PATH_OUT}"
 	sudo $TOP/device/fsl/common/tools/fsl-sdcard-partition-source.sh -f ${TARGET_DEVICE} ${dev_node}
+	sync
+    sleep 1
+	sudo $TOP/device/fsl/common/tools/gpt_partition_move -d ${dev_node} -s 8192
+    sync
+    sleep 1
+    cd "${TOP}"
+    sudo hdparm -z ${dev_node}
+    sync
+    sudo mkfs.vfat -F 32 ${dev_node}1 -n boot;sync
+
+	mkdir $IMX_PATH
+    sudo mount ${dev_node}1 $IMX_PATH;
+    sudo cp $TOP/out/target/product/$TARGET_DEVICE/obj/BOOTLOADER_OBJ/u-boot.img $IMX_PATH/; sync
+    sudo cp $TOP/out/target/product/$TARGET_DEVICE/obj/KERNEL_OBJ/arch/arm/boot/zImage $IMX_PATH/zImage; sync
+
+    # donwload the environment settings
+    echo == download the environment - Display: "$OUTPUT_DISPLAY" ==
+		sudo cp $TOP/out/target/product/$TARGET_DEVICE/obj/KERNEL_OBJ/*.dtb $IMX_PATH/.; sync
+        sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/chmodel.sh $IMX_PATH/chmodel.sh; sync
+        sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt.*.* $IMX_PATH/.; sync
+		sudo cp ./device/fsl/"$TARGET_DEVICE"/uenv/uEnv.txt."$BASEBOARD"."$OUTPUT_DISPLAY" $IMX_PATH/uEnv.txt; sync
+
+    # download the ramdisk
+    if [[ "$CPU_TYPE" == "imx7" ]]; then
+        echo == download the ramdisk ==
+        sudo mkimage -A arm -O linux -T ramdisk -C none -a 0x83800000 -n "Android Root Filesystem" -d ./out/target/product/$TARGET_DEVICE/ramdisk.img ./out/target/product/$TARGET_DEVICE/uramdisk.img
+        sudo cp $TOP/out/target/product/$TARGET_DEVICE/uramdisk.img $IMX_PATH/;sync
+    else
+        echo == download the ramdisk ==
+        sudo mkimage -A arm -O linux -T ramdisk -C none -a 0x10800800 -n "Android Root Filesystem" -d ./out/target/product/$TARGET_DEVICE/ramdisk.img ./out/target/product/$TARGET_DEVICE/uramdisk.img
+        sudo cp $TOP/out/target/product/$TARGET_DEVICE/uramdisk.img $IMX_PATH/;sync
+    fi
+    # download the android system
+    echo == download the system ==
+    sudo dd if=$TOP/out/target/product/$TARGET_DEVICE/system_raw.img of=${dev_node}3 bs=1M oflag=dsync
+    sleep 1
+    echo == download the vendor ==
+    sudo dd if=$TOP/out/target/product/$TARGET_DEVICE/vendor_raw.img of=${dev_node}9 bs=1M oflag=dsync
+    sleep 1
+    echo == download the recovery ==
+    sudo dd if=$TOP/out/target/product/$TARGET_DEVICE/recovery.img of=${dev_node}2 bs=1M oflag=dsync
+    sleep 1
+	echo == Erase the environment variables ==
+	sudo dd if=/dev/zero of="$@" bs=1k seek=1 count=1023 oflag=dsync
+	sleep 1
+	sudo dd if=/dev/zero of="$@" bs=1M seek=1 count=3 oflag=dsync
+	sleep 1
+	echo == flash the SPL ==
+	sudo dd if=$TOP/out/target/product/$TARGET_DEVICE/obj/BOOTLOADER_OBJ/SPL of="$@" bs=1k seek=1 oflag=dsync
+	sleep 1
+
+    # donwload the audio settings
+	mkdir $SYS_PATH; sync
+	sudo mount ${dev_node}9 $SYS_PATH; sync
+    sleep 1
+	echo == download the audio setting for "$OUTPUT_DISPLAY" ==
+    if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+		sudo cp $TOP/device/fsl/"$TARGET_DEVICE"/audio_policy_configuration_hdmi.xml $SYS_PATH/etc/audio_policy_configuration.xml; sync
+		sudo cp $TOP/device/fsl/"$TARGET_DEVICE"/audio_policy_hdmi.conf $SYS_PATH/etc/audio_policy.conf; sync
+		# sudo cp $TOP/device/fsl/"$TARGET_DEVICE"/audio_policy_configuration.xml $SYS_PATH/etc/audio_policy_configuration.xml; sync
+	else
+		sudo cp $TOP/device/fsl/"$TARGET_DEVICE"/audio_policy_configuration_lcd.xml $SYS_PATH/etc/audio_policy_configuration.xml; sync
+		sudo cp $TOP/device/fsl/"$TARGET_DEVICE"/audio_policy.conf $SYS_PATH/etc/audio_policy.conf; sync
+	fi
+
+	sleep 1
+    sudo umount ${dev_node}*
+    sudo rm -rf $IMX_PATH
+	sudo rm -rf $SYS_PATH
+	sudo rm $TOP/out/target/product/$TARGET_DEVICE/uramdisk.img
+    sync
+    sleep 1
+
+    echo "Flash Done!!!"
+
+    cd "${TMP_PWD}"
+}
+
+flashcard_8g() {
+    local TMP_PWD="${PWD}"
+	PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
+    dev_node="$@"
+    echo "$dev_node start"
+	cd "${PATH_OUT}"
+	sudo $TOP/device/fsl/common/tools/fsl-sdcard-partition-source.sh -f ${TARGET_DEVICE} -c 7 ${dev_node}
 	sync
     sleep 1
 	sudo $TOP/device/fsl/common/tools/gpt_partition_move -d ${dev_node} -s 8192

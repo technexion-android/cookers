@@ -31,7 +31,6 @@ export USER=$(whoami)
 
 export MY_ANDROID=$TOP
 export LC_ALL=C
-source build/envsetup.sh
 
 # TARGET support: wandboard,edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"
@@ -105,6 +104,7 @@ heat() {
             cd ${PATH_UBOOT} && heat "$@" || return $?
             cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
+            source build/envsetup.sh
             lunch "$TARGET_DEVICE"-user
             make "$@" || return $?
 #           make "$@" PRODUCT-"$TARGET_DEVICE"-user dist || return $?
@@ -147,6 +147,7 @@ cook() {
             cd ${PATH_UBOOT} && cook "$@" || return $?
             cd ${PATH_KERNEL} && cook "$@" || return $?
             cd "${TMP_PWD}"
+            source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
             ;;

@@ -326,12 +326,13 @@ flashemmc() {
 }
 
 merge_restricted_extras() {
-  wget https://github.com/technexion-android/android_restricted_extra/raw/master/imx8-o8.tar.gz
-  tar zxvf imx8-o8.tar.gz
+  wget https://github.com/technexion-android/android_restricted_extra/archive/v2.0.zip
+  unzip v2.0.zip
+  tar zxvf android_restricted_extra-2.0/imx8-o8.tar.gz
   cp -rv imx-o8.1.0_1.3.0_8m/vendor/nxp/* vendor/nxp/
   cp -rv imx-o8.1.0_1.3.0_8m/EULA.txt .
   cp -rv imx-o8.1.0_1.3.0_8m/SCR* .
-  rm -rf imx8-o8.tar.gz imx-o8.1.0_1.3.0_8m
+  rm -rf android_restricted_extra-2.0 imx-o8.1.0_1.3.0_8m v2.0.zip
   sync
 }
 

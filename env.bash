@@ -351,6 +351,8 @@ gen_mp_images() {
   cp -rv out/target/product/pico_8m/u-boot-*.imx auto_test/out/target/product/pico_8m/
   cp -rv out/target/product/pico_8m/vbmeta-*.img auto_test/out/target/product/pico_8m/
   cp -rv out/target/product/pico_8m/vendor.img auto_test/out/target/product/pico_8m/
+  cp -rv out/target/product/pico_8m/system.img auto_test/out/target/product/pico_8m/
+
 
   cp -rv cookers auto_test/
   rm -rf auto_test/cookers/.git

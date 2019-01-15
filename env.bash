@@ -35,7 +35,7 @@ KERNEL_CFLAGS='KCFLAGS=-mno-android'
 PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
 if [[ "$CPU_TYPE" == "imx6" ]]; then
-    if [[ "$CPU_MODULE" == "edm1-sd" ]]; then
+    if [[ "$CPU_MODULE" == "edm1" ]]; then
         if [[ "$BASEBOARD" == "fairy" ]]; then
             UBOOT_CONFIG='edm-cf-imx6_defconfig'
             KERNEL_IMAGE='zImage'
@@ -43,18 +43,12 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
             DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb'
             TARGET_DEVICE=edm1_6dq
         fi
-    elif [[ "$CPU_MODULE" == "edm1cf-sd-pmic" ]]; then
-        if [[ "$BASEBOARD" == "fairy" ]]; then
-			UBOOT_CONFIG='edm-cf-imx6_defconfig'
-			KERNEL_IMAGE='zImage'
-			KERNEL_CONFIG='tn_imx_android_defconfig'
-        	if [[ "$OUTPUT_DISPLAY" == "tc0700" ]]; then
-	            DTB_TARGET='imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb'
-        	else
-				DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb'
-			fi
-			TARGET_DEVICE=edm1cf_pmic_6dq
-        fi
+    elif [[ "$CPU_MODULE" == "edm1cf-pmic" ]]; then
+		UBOOT_CONFIG='edm-cf-imx6_defconfig'
+		KERNEL_IMAGE='zImage'
+		KERNEL_CONFIG='tn_imx_android_defconfig'
+		DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb imx6dl-edm1_tc1000.dtb imx6q-edm1_tc1000.dtb imx6qp-edm1_tc1000.dtb'
+		TARGET_DEVICE=edm1cf_pmic_6dq
     elif [[ "$CPU_MODULE" == "tek3" ]]; then
 		UBOOT_CONFIG='tek-imx6_defconfig'
 		KERNEL_CONFIG='tn_imx_android_defconfig'
@@ -67,7 +61,7 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
 		KERNEL_IMAGE='uImage LOADADDR=0x10008000'
 		DTB_TARGET='imx6q-tep5.dtb imx6dl-tep5.dtb'
 		TARGET_DEVICE=tep5_6dq	    	
-    elif [[ "$CPU_MODULE" == "pico-sd" ]]; then
+    elif [[ "$CPU_MODULE" == "pico" ]]; then
 		UBOOT_CONFIG='pico-imx6_defconfig'
 		KERNEL_CONFIG='tn_imx_android_defconfig'
 #		KERNEL_IMAGE='uImage LOADADDR=0x10008000'
@@ -76,34 +70,28 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
 		TARGET_DEVICE=pico_6dq
 		PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
     elif [[ "$CPU_MODULE" == "edm1cf-nand-pmic" ]]; then
-        if [[ "$BASEBOARD" == "fairy" ]]; then
-            UBOOT_CONFIG='edm-cf-imx6_defconfig'
+		UBOOT_CONFIG='edm-cf-imx6_defconfig'
             KERNEL_IMAGE='uImage LOADADDR=0x10008000'
-            KERNEL_CONFIG='tn_imx_android_defconfig'
-        	if [[ "$OUTPUT_DISPLAY" == "tc0700" ]]; then
-	            DTB_TARGET='imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb'
-        	else
-				DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb'
-			fi
-            TARGET_DEVICE=edm1cf_pmic_6dq
-        fi
+		KERNEL_CONFIG='tn_imx_android_defconfig'
+		DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb imx6dl-edm1_tc1000.dtb imx6q-edm1_tc1000.dtb imx6qp-edm1_tc1000.dtb'
+		TARGET_DEVICE=edm1cf_pmic_6dq
     fi
-	elif [[ "$CPU_TYPE" == "imx7" ]]; then
-	    if [[ "$CPU_MODULE" == "pico-sd" ]]; then
-			UBOOT_CONFIG='pico-imx7d_spl_defconfig'
-			KERNEL_IMAGE='uImage LOADADDR=0x10008000'
-			DTB_TARGET='imx7d-pico_dwarf.dtb imx7d-pico_hobbit.dtb imx7d-pico_nymph.dtb imx7d-pico_pi.dtb'
-#			KERNEL_CONFIG='tn_pico_7d_android_defconfig'
-			KERNEL_CONFIG='tn_imx_android_defconfig'
-			TARGET_DEVICE=pico_7d	
-	    elif [[ "$CPU_MODULE" == "tep1" ]]; then
-			UBOOT_CONFIG='tep1-imx7d_spl_defconfig'
-			KERNEL_IMAGE='uImage LOADADDR=0x10008000'
-			DTB_TARGET='imx7d-tep1.dtb'
-			KERNEL_CONFIG='tn_tep1_android_defconfig'
-			TARGET_DEVICE=tep1_7d	    	
-		fi
+elif [[ "$CPU_TYPE" == "imx7" ]]; then
+	if [[ "$CPU_MODULE" == "pico" ]]; then
+		UBOOT_CONFIG='pico-imx7d_spl_defconfig'
+		KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+		DTB_TARGET='imx7d-pico_dwarf.dtb imx7d-pico_hobbit.dtb imx7d-pico_nymph.dtb imx7d-pico_pi.dtb'
+#		KERNEL_CONFIG='tn_pico_7d_android_defconfig'
+		KERNEL_CONFIG='tn_imx_android_defconfig'
+		TARGET_DEVICE=pico_7d	
+	elif [[ "$CPU_MODULE" == "tep1" ]]; then
+		UBOOT_CONFIG='tep1-imx7d_spl_defconfig'
+		KERNEL_IMAGE='uImage LOADADDR=0x10008000'
+		DTB_TARGET='imx7d-tep1.dtb'
+		KERNEL_CONFIG='tn_tep1_android_defconfig'
+		TARGET_DEVICE=tep1_7d	    	
 	fi
+fi
 
 recipe() {
     local TMP_PWD="${PWD}"

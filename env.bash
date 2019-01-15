@@ -569,3 +569,29 @@ merge_restricted_extras() {
   rm -rf imx6_7-o8.tar.gz imx-o8.0.0_1.0.0_ga
   sync
 }
+
+
+gen_mp_images() {
+
+  mkdir -p auto_test/device/fsl/common/tools
+  cp -rv device/fsl/common/tools/* auto_test/device/fsl/common/tools/
+
+  mkdir -p auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/boot-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table-*.bpt auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table.bpt auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/ramdisk-recovery.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/u-boot-*.imx auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/vbmeta-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/vendor*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/system_raw.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/uramdisk.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/recovery-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+
+  cp -rv cookers auto_test/
+  rm -rf auto_test/cookers/.git
+
+}
+

@@ -559,3 +559,13 @@ flashemmc() {
     cd "${TMP_PWD}"
 }
 
+
+merge_restricted_extras() {
+  wget -c -t 0 --timeout=60 --waitretry=60 https://github.com/technexion-android/android_restricted_extra/raw/master/imx6_7-o8.tar.gz
+  tar zxvf imx6_7-o8.tar.gz
+  cp -rv imx-o8.0.0_1.0.0_ga/vendor/nxp/* vendor/nxp/
+  cp -rv imx-o8.0.0_1.0.0_ga/EULA.txt .
+  cp -rv imx-o8.0.0_1.0.0_ga/SCR* .
+  rm -rf imx6_7-o8.tar.gz imx-o8.0.0_1.0.0_ga
+  sync
+}

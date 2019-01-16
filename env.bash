@@ -22,7 +22,6 @@ export CROSS_COMPILE=/opt/gcc-5.1-2015.08-x86_64_arm-linux-gnueabihf/bin/arm-lin
 export USER=$(whoami)
 export MY_ANDROID=$TOP
 export LC_ALL=C
-source build/envsetup.sh
 
 # TARGET support: edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"
@@ -165,6 +164,7 @@ cook() {
             cd ${PATH_UBOOT} && cook "$@" || return $?
             cd ${PATH_KERNEL} && cook "$@" || return $?
             cd "${TMP_PWD}"
+			source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
             ;;
@@ -578,7 +578,21 @@ gen_mp_images() {
   cp -rv out/target/product/"${TARGET_DEVICE}"/vendor*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/system_raw.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/uramdisk.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/recovery-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/recovery*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/ramdisk.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+
+  mkdir -p auto_test/out/target/product/"${TARGET_DEVICE}"/obj/BOOTLOADER_OBJ
+  cp -rv out/target/product/"${TARGET_DEVICE}"/obj/BOOTLOADER_OBJ/u-boot.img auto_test/out/target/product/"${TARGET_DEVICE}"/obj/BOOTLOADER_OBJ/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/obj/BOOTLOADER_OBJ/SPL auto_test/out/target/product/"${TARGET_DEVICE}"/obj/BOOTLOADER_OBJ/
+
+  mkdir -p auto_test/out/target/product/"${TARGET_DEVICE}"/obj/KERNEL_OBJ/arch/arm/boot
+  cp -rv out/target/product/"${TARGET_DEVICE}"/obj/KERNEL_OBJ/*.dtb auto_test/out/target/product/"${TARGET_DEVICE}"/obj/KERNEL_OBJ/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/obj/KERNEL_OBJ/arch/arm/boot/zImage auto_test/out/target/product/"${TARGET_DEVICE}"/obj/KERNEL_OBJ/arch/arm/boot/
+
+  mkdir -p auto_test/device/fsl/"${TARGET_DEVICE}"/uenv
+  cp -rv device/fsl/"${TARGET_DEVICE}"/uenv/* auto_test/device/fsl/"${TARGET_DEVICE}"/uenv/
+  cp -rv device/fsl/"${TARGET_DEVICE}"/audio_policy_configuration_* auto_test/device/fsl/"${TARGET_DEVICE}"/
+  cp -rv device/fsl/"${TARGET_DEVICE}"/audio_policy.conf auto_test/device/fsl/"${TARGET_DEVICE}"/
 
   cp -rv cookers auto_test/
   rm -rf auto_test/cookers/.git

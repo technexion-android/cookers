@@ -18,6 +18,8 @@ PATH="$JAVA_HOME/bin:${PATH}"
 export DISPLAY=:0
 export PATH=$PATH:/opt/gcc-5.1-2015.08-x86_64_arm-linux-gnueabihf/bin
 export CROSS_COMPILE=/opt/gcc-5.1-2015.08-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
+
+export USER=$(whoami)
 export MY_ANDROID=$TOP
 export LC_ALL=C
 source build/envsetup.sh

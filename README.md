@@ -32,47 +32,137 @@ Technexion Docker Image Production
 
 ## Starting Compile The Source Code
  
-Source the compile relative commands:
+Source the compile relative commands (SoM product line):
 
-    SD boot for EDM1-i.MX6 with PMIC onto FAIRY: HDMI
+    EDM1-i.MX6 onto FAIRY: HDMI
 
-    $ source cookers/env.bash.imx6.edm1cf-sd-pmic.fairy.hdmi
+    $ source cookers/env.bash.imx6.edm1cf-pmic.fairy.hdmi
 
-    SD boot for EDM1-i.MX6 with PMIC onto FAIRY: 7-inch LCD (800x480 resolution via LVDS interface)
+    EDM1-i.MX6 with PMIC onto FAIRY: 7-inch LCD (800x480 resolution via LCD interface)
 
-    $ source cookers/env.bash.imx6.edm1cf-sd-pmic.fairy.lcd
+    $ source cookers/env.bash.imx6.edm1cf-pmic.fairy.lcd
 
-    SD boot for TC0700 (7-inch Panel PC)
+    PCIO-i.MX6 onto DWARF: HDMI
 
-    $ source cookers/env.bash.imx6.edm1cf-sd-pmic.fairy.tc0700
+    $ source cookers/env.bash.imx6.pico.dwarf.hdmi
 
-    SD boot for PCIO-i.MX6 onto DWARF: HDMI
+    PCIO-i.MX6 onto DWARF: 7-inch LCD (800x480 resolution via LCD interface)
 
-    $ source cookers/env.bash.imx6.pico-sd.dwarf.hdmi
+    $ source cookers/env.bash.imx6.pico.dwarf.lcd
 
-    SD boot for PCIO-i.MX6 onto DWARF: 7-inch LCD (800x480 resolution via LVDS interface)
+    PCIO-i.MX6 onto HOBBIT: 7-inch LCD (800x480 resolution via LCD interface)
 
-    $ source cookers/env.bash.imx6.pico-sd.dwarf.lcd
+    $ source cookers/env.bash.imx6.pico.hobbit.lcd
 
-    SD boot for PCIO-i.MX6 onto HOBBIT: 7-inch LCD (800x480 resolution via LVDS interface)
+    PCIO-i.MX6 onto NYMPH: HDMI
 
-    $ source cookers/env.bash.imx6.pico-sd.hobbit.lcd
+    $ source cookers/env.bash.imx6.pico.nymph.hdmi
 
-    SD boot for PCIO-i.MX6 onto NYMPH: HDMI
+    PCIO-i.MX6 onto NYMPH: 7-inch LVDS (1024x600 resolution via LVDS interface)
 
-    $ source cookers/env.bash.imx6.pico-sd.nymph.hdmi
+    $ source cookers/env.bash.imx6.pico.nymph.lvds
 
-    SD boot for PCIO-i.MX6 onto PI: 7-inch LCD (800x480 resolution via LVDS interface)
+    PCIO-i.MX6 onto NYMPH: VGA
 
-    $ source cookers/env.bash.imx6.pico-sd.pi.lcd
+    $ source cookers/env.bash.imx6.pico.nymph.vga
 
-    SD boot for PCIO-i.MX7 onto PI: 7-inch LCD (800x480 resolution via LVDS interface)
+    PCIO-i.MX6 onto PI: 7-inch LCD (800x480 resolution via LCD interface)
 
-    $ source cookers/env.bash.imx7.pico-sd.pi.lcd
+    $ source cookers/env.bash.imx6.pico.pi.lcd
+
+    PCIO-i.MX7 onto DWARF: 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx7.pico.dwarf.lcd
+
+    PCIO-i.MX7 onto HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx7.pico.hobbit.lcd
+
+    PCIO-i.MX7 onto NYMPH: VGA
+
+    $ source cookers/env.bash.imx7.pico.nymph.vga
+
+    PCIO-i.MX7 onto PI: 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx7.pico.pi.lcd
 
     TEP1 SERIES (5-inch Panel PC)
 
     $ source cookers/env.bash.imx7.tep1.tep1.lcd
 
 
-## Work In Process, Coming Soon
+Source the compile relative commands (HMI product line):
+
+    i,MX6 TC0700 (7-inch 1024x600 resolution Panel PC)
+
+    $ source cookers/env.bash.imx6.edm1cf-pmic.fairy.tc0700
+
+    i,MX6 TC01000 (10-inch 1280x800 resolution Panel PC)
+
+    $ source cookers/env.bash.imx6.edm1cf-pmic.fairy.tc1000
+
+    i,MX7 TEP1 (5-inch 800x480 Panel PC)
+
+    $ source cookers/env.bash.imx7.tep1.tep1.lcd
+
+Get the NXP restricted extra packages (recommended):
+
+    $ merge_restricted_extras
+    (sometimes could be stocking on the waiting github response, please try again)
+
+For a full clean build:
+
+    $ cook -j<N> (N is up to cors numbers on your host PC)
+
+For an incremental build:
+
+    $ heat -j<N> (N is up to cors numbers on your host PC)
+
+For clean the all build files:
+
+    $ throw
+
+To Configuration in Linux Kernel part:
+
+    $ cd vendor/nxp-opensource/kernel_imx/
+    $ recipe (or make menuconfig)
+
+## Flashing The Output Images
+
+Output relative image files of path:
+
+    $ ls <source>/out/target/product/<your target platform>/
+
+Quick way for flashing to board:
+
+    $ flashcard /dev/sd<x> (x is up to your device node)
+
+About how to mount your board as mass storage, please refer:
+* [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-to-flash-eMMC)
+
+## Enabling WiFi/BT function
+
+Prepare WiFi/BT firmware
+
+This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configuration, Because of the license restriction, please contact TechNexion FAE or Sales to get licensed firmware files.
+
+Contact Window: sales@technexion.com
+
+After getting the firmware binary: .. Decompress the tarball and put all the firmware files into░
+
+    <source folder>/device/fsl/<your target platform>/wifi-firmware/
+
+Then take the QCA9377 folder as target path such as:
+
+    <source folder>/device/fsl/<your target platform>/wifi-firmware/QCA9377
+
+Enabling the WiFi function in Build file:
+
+    i.MX6: path: <source folder>/device/fsl/imx6/<your target platform>.mk
+    i.MX7: path: <source folder>/device/fsl/imx7/<your target platform>.mk
+
+    - BOARD_HAS_QCA9377_WLAN_FIRMWARE := false
+    to
+    + BOARD_HAS_QCA9377_WLAN_FIRMWARE := true
+
+Issue the command cook/heat again as previous Chapter "Compiling Environment Setup", WiFi/BT function will be working! Enjoy!

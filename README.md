@@ -34,74 +34,69 @@ Technexion Docker image generation
 
 Source the compile relative commands (SoM product line):
 
-    EDM1-i.MX6 onto FAIRY: HDMI
+    EDM1-IMX6 onto FAIRY: HDMI
 
     $ source cookers/env.bash.imx6.edm1cf-pmic.fairy.hdmi
 
-    EDM1-i.MX6 with PMIC onto FAIRY: 7-inch LCD (800x480 resolution via LCD interface)
+    EDM1-IMX6 with PMIC onto FAIRY: 7-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6.edm1cf-pmic.fairy.lcd
 
-    PCIO-i.MX6 onto DWARF: HDMI
+    PICO-IMX6 onto DWARF: HDMI
 
     $ source cookers/env.bash.imx6.pico.dwarf.hdmi
 
-    PCIO-i.MX6 onto DWARF: 7-inch LCD (800x480 resolution via LCD interface)
+    PICO-IMX6 onto DWARF: 7-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6.pico.dwarf.lcd
 
-    PCIO-i.MX6 onto HOBBIT: 7-inch LCD (800x480 resolution via LCD interface)
+    PICO-IMX6 onto HOBBIT: 7-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6.pico.hobbit.lcd
 
-    PCIO-i.MX6 onto NYMPH: HDMI
+    PICO-IMX6 onto NYMPH: HDMI
 
     $ source cookers/env.bash.imx6.pico.nymph.hdmi
 
-    PCIO-i.MX6 onto NYMPH: 7-inch LVDS (1024x600 resolution via LVDS interface)
+    PICO-IMX6 onto NYMPH: 7-inch LVDS (1024x600 resolution via LVDS interface)
 
     $ source cookers/env.bash.imx6.pico.nymph.lvds
 
-    PCIO-i.MX6 onto NYMPH: VGA
+    PICO-IMX6 onto NYMPH: VGA
 
     $ source cookers/env.bash.imx6.pico.nymph.vga
 
-    PCIO-i.MX6 onto PI: 7-inch LCD (800x480 resolution via LCD interface)
+    PICO-IMX6 onto PI: 7-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6.pico.pi.lcd
 
-    PCIO-i.MX7 onto DWARF: 5-inch LCD (800x480 resolution via LCD interface)
+    PICO-IMX7 onto DWARF: 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7.pico.dwarf.lcd
 
-    PCIO-i.MX7 onto HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
+    PICO-IMX7 onto HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7.pico.hobbit.lcd
 
-    PCIO-i.MX7 onto NYMPH: VGA
+    PICO-IMX7 onto NYMPH: VGA
 
     $ source cookers/env.bash.imx7.pico.nymph.vga
 
-    PCIO-i.MX7 onto PI: 5-inch LCD (800x480 resolution via LCD interface)
+    PICO-IMX7 onto PI: 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7.pico.pi.lcd
 
-    TEP1 SERIES (5-inch Panel PC)
-
-    $ source cookers/env.bash.imx7.tep1.tep1.lcd
-
-
 Source the compile relative commands (HMI product line):
 
-    i,MX6 TC0700 (7-inch 1024x600 resolution Panel PC)
+    i.MX6 TC0700 (7-inch 1024x600 resolution Panel PC)
 
     $ source cookers/env.bash.imx6.edm1cf-pmic.fairy.tc0700
 
-    i,MX6 TC01000 (10-inch 1280x800 resolution Panel PC)
+    i.MX6 TC01000 (10-inch 1280x800 resolution Panel PC)
 
     $ source cookers/env.bash.imx6.edm1cf-pmic.fairy.tc1000
 
-    i,MX7 TEP1 (5-inch 800x480 Panel PC)
+    i.MX7 TEP1 (5-inch 800x480 Panel PC)
 
     $ source cookers/env.bash.imx7.tep1.tep1.lcd
 

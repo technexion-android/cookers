@@ -1,14 +1,14 @@
 # Technexion Android 8 SDK for i.MX6/i.MX7 Platforms
 ## Download The Source code
 
-Github way (Prepare repo command first is recommended)
+Github way (prepare repo command first is recommended)
 
     $ repo init https://github.com/technexion-android/manifest -b tn-o8.0.0_1.0.0-ga
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup
 
-General Packages Installation ( Ubuntu 16.04 or above)
+General packages installation ( Ubuntu 16.04 or above)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \
     git-core curl u-boot-tools mtd-utils android-tools-fsutils device-tree-compiler gdisk \
@@ -17,7 +17,7 @@ General Packages Installation ( Ubuntu 16.04 or above)
     libxml2-utils xsltproc unzip sshpass ssh-askpass zip xz-utils kpartx vim screen sudo wget \
     bc locales openjdk-8-jdk rsync docker.io
 
-Technexion Docker Image Production
+Technexion Docker image generation
 
     $ cd cookers
     $ docker build -t build_droid8 .
@@ -31,7 +31,7 @@ Technexion Docker Image Production
 
 
 ## Starting Compile The Source Code
- 
+
 Source the compile relative commands (SoM product line):
 
     EDM1-i.MX6 onto FAIRY: HDMI
@@ -122,7 +122,7 @@ For clean the all build files:
 
     $ throw
 
-To Configuration in Linux Kernel part:
+To configuration in Linux Kernel part:
 
     $ cd vendor/nxp-opensource/kernel_imx/
     $ recipe (or make menuconfig)

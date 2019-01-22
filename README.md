@@ -34,11 +34,11 @@ Technexion Docker image generation
  
 Source the compile relative commands:
 
-    For PICO-i.MX8 HDMI
+    For PICO-IMX8 HDMI
 
     $ source cookers/env.bash.imx8.pico-8m.pi.hdmi
 
-    For PICO-i.MX8 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX8 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-8m.pi.lcd
 

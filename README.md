@@ -8,7 +8,7 @@ Github way (Prepare repo command first is recommended)
 
 ## Compiling Environment Setup
 
-General Packages Installation ( Ubuntu 16.04 or above)
+General packages installation ( Ubuntu 16.04 or above)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \
     git-core curl u-boot-tools mtd-utils android-tools-fsutils device-tree-compiler gdisk \
@@ -17,7 +17,7 @@ General Packages Installation ( Ubuntu 16.04 or above)
     libxml2-utils xsltproc unzip sshpass ssh-askpass zip xz-utils kpartx vim screen sudo wget \
     bc locales openjdk-8-jdk rsync docker.io
 
-Technexion Docker Image Production
+Technexion Docker image generation
 
     $ cd cookers
     $ docker build -t build_droid8 .
@@ -79,7 +79,7 @@ Quick way for flashing to board:
 About how to mount your board as mass storage, please refer:
 * [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-to-flash-eMMC)
 
-## Enabling WiFi/BT function
+## Enabling WiFi/BT Function
 
 Prepare WiFi/BT firmware
 
@@ -87,7 +87,7 @@ This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configurat
 
     Contact Window: sales@technexion.com
 
-After getting the firmware binary: .. Decompress the tarball and put all the firmware files into 
+After getting the WiFi firmware binary: .. Decompress the tarball and put all the WiFi firmware files into 
 
     <source folder>/device/fsl/pico_8m/wifi-firmware/
 
@@ -95,13 +95,9 @@ Then take the QCA9377 folder as target path such as:
 
     <source folder>/device/fsl/pico_8m/wifi-firmware/QCA9377
 
-Enabling the WiFi function in Build file:
+After getting the BT firmware binary: .. Decompress the tarball and put all the BT(Bluetooth) firmware files into 
 
-    hdmi: path: <source folder>/device/fsl/imx8/pico_8m.mk
-    lcd:  path: <source folder>/device/fsl/imx8/pico_8m_lcd.mk
-
-    - BOARD_HAS_QCA9377_WLAN_FIRMWARE := false
-    to
-    + BOARD_HAS_QCA9377_WLAN_FIRMWARE := true
+    <source folder>/device/fsl/pico_8m/bluetooth/nvm_tlv_3.2.bin
+    <source folder>/device/fsl/pico_8m/bluetooth/rampatch_tlv_3.2.tlv
 
 Issue the command cook/heat again as previous Chapter "Compiling Environment Setup", WiFi/BT function will be working! Enjoy!

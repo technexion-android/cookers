@@ -593,6 +593,7 @@ gen_mp_images() {
   cp -rv device/fsl/"${TARGET_DEVICE}"/uenv/* auto_test/device/fsl/"${TARGET_DEVICE}"/uenv/
   cp -rv device/fsl/"${TARGET_DEVICE}"/audio_policy_configuration_* auto_test/device/fsl/"${TARGET_DEVICE}"/
   cp -rv device/fsl/"${TARGET_DEVICE}"/audio_policy.conf auto_test/device/fsl/"${TARGET_DEVICE}"/
+  cp -rv device/fsl/"${TARGET_DEVICE}"/audio_policy_hdmi.conf auto_test/device/fsl/"${TARGET_DEVICE}"/
 
   cp -rv cookers auto_test/
   rm -rf auto_test/cookers/.git

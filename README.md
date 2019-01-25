@@ -1,9 +1,9 @@
-# Technexion Android 8 SDK for i.MX8 Platforms
+# Technexion Android 9 SDK for i.MX8 Platforms
 ## Download The Source code
 
 Github way (Prepare repo command first is recommended)
 
-    $ repo init https://github.com/technexion-android/manifest -b tn-o8.1.0_1.3.0_8m-ga
+    $ repo init https://github.com/technexion-android/manifest -b tn-o8.1.0_1.3.0_8m-wip
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup

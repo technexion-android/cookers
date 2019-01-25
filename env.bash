@@ -45,38 +45,23 @@ KERNEL_CFLAGS='KCFLAGS=-mno-android'
 PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
-    if [[ "$CPU_MODULE" == "pico-8m" ]]; then
-        if [[ "$BASEBOARD" == "pi" ]]; then
-
-            KERNEL_IMAGE='Image'
-            KERNEL_CONFIG='android_defconfig'
-			if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-				UBOOT_CONFIG='pico_8m_android_defconfig'
-				TARGET_DEVICE=pico_8m
-				TARGET_DEVICE_NAME=imxpico_8m
-				DTB_TARGET='pico_8m.dtb'
-			elif [[ "$OUTPUT_DISPLAY" == "lcd" ]]; then
-				UBOOT_CONFIG='pico_8m_lcd_android_defconfig'
-				TARGET_DEVICE=pico_8m_lcd
-				TARGET_DEVICE_NAME=imxpico_8m_lcd
-				DTB_TARGET='pico_8m_lcd.dtb'
-			fi
-        elif [[ "$BASEBOARD" == "wanboard" ]]; then
-            UBOOT_CONFIG='mx8mq_evk_android_defconfig'
-            KERNEL_IMAGE='Image'
-            KERNEL_CONFIG='android_defconfig'
-            DTB_TARGET='fsl-imx8mq-evk.dtb'
-            TARGET_DEVICE=evk_8mq
-            TARGET_DEVICE_NAME=imx8mq
-        fi
-	elif [[ "$CPU_MODULE" == "evk_8mq" ]]; then
-            UBOOT_CONFIG='mx8mq_evk_android_defconfig'
-            KERNEL_IMAGE='Image'
-            KERNEL_CONFIG='android_defconfig'
-            DTB_TARGET='fsl-imx8mq-evk.dtb'
-            TARGET_DEVICE=evk_8mq
-            TARGET_DEVICE_NAME=imx8mq
-	fi
+  if [[ "$CPU_MODULE" == "pico-8mq" ]]; then
+    if [[ "$BASEBOARD" == "pi" ]]; then
+      KERNEL_IMAGE='Image'
+      KERNEL_CONFIG='tn_imx8_android_defconfig'
+      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+        UBOOT_CONFIG='pico-8mq_android_defconfig'
+        TARGET_DEVICE=pico_8mq
+        TARGET_DEVICE_NAME=imxpico_8mq
+        DTB_TARGET='pico_8mq.dtb'
+      elif [[ "$OUTPUT_DISPLAY" == "lcd" ]]; then
+        UBOOT_CONFIG='pico_8mq_lcd_android_defconfig'
+        TARGET_DEVICE=pico_8mq_lcd
+        TARGET_DEVICE_NAME=imxpico_8mq_lcd
+        DTB_TARGET='pico_8mq_lcd.dtb'
+      fi
+    fi
+  fi
 fi
 
 recipe() {
@@ -105,24 +90,23 @@ heat() {
             cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
             source build/envsetup.sh
-            lunch "$TARGET_DEVICE"-user
+            lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
-#           make "$@" PRODUCT-"$TARGET_DEVICE"-user dist || return $?
             ;;
         "${PATH_KERNEL}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
             cd "${PATH_KERNEL}"
-			rm "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/wlan.ko
-			rm -rf ../modules/lib
+            rm "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/wlan.ko
+            rm -rf ../modules/lib
             make "$@" $KERNEL_CFLAGS || return $?
-            make "$@" || return $?
+            #make "$@" || return $?
             make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
-			cd drivers/net/wireless/qcacld-2.0
-            make "$@" clean || return $?
-            make "$@" || return $?
-            KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
-            cd "${PATH_KERNEL}"
-			cp ../modules/lib/modules/4.9.78*/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
+            #cd drivers/net/wireless/qcacld-2.0
+            #make "$@" clean || return $?
+            #make "$@" || return $?
+            #KERNEL_SRC=../../../../../kernel_imx make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
+            #cd "${PATH_KERNEL}"
+            #cp ../modules/lib/modules/4.9.78*/extra/wlan.ko "${TOP}"/device/fsl/"${TARGET_DEVICE}"/wifi-firmware/
             ;;
         "${PATH_UBOOT}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
@@ -326,13 +310,12 @@ flashemmc() {
 }
 
 merge_restricted_extras() {
-  wget https://github.com/technexion-android/android_restricted_extra/archive/v2.0.zip
-  unzip v2.0.zip
-  tar zxvf android_restricted_extra-2.0/imx8-o8.tar.gz
-  cp -rv imx-o8.1.0_1.3.0_8m/vendor/nxp/* vendor/nxp/
-  cp -rv imx-o8.1.0_1.3.0_8m/EULA.txt .
-  cp -rv imx-o8.1.0_1.3.0_8m/SCR* .
-  rm -rf android_restricted_extra-2.0 imx-o8.1.0_1.3.0_8m v2.0.zip
+  wget -c -t 0 --timeout=60 --waitretry=60 https://github.com/technexion-android/android_restricted_extra/raw/master/imx8-p9.tar.gz
+  tar zxvf imx8-p9.tar.gz
+  cp -rv imx-p9.0.0_1.0.0-ga/vendor/nxp/* vendor/nxp/
+  cp -rv imx-p9.0.0_1.0.0_ga/EULA.txt .
+  cp -rv imx-p9.0.0_1.0.0_ga/SCR* .
+  rm -rf imx8-p9.tar.gz imx-p9.0.0_1.0.0_ga
   sync
 }
 

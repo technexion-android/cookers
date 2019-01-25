@@ -3,7 +3,7 @@
 
 Github way (Prepare repo command first is recommended)
 
-    $ repo init https://github.com/technexion-android/manifest -b tn-o8.1.0_1.3.0_8m-ga
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-o8.1.0_1.3.0_8m-ga
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup

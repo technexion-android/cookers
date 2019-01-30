@@ -81,12 +81,12 @@ heat() {
     case "${PWD}" in
         "${TOP}")
             # cd "${TMP_PWD}"'
-            cd ${PATH_UBOOT} && heat "$@" || return $?
-            cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
+            cd ${PATH_KERNEL} && heat "$@" || return $?
+            cd ${PATH_UBOOT} && heat "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
@@ -123,12 +123,12 @@ cook() {
 
     case "${PWD}" in
         "${TOP}")
-            cd ${PATH_UBOOT} && cook "$@" || return $?
-            cd ${PATH_KERNEL} && cook "$@" || return $?
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
+            cd ${PATH_KERNEL} && cook "$@" || return $?
+            cd ${PATH_UBOOT} && cook "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"

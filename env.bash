@@ -45,20 +45,15 @@ KERNEL_CFLAGS='KCFLAGS=-mno-android'
 PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
-  if [[ "$CPU_MODULE" == "pico-8mq" ]]; then
+  if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-        UBOOT_CONFIG='pico-8mq_android_defconfig'
-        TARGET_DEVICE=pico_8mq
+        UBOOT_CONFIG='pico-imx8m_android_defconfig'
+        TARGET_DEVICE=pico_imx8m
         TARGET_DEVICE_NAME=imxpico_8mq
-        DTB_TARGET='pico_8mq.dtb'
-      elif [[ "$OUTPUT_DISPLAY" == "lcd" ]]; then
-        UBOOT_CONFIG='pico_8mq_lcd_android_defconfig'
-        TARGET_DEVICE=pico_8mq_lcd
-        TARGET_DEVICE_NAME=imxpico_8mq_lcd
-        DTB_TARGET='pico_8mq_lcd.dtb'
+        DTB_TARGET='pico_imx8m.dtb'
       fi
     fi
   fi

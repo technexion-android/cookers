@@ -52,8 +52,8 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         UBOOT_CONFIG='pico-imx8m_android_defconfig'
         TARGET_DEVICE=pico_imx8m
-        TARGET_DEVICE_NAME=imxpico_8mq
-        DTB_TARGET='pico_imx8m.dtb'
+        TARGET_DEVICE_NAME=imx8mq
+        DTB_TARGET='pico-imx8m.dtb'
       fi
     fi
   fi
@@ -186,7 +186,10 @@ flashcard() {
   dev_node="$@"
   echo "$dev_node start"
   cd "${PATH_OUT}"
-  sudo $TOP/device/fsl/common/tools/tn-sdcard-partition.sh -f ${TARGET_DEVICE_NAME} -c 7 ${dev_node}
+  sudo $TOP/device/fsl/common/tools/tn-sd-emmc-partition.sh -f ${TARGET_DEVICE_NAME} -c 7 ${dev_node}
+  sync
+  cd "${PATH_UBOOT}"
+  ./install_uboot_imx8.sh -b pico-imx8m -d ${dev_node}
   sync
   echo "Flash Done!!!"
   cd "${TMP_PWD}"

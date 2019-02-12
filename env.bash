@@ -185,6 +185,7 @@ flashcard() {
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
   dev_node="$@"
   echo "$dev_node start"
+  sudo cp -rv ${TMP_PWD}/device/fsl/common/tools/gpt_partition_move ${PATH_OUT}/
   cd "${PATH_OUT}"
   sudo $TOP/device/fsl/common/tools/tn-sd-emmc-partition.sh -f ${TARGET_DEVICE_NAME} -c 7 ${dev_node}
   sync

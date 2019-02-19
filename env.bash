@@ -53,7 +53,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         UBOOT_CONFIG='pico-imx8m_android_defconfig'
         TARGET_DEVICE=pico_imx8m
         TARGET_DEVICE_NAME=imx8mq
-        DTB_TARGET='pico-imx8m.dtb'
+        DTB_TARGET='imx8mq-pico-pi.dtb'
       fi
     fi
   fi

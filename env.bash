@@ -49,11 +49,15 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
+      UBOOT_CONFIG='pico-imx8m_android_defconfig'
+      TARGET_DEVICE=pico_imx8m
+      TARGET_DEVICE_NAME=imx8mq
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-        UBOOT_CONFIG='pico-imx8m_android_defconfig'
-        TARGET_DEVICE=pico_imx8m
-        TARGET_DEVICE_NAME=imx8mq
         DTB_TARGET='imx8mq-pico-pi.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
+      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
+        DTB_TARGET='imx8mq-pico-pi-dcss-ili9881c.dtb'
+        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
       fi
     fi
   fi

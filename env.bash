@@ -8,21 +8,10 @@ PATH_KERNEL="${PWD}/vendor/nxp-opensource/kernel_imx"
 PATH_UBOOT="${PWD}/vendor/nxp-opensource/uboot-imx"
 
 export PATH="${PATH_UBOOT}/tools:${PATH}"
-#export ARCH=arm
-#export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
-#export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eabi-"
-#export CROSS_COMPILE=/opt/gcc-5.1-2015.08-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
 JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 CLASSPATH=".:$JAVA_HOME/lib:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar"
-#PATH="$JAVA_HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games"
 PATH="$JAVA_HOME/bin:${PATH}"
 export DISPLAY=:0
-#export PATH=$PATH:/opt/gcc-5.1-2015.08-x86_64_arm-linux-gnueabihf/bin
-#export CROSS_COMPILE=/opt/gcc-5.1-2015.08-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
-#export PATH=$PATH:"${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin"
-#export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
-#sudo apt-get install gcc-aarch64-linux-gnu
-#sudo apt-get install gcc-arm-linux-gnueabi
 
 export ARCH=arm64
 export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"

@@ -20,6 +20,7 @@ export USER=$(whoami)
 
 export MY_ANDROID=$TOP
 export LC_ALL=C
+export DRAM_SIZE_1G=false
 
 # TARGET support: wandboard,edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"

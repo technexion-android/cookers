@@ -6,6 +6,7 @@
 TOP="${PWD}"
 PATH_KERNEL="${PWD}/vendor/nxp-opensource/kernel_imx"
 PATH_UBOOT="${PWD}/vendor/nxp-opensource/uboot-imx"
+PATH_OUT_DRIVERS="${PWD}/vendor/nxp-opensource/out-of-tree_drivers"
 
 export PATH="${PATH_UBOOT}/tools:${PATH}"
 JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
@@ -21,6 +22,7 @@ export USER=$(whoami)
 export MY_ANDROID=$TOP
 export LC_ALL=C
 export DRAM_SIZE_1G=false
+export AUDIOHAT_ACTIVE=false
 
 # TARGET support: pico-imx8m, pico-imx8mm
 IMX_PATH="./mnt"
@@ -45,6 +47,10 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         DTB_TARGET='imx8mq-pico-pi.dtb'
         export DISPLAY_TARGET="DISP_HDMI"
+      elif [[ "$OUTPUT_DISPLAY" == "hdmi-audiohat" ]]; then
+        DTB_TARGET='imx8mq-pico-pi-voicehat.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
+        export AUDIOHAT_ACTIVE=true
       elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
         DTB_TARGET='imx8mq-pico-pi-dcss-ili9881c.dtb'
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
@@ -74,12 +80,21 @@ heat() {
     local TMP_PWD="${PWD}"
     case "${PWD}" in
         "${TOP}")
-            # cd "${TMP_PWD}"'
+            cd ${PATH_KERNEL} && heat "$@" || return $?
+
+            if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
+              echo 'Compile Audio-Hat relative drivers...'
+              cd "${PATH_OUT_DRIVERS}"/tfa98xx/
+              KDIR=${PATH_KERNEL} make clean
+              KDIR=${PATH_KERNEL} make
+              KDIR=${PATH_KERNEL} INSTALL_MOD_PATH=. make modules_install
+              cd -
+            fi
+
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
-            cd ${PATH_KERNEL} && heat "$@" || return $?
             cd ${PATH_UBOOT} && heat "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
@@ -109,11 +124,21 @@ cook() {
 
     case "${PWD}" in
         "${TOP}")
+            cd ${PATH_KERNEL} && cook "$@" || return $?
+
+            if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
+              echo 'Compile Audio-Hat relative drivers...'
+              cd "${PATH_OUT_DRIVERS}"/tfa98xx/
+              KDIR=${PATH_KERNEL} make clean
+              KDIR=${PATH_KERNEL} make
+              KDIR=${PATH_KERNEL} INSTALL_MOD_PATH=. make modules_install
+              cd -
+            fi
+
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
-            cd ${PATH_KERNEL} && cook "$@" || return $?
             cd ${PATH_UBOOT} && cook "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)

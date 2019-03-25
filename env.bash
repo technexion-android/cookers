@@ -80,29 +80,29 @@ heat() {
     local TMP_PWD="${PWD}"
     case "${PWD}" in
         "${TOP}")
-            cd ${PATH_KERNEL} && heat "$@" || return $?
-
-            if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
-              echo 'Compile Audio-Hat relative drivers...'
-              cd "${PATH_OUT_DRIVERS}"/tfa98xx/
-              KDIR=${PATH_KERNEL} make clean
-              KDIR=${PATH_KERNEL} make
-              KDIR=${PATH_KERNEL} INSTALL_MOD_PATH=. make modules_install
-              cd -
-            fi
-
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
+
+            if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
+              echo 'Compile Audio-Hat relative drivers...'
+              cd "${PATH_OUT_DRIVERS}"/tfa98xx/
+              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make clean
+              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make
+              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make modules_install
+              cd -
+              make "$@" || return $?
+            fi
+
             cd ${PATH_UBOOT} && heat "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
             cd "${PATH_KERNEL}"
-            rm -rf ../modules/lib
+            rm -rf ./modules/lib
             make "$@" $KERNEL_CFLAGS || return $?
-            make "$@" modules_install INSTALL_MOD_PATH=../modules || return $?
+            make "$@" modules_install INSTALL_MOD_PATH=./modules || return $?
             ;;
         "${PATH_UBOOT}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
@@ -124,21 +124,20 @@ cook() {
 
     case "${PWD}" in
         "${TOP}")
-            cd ${PATH_KERNEL} && cook "$@" || return $?
-
-            if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
-              echo 'Compile Audio-Hat relative drivers...'
-              cd "${PATH_OUT_DRIVERS}"/tfa98xx/
-              KDIR=${PATH_KERNEL} make clean
-              KDIR=${PATH_KERNEL} make
-              KDIR=${PATH_KERNEL} INSTALL_MOD_PATH=. make modules_install
-              cd -
-            fi
-
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
             make "$@" || return $?
+
+            if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
+              echo 'Compile Audio-Hat relative drivers...'
+              cd "${PATH_OUT_DRIVERS}"/tfa98xx/
+              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make clean
+              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make
+              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make modules_install
+              cd -
+              make "$@" || return $?
+            fi
             cd ${PATH_UBOOT} && cook "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)

@@ -98,7 +98,7 @@ heat() {
             cd ${PATH_UBOOT} && heat "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
+            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
             cd "${PATH_KERNEL}"
             rm -rf ./modules/lib
             make "$@" $KERNEL_CFLAGS || return $?
@@ -141,7 +141,7 @@ cook() {
             cd ${PATH_UBOOT} && cook "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
+            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
             cd "${PATH_KERNEL}"
             make "$@" $KERNEL_CONFIG || return $?
             heat "$@" || return $?

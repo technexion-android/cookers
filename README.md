@@ -105,23 +105,40 @@ Issue the command cook/heat again as previous Chapter "Compiling Environment Set
 
 ## OTA Upgrade
 
-###Generating an incremental upgradabled OTA package:
+Step 1. Setup an OTA server:
 
-Backup your OTA package of current system revision, compile manually if the zip file is no exist:
+You can setup OTA server using any simple REST base http server such as LineageOTA:
 
-    make otapackage -j4
+* [LineageOTA](https://github.com/julianxhokaxhiu/LineageOTA)
 
-    path: <source folder>/out/target/product/pico_imx8m/obj/PACKAGING/target_files_intermediates/pico_imx8m-target_files-eng.root.zip
+On Android side, please change your path of OTA Client app if neceassary
 
-When you're done the modified part for latest system revision, editing "<source>imx8m/pico_imx8m/build_id.mk" and modify the BUILD_ID to latest revision.
+    path: <source folder>/vendor/nxp-opensource/fsl_imx_demo/FSLOta/src/com/fsl/android/ota/OTAServerConfig.java
 
-Note that the BUILD_ID must be newer than your current system revision.
+    - ota_folder = new String(product + "_" + android_name + "_" + version + "/");
+    to
+    + ota_folder = "builds/full/"; (just example, you can change to your path of the ota server)
 
 Correct the IP address, port and path from target OTA server to ota.conf
 
     path: <source folder>device/fsl/imx8m/etc/ota.conf
 
-Re-compile source code again and generate the new  pico_imx8m-target_files-eng.root.zip
+Compiling again and flashing to your system as fixed link of OTA server.
+
+Step 2. Backup your OTA package and build.prop of current system revision, compile manually if the zip file is no exist:
+
+    make otapackage -j4
+
+    path: <source folder>/out/target/product/pico_imx8m/obj/PACKAGING/target_files_intermediates/pico_imx8m-target_files-eng.root.zip
+    path: <source folder>/out/target/product/system/build.prop
+
+Step 3. Generating an incremental upgradabled OTA package
+
+When you're done the modified part for latest system revision, editing "<source>imx8m/pico_imx8m/build_id.mk" and modify the BUILD_ID to latest revision.
+
+Note that the BUILD_ID must be newer than your current system revision and date.
+
+Re-compile source code again and generate the new pico_imx8m-target_files-eng.root.zip
 
 old zip file rename to old.zip, and new zip file rename to new.zip, issue the command to generate the incremental update package:
 
@@ -129,23 +146,17 @@ old zip file rename to old.zip, and new zip file rename to new.zip, issue the co
 
     ./build/tools/releasetools/ota_from_target_files -i old.zip new.zip incremental_ota_update.zip
 
-###Setup an OTA server:
+Step 4. Moving upgrade relative files to OTA server:
 
-You can setup OTA server using any simple REST base http server such as LineageOTA:
+    cp ${old_build.prop} <your server ota folder>/old_build.prop
 
-    https://github.com/julianxhokaxhiu/LineageOTA
+    cp <your source folder>/out/target/product/pico-imx8m/system/build.prop <your server ota folder>/build_diff.prop
 
-move upgrade relative files to OTA server:
+    mkdir -p <your server ota folder>/diff_ota
 
-    cp ${old_build.prop} ${server_ota_folder}/old_build.prop
+    cp <your source folder>/incremental_ota_update.zip <your server ota folder>/diff_ota/
 
-    cp ${MY_ANDROID}/out/target/product/evk_8mm/system/build.prop ${server_ota_folder}/build_diff.prop
-
-    mkdir ${server_ota_folder}/diff_ota
-
-    cp ${MY_ANDROID}/incremental_ota_update.zip ${server_ota_folder}/diff_ota
-
-    cd ${server_ota_folder}/diff_ota
+    cd <your server ota folder>/diff_ota
 
     unzip incremental_ota_update.zip
 
@@ -153,13 +164,36 @@ move upgrade relative files to OTA server:
 
     mv payload_properties.txt payload_properties_diff.txt
 
-    mv payload_diff.bin payload_properties_diff.txt ${server_ota_folder}
+    mv payload_diff.bin payload_properties_diff.txt <your server ota folder>/
 
-    cd ${server_ota_folder}
+    cd <your server ota folder>
 
     echo -n "base." >> build_diff.prop
 
     grep "ro.build.date.utc" old_build.prop >> build_diff.prop
+
+    cp build_diff.prop build.prop
+
+    cp -rv <your source folder>/out/target/product/pico_imx8m/pico_imx8m-ota-eng.root.zip .
+
+    unzip pico_imx8m-ota-eng.root.zip
+
+Step 5. Now, you can starting upgrade Android system using OTA function
+
+Clicking the "Additional System Updates" on the setting page to check the latest update revision
+![ota-1](images/ota-1.png)
+
+It will be showed the upgrade information when your OTA server is ready and detect the newer version
+![ota-2](images/ota-2.png)
+
+Clicking the "Upgrade", starting download and install to your current system
+![ota-3](images/ota-3.png)
+
+Clicking "Reboot" after upgrade done
+![ota-4](images/ota-4.png)
+
+Clicking the "Additional System Updates" to check the current revision is already upgraded
+![ota-5](images/ota-5.png)
 
 ## Change the Display Rotation Angle When Boot
 

@@ -218,24 +218,26 @@ merge_restricted_extras() {
 
 
 gen_mp_images() {
-
   mkdir -p auto_test/device/fsl/common/tools
+  mkdir -p auto_test/vendor/nxp-opensource
   cp -rv device/fsl/common/tools/* auto_test/device/fsl/common/tools/
 
   mkdir -p auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/boot-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  sudo cp -rv device/fsl/common/tools/gpt_partition_move auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/boot*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/dtbo*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table-*.bpt auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table.bpt auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/ramdisk-recovery.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/u-boot-*.imx auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/vbmeta-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/vendor.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/system.img auto_test/out/target/product/"${TARGET_DEVICE}"/
 
-
   cp -rv cookers auto_test/
+  cp -rv vendor/nxp-opensource/uboot-imx auto_test/vendor/nxp-opensource/
   rm -rf auto_test/cookers/.git
-
+  rm -rf auto_test/vendor/nxp-opensource/uboot-imx/.git
+  chmod -R 777 auto_test/vendor/nxp-opensource/uboot-imx/
 }

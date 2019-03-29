@@ -240,4 +240,8 @@ gen_mp_images() {
   rm -rf auto_test/cookers/.git
   rm -rf auto_test/vendor/nxp-opensource/uboot-imx/.git
   chmod -R 777 auto_test/vendor/nxp-opensource/uboot-imx/
+
+  mkdir -p auto_test/prebuilts/gcc/linux-x86/aarch64
+  cp -rv prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 auto_test/prebuilts/gcc/linux-x86/aarch64/
+  sync
 }

@@ -104,9 +104,9 @@ heat() {
             if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
               echo 'Compile Audio-Hat relative drivers...'
               cd "${PATH_OUT_DRIVERS}"/tfa98xx/
-              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make clean
-              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make
-              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make modules_install
+              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make clean
+              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make
+              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make modules_install
               cd -
               make "$@" || return $?
             fi
@@ -148,9 +148,9 @@ cook() {
             if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
               echo 'Compile Audio-Hat relative drivers...'
               cd "${PATH_OUT_DRIVERS}"/tfa98xx/
-              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make clean
-              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make
-              KDIR="${TOP}"/out/target/product/pico_imx8m/obj/KERNEL_OBJ make modules_install
+              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make clean
+              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make
+              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make modules_install
               cd -
               make "$@" || return $?
             fi

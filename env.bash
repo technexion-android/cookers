@@ -56,6 +56,22 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
       fi
     fi
+  elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
+    if [[ "$BASEBOARD" == "pi" ]]; then
+      KERNEL_IMAGE='Image'
+      KERNEL_CONFIG='tn_imx8_android_defconfig'
+      UBOOT_CONFIG='pico-imx8mm_android_defconfig'
+      TARGET_DEVICE=pico_imx8mm
+      TARGET_DEVICE_NAME=imx8mm
+      if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
+        DTB_TARGET='imx8mm-pico-pi-ili9881c.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
+      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
+        DTB_TARGET='imx8mm-pico-pi-voicehat.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
+        export AUDIOHAT_ACTIVE=true
+      fi
+    fi
   fi
 fi
 

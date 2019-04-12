@@ -47,7 +47,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         DTB_TARGET='imx8mq-pico-pi.dtb'
         export DISPLAY_TARGET="DISP_HDMI"
-      elif [[ "$OUTPUT_DISPLAY" == "hdmi-audiohat" ]]; then
+      elif [[ "$OUTPUT_DISPLAY" == "hdmi-voicehat" ]]; then
         DTB_TARGET='imx8mq-pico-pi-voicehat.dtb'
         export DISPLAY_TARGET="DISP_HDMI"
         export AUDIOHAT_ACTIVE=true

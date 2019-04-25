@@ -206,6 +206,32 @@ throw() {
     cd "${TMP_PWD}"
 }
 
+uuu_flashcard() {
+  local TMP_PWD="${PWD}"
+  PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
+  if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
+  UBOOT_PLATFORM="pico-imx8m"
+  elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
+  UBOOT_PLATFORM="imx8mm-pico-pi"
+  fi
+
+  cd "${PATH_UBOOT}"
+  ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0
+  cd -
+
+  if [[ "$CPU_MODULE" == "pico-imx8m" || "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
+    sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"
+  fi
+  cd "${PATH_OUT}"
+  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}".imx
+  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx
+  #sudo tee < flash.bin u-boot-* > /dev/null
+  sync
+  sudo ./uuu_imx_android_flash.sh -f "${TARGET_DEVICE_NAME}" -e -D .
+  echo "Flash Done!!!"
+  cd "${TMP_PWD}"
+}
+
 flashcard() {
   local TMP_PWD="${PWD}"
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"

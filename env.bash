@@ -44,6 +44,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       UBOOT_CONFIG='pico-imx8m_android_defconfig'
       TARGET_DEVICE=pico_imx8m
       TARGET_DEVICE_NAME=imx8mq
+      sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         DTB_TARGET='imx8mq-pico-pi.dtb'
         export DISPLAY_TARGET="DISP_HDMI"
@@ -54,6 +55,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
         DTB_TARGET='imx8mq-pico-pi-dcss-ili9881c.dtb'
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
+        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
       fi
     fi
   elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then

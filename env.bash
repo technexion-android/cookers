@@ -207,6 +207,9 @@ throw() {
 }
 
 uuu_flashcard() {
+
+  partition_size="$@"
+
   local TMP_PWD="${PWD}"
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
   if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
@@ -227,7 +230,7 @@ uuu_flashcard() {
   sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx
   #sudo tee < flash.bin u-boot-* > /dev/null
   sync
-  sudo ./uuu_imx_android_flash.sh -f "${TARGET_DEVICE_NAME}" -e -D .
+  sudo ./uuu_imx_android_flash.sh -c "${partition_size}" -f "${TARGET_DEVICE_NAME}" -e -D .
   echo "Flash Done!!!"
   cd "${TMP_PWD}"
 }

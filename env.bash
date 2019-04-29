@@ -275,6 +275,9 @@ gen_mp_images() {
   cp -rv out/target/product/"${TARGET_DEVICE}"/vendor.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/system.img auto_test/out/target/product/"${TARGET_DEVICE}"/
 
+  cp -rv device/fsl/common/tools/uuu_imx_android_flash.sh auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv device/fsl/common/tools/uuu_imx_android_flash.bat auto_test/out/target/product/"${TARGET_DEVICE}"/
+
   cp -rv cookers auto_test/
   cp -rv vendor/nxp-opensource/uboot-imx auto_test/vendor/nxp-opensource/
   rm -rf auto_test/cookers/.git

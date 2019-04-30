@@ -3,11 +3,11 @@
 
 Github way (Prepare repo command first is recommended)
 
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_1.0.0_8m-ga
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_1.1.0_8m-ga
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup
-
+ 
 General Packages Installation ( Ubuntu 16.04 or above)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \
@@ -42,12 +42,17 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx8.pico-imx8m.pi.mipi-dsi_ili9881c
 
-    For PICO-IMX8M HDMI with Audio-HAT
+    For PICO-IMX8M HDMI with Voice-HAT
 
-    $ source cookers/env.bash.imx8.pico-imx8m.pi.hdmi-audiohat
+    $ source cookers/env.bash.imx8.pico-imx8m.pi.hdmi-voicehat
 
-    For PICO-IMX8M-Mini HDMI (will be released soon)
+    For PICO-IMX8M-Mini 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
 
+    $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c
+
+    For PICO-IMX8M-Mini 5-inch LCD with Voice-HAT (1280x720 resolution via MIPI-DSI interface)
+
+    $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
 
 Get the NXP restricted extra packages (recommended):
 
@@ -76,17 +81,23 @@ To Configuration in Linux Kernel part:
 
 Output relative image files of path:
 
-    $ ls <source>/out/target/product/pico_8m/
+    $ ls <source>/out/target/product/<target board>/ (pico-imx8m or others)
 
-Quick way for flashing to board:
+Quick way for flashing to board (uuu tool):
 
-    $ flashcard /dev/sd<x> (x is up to your device node)
+    $ uuu_flashcard x (x is up to your eMMC size, 8GB: x=7, 16GB: x=13, 32GB: x=28)
 
-About how to mount your board as mass storage, please refer:
-* [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-to-flash-eMMC)
+Standard way using uuu based script:
+
+    $ cd <source>/out/target/product/<target board>/ (pico-imx8m or others)
+    $ Ubuntu host: sudo ./uuu_imx_android_flash.sh -c <partition table size> -f <cpu type> -e -D . (cpu type is imx8mq, imx8mm, etc.)
+    $ Windows host: uuu_imx_android_flash.bat -c <partition table size> -f <cpu type> -e -D .
+
+About uuu Detial:
+* [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)
 
 ## Enabling WiFi/BT function
-
+ 
 Prepare WiFi/BT firmware
 
 This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configuration, Because of the license restriction, please contact TechNexion FAE or Sales to get licensed firmware files, default is disabled.
@@ -194,7 +205,7 @@ Clicking "Reboot" after upgrade done
 
 Clicking the "Additional System Updates" to check the current revision is already upgraded
 ![ota-5](images/ota-5.png)
-
+ 
 ## Change the Display Rotation Angle When Boot
 
 You can modify the boot argument in device/fsl/imx8m/pico_imx8m/BoardConfig.mk
@@ -208,9 +219,9 @@ You can modify the boot argument in device/fsl/imx8m/pico_imx8m/BoardConfig.mk
     androidboot.hwrotation=180 (rotate 180 degree)
 
     androidboot.hwrotation=270 (rotate 270 degree)
-
+ 
 ## Enabling Low Memory Size Support
-
+ 
 You can modify the global variable in cookers/env.bash
 
     modify the argument DRAM_SIZE_1G

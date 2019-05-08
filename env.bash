@@ -23,7 +23,7 @@ export USER=$(whoami)
 export MY_ANDROID=$TOP
 export LC_ALL=C
 
-# TARGET support: edm1cf,picosom,edm1cf_6sx
+# TARGET support: wandboard,edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"
 SYS_PATH="./tmp"
 MODULE=$(basename $BASH_SOURCE)
@@ -45,11 +45,19 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
             TARGET_DEVICE=edm1_6dq
         fi
     elif [[ "$CPU_MODULE" == "edm1cf-pmic" ]]; then
-		UBOOT_CONFIG='edm-cf-imx6_defconfig'
-		KERNEL_IMAGE='zImage'
-		KERNEL_CONFIG='tn_imx_android_defconfig'
-		DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb imx6dl-edm1_tc1000.dtb imx6q-edm1_tc1000.dtb imx6qp-edm1_tc1000.dtb'
-		TARGET_DEVICE=edm1cf_pmic_6dq
+        if [[ "$BASEBOARD" == "fairy" ]]; then
+			UBOOT_CONFIG='edm-cf-imx6_defconfig'
+			KERNEL_IMAGE='zImage'
+			KERNEL_CONFIG='tn_imx_android_defconfig'
+			DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb imx6dl-edm1_tc1000.dtb imx6q-edm1_tc1000.dtb imx6qp-edm1_tc1000.dtb'
+			TARGET_DEVICE=edm1cf_pmic_6dq
+        elif [[ "$BASEBOARD" == "wandboard" ]]; then
+            UBOOT_CONFIG='wandboard_defconfig'
+            KERNEL_IMAGE='zImage'
+            KERNEL_CONFIG='wandboard_android_defconfig'
+			DTB_TARGET='imx6q-wandboard-revb1.dtb imx6q-wandboard-revd1.dtb imx6dl-wandboard-revb1.dtb imx6dl-wandboard-revd1.dtb imx6qp-wandboard-revd1.dtb'
+            TARGET_DEVICE=wandboard
+        fi
     elif [[ "$CPU_MODULE" == "tek3" ]]; then
 		UBOOT_CONFIG='tek-imx6_defconfig'
 		KERNEL_CONFIG='tn_imx_android_defconfig'

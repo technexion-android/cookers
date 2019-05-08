@@ -215,7 +215,7 @@ uuu_flashcard() {
   local TMP_PWD="${PWD}"
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
   if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
-  UBOOT_PLATFORM="pico-imx8m"
+  UBOOT_PLATFORM="imx8mq-pico-pi"
   elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
   UBOOT_PLATFORM="imx8mm-pico-pi"
   fi

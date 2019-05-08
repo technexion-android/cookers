@@ -254,12 +254,12 @@ flashcard() {
 }
 
 merge_restricted_extras() {
-  wget -c -t 0 --timeout=60 --waitretry=60 https://github.com/technexion-android/android_restricted_extra/raw/master/imx8-p9.tar.gz
-  tar zxvf imx8-p9.tar.gz
-  cp -rv imx-p9.0.0_1.0.0-ga/vendor/nxp/* vendor/nxp/
-  cp -rv imx-p9.0.0_1.0.0-ga/EULA.txt .
-  cp -rv imx-p9.0.0_1.0.0-ga/SCR* .
-  rm -rf imx8-p9.tar.gz imx-p9.0.0_1.0.0-ga
+  wget -c -t 0 --timeout=60 --waitretry=60 https://github.com/technexion-android/android_restricted_extra/raw/master/imx8-p9-2.0.tar.gz
+  tar zxvf imx8-p9-2.0.tar.gz
+  cp -rv imx-p9.0.0_2.0.0-ga/vendor/nxp/* vendor/nxp/
+  cp -rv imx-p9.0.0_2.0.0-ga/EULA.txt .
+  cp -rv imx-p9.0.0_2.0.0-ga/SCR* .
+  rm -rf imx8-p9-2.0.tar.gz imx-p9.0.0_2.0.0-ga
   sync
 }
 

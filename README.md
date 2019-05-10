@@ -100,6 +100,16 @@ Source the compile relative commands (HMI product line):
 
     $ source cookers/env.bash.imx7.tep1.tep1.lcd
 
+Source the compile relative commands (Wandboard community):
+
+    Wandboard(i.MX6): HDMI
+
+    $ source cookers/env.bash.imx6.edm1cf-pmic.wandboard.hdmi
+
+    Wandboard(i.MX6): 5-inch 800x480 LCD panel
+
+    $ source cookers/env.bash.imx6.edm1cf-pmic.wandboard.lcd
+
 Get the NXP restricted extra packages (recommended):
 
     $ merge_restricted_extras

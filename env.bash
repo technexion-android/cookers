@@ -73,10 +73,10 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       TARGET_DEVICE_NAME=imx8mm
       if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
         DTB_TARGET='imx8mm-pico-pi-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_HDMI"
+        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
       elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
         DTB_TARGET='imx8mm-pico-pi-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_HDMI"
+        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
         export AUDIOHAT_ACTIVE=true
       fi
     fi

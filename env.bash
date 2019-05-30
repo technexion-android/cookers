@@ -31,6 +31,7 @@ export USER=$(whoami)
 
 export MY_ANDROID=$TOP
 export LC_ALL=C
+export DUAL_DISPLAY_LVDS=false
 
 # TARGET support: wandboard,edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"
@@ -47,7 +48,6 @@ PATH_TOOLS="${TOP}/device/fsl/common/tools"
 if [[ "$CPU_TYPE" == "imx8" ]]; then
     if [[ "$CPU_MODULE" == "pico-8m" ]]; then
         if [[ "$BASEBOARD" == "pi" ]]; then
-
             KERNEL_IMAGE='Image'
             KERNEL_CONFIG='android_defconfig'
 			if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
@@ -60,22 +60,28 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
 				TARGET_DEVICE=pico_8m_lcd
 				TARGET_DEVICE_NAME=imxpico_8m_lcd
 				DTB_TARGET='pico_8m_lcd.dtb'
+			elif [[ "$OUTPUT_DISPLAY" == "dual-sn65dsi84" ]]; then
+				UBOOT_CONFIG='pico_8m_android_defconfig'
+				TARGET_DEVICE=pico_8m
+				TARGET_DEVICE_NAME=imxpico_8m
+				DTB_TARGET='pico_8m_dual-sn65dsi84.dtb'
+        export DUAL_DISPLAY_LVDS=true
 			fi
-        elif [[ "$BASEBOARD" == "wanboard" ]]; then
-            UBOOT_CONFIG='mx8mq_evk_android_defconfig'
-            KERNEL_IMAGE='Image'
-            KERNEL_CONFIG='android_defconfig'
-            DTB_TARGET='fsl-imx8mq-evk.dtb'
-            TARGET_DEVICE=evk_8mq
-            TARGET_DEVICE_NAME=imx8mq
-        fi
+   elif [[ "$BASEBOARD" == "wanboard" ]]; then
+        UBOOT_CONFIG='mx8mq_evk_android_defconfig'
+        KERNEL_IMAGE='Image'
+        KERNEL_CONFIG='android_defconfig'
+        DTB_TARGET='fsl-imx8mq-evk.dtb'
+        TARGET_DEVICE=evk_8mq
+        TARGET_DEVICE_NAME=imx8mq
+   fi
 	elif [[ "$CPU_MODULE" == "evk_8mq" ]]; then
-            UBOOT_CONFIG='mx8mq_evk_android_defconfig'
-            KERNEL_IMAGE='Image'
-            KERNEL_CONFIG='android_defconfig'
-            DTB_TARGET='fsl-imx8mq-evk.dtb'
-            TARGET_DEVICE=evk_8mq
-            TARGET_DEVICE_NAME=imx8mq
+        UBOOT_CONFIG='mx8mq_evk_android_defconfig'
+        KERNEL_IMAGE='Image'
+        KERNEL_CONFIG='android_defconfig'
+        DTB_TARGET='fsl-imx8mq-evk.dtb'
+        TARGET_DEVICE=evk_8mq
+        TARGET_DEVICE_NAME=imx8mq
 	fi
 fi
 

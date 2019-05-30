@@ -42,6 +42,9 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx8.pico-8m.pi.lcd
 
+    For PICO-IMX8 Dual Display: HDMI and MIPI-to-LVDS 7-inch Panel with 1024x600 resolution (Demo Stage)
+
+    $ source cookers/env.bash.imx8.pico-8m.pi.dual-sn65dsi84
 
 Get the NXP restricted extra packages (recommended):
 

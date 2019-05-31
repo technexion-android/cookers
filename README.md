@@ -34,15 +34,15 @@ Technexion Docker image generation
  
 Source the compile relative commands:
 
-    For PICO-IMX8 HDMI
+    For PICO-IMX8M HDMI
 
     $ source cookers/env.bash.imx8.pico-8m.pi.hdmi
 
-    For PICO-IMX8 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX8M 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-8m.pi.lcd
 
-    For PICO-IMX8 Dual Display: HDMI and MIPI-to-LVDS 7-inch Panel with 1024x600 resolution (Demo Stage)
+    For PICO-IMX8M Dual Display: HDMI and MIPI-to-LVDS 7-inch Panel with 1024x600 resolution (Demo Stage)
 
     $ source cookers/env.bash.imx8.pico-8m.pi.dual-sn65dsi84
 

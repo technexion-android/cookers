@@ -41,7 +41,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='pico-imx8m_android_defconfig'
+      UBOOT_CONFIG='pico-imx8mq_android_defconfig'
       TARGET_DEVICE=pico_imx8m
       TARGET_DEVICE_NAME=imx8mq
       sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc

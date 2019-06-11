@@ -80,6 +80,18 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         export AUDIOHAT_ACTIVE=true
       fi
     fi
+  elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
+    if [[ "$BASEBOARD" == "pi" ]]; then
+      KERNEL_IMAGE='Image'
+      KERNEL_CONFIG='tn_imx8_android_defconfig'
+      UBOOT_CONFIG='flex-imx8mm_android_defconfig'
+      TARGET_DEVICE=flex_imx8mm
+      TARGET_DEVICE_NAME=imx8mm
+      if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
+        DTB_TARGET='imx8mm-flex-pi-ili9881c.dtb'
+        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
+      fi
+    fi
   fi
 fi
 

@@ -3,7 +3,7 @@
 
 Github way (Prepare repo command first is recommended)
 
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_1.1.0_8m-ga
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.0_8m-ga
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup
@@ -53,6 +53,15 @@ Source the compile relative commands:
     For PICO-IMX8M-Mini 5-inch LCD with Voice-HAT (1280x720 resolution via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
+
+    For FLEX-IMX8M-Mini 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+
+    $ source cookers/env.bash.imx8.flex-imx8m-mini.pi.mipi-dsi_ili9881c
+
+    For FLEX-IMX8M-Mini 5-inch LCD with Voice-HAT (1280x720 resolution via MIPI-DSI interface)
+
+    $ source cookers/env.bash.imx8.flex-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
+
 
 Get the NXP restricted extra packages (recommended):
 

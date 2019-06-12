@@ -236,15 +236,15 @@ uuu_flashcard() {
   UBOOT_PLATFORM="imx8mq-pico-pi"
   elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
   UBOOT_PLATFORM="imx8mm-pico-pi"
+  elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
+  UBOOT_PLATFORM="imx8mm-flex-pi"
   fi
 
   cd "${PATH_UBOOT}"
   ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0
   cd -
 
-  if [[ "$CPU_MODULE" == "pico-imx8m" || "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
-    sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"
-  fi
+  sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"
   cd "${PATH_OUT}"
   sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}".imx
   sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx

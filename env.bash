@@ -134,8 +134,6 @@ heat() {
               cd -
               make "$@" || return $?
             fi
-
-            cd ${PATH_UBOOT} && heat "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
             export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"

@@ -14,15 +14,15 @@ CLASSPATH=".:$JAVA_HOME/lib:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar"
 PATH="$JAVA_HOME/bin:${PATH}"
 export DISPLAY=:0
 
-export ARCH=arm64
-export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
-export CROSS32CC=arm-linux-gnueabi-gcc
+export ARCH=arm
+export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-"
 export USER=$(whoami)
 
 export MY_ANDROID=$TOP
 export LC_ALL=C
 export DRAM_SIZE_1G=false
 export AUDIOHAT_ACTIVE=false
+export EXPORT_BASEBOARD_NAME="PI"
 
 # TARGET support: pico-imx8m, pico-imx8mm
 IMX_PATH="./mnt"
@@ -36,65 +36,33 @@ KERNEL_CFLAGS='KCFLAGS=-mno-android'
 
 PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
-if [[ "$CPU_TYPE" == "imx8" ]]; then
-  if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
+if [[ "$CPU_TYPE" == "imx6" ]]; then
+  if [[ "$CPU_MODULE" == "pico-imx6" ]]; then
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_android_defconfig'
+    UBOOT_CONFIG='pico-imx6_android_spl_defconfig'
+    TARGET_DEVICE=pico_imx6
+    TARGET_DEVICE_NAME=imx6
+    DTB_TARGET='imx6q-pico-qca_pi.dtb imx6dl-pico-qca_pi.dtb imx6q-pico-qca_dwarf.dtb imx6dl-pico-qca_dwarf.dtb'
     if [[ "$BASEBOARD" == "pi" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='pico-imx8mq_android_defconfig'
-      TARGET_DEVICE=pico_imx8m
-      TARGET_DEVICE_NAME=imx8mq
-      sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
+      export EXPORT_BASEBOARD_NAME="PI"
+    elif [[ "$BASEBOARD" == "dwarf" ]]; then
+      export EXPORT_BASEBOARD_NAME="DWARF"
+    elif [[ "$BASEBOARD" == "hobbit" ]]; then
+      export EXPORT_BASEBOARD_NAME="HOBBIT"
+    elif [[ "$BASEBOARD" == "NYMPH" ]]; then
+      export EXPORT_BASEBOARD_NAME="NYMPH"
+    fi
 
-      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-        DTB_TARGET='imx8mq-pico-pi.dtb'
-        export DISPLAY_TARGET="DISP_HDMI"
-      elif [[ "$OUTPUT_DISPLAY" == "hdmi-voicehat" ]]; then
-        DTB_TARGET='imx8mq-pico-pi-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_HDMI"
-        export AUDIOHAT_ACTIVE=true
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-        DTB_TARGET='imx8mq-pico-pi-dcss-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
-        DTB_TARGET='imx8mq-pico-pi-dcss-ili9881c-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export AUDIOHAT_ACTIVE=true
-        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
-      fi
-    fi
-  elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
-    if [[ "$BASEBOARD" == "pi" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='pico-imx8mm_android_defconfig'
-      TARGET_DEVICE=pico_imx8mm
-      TARGET_DEVICE_NAME=imx8mm
-      if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-        DTB_TARGET='imx8mm-pico-pi-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
-        DTB_TARGET='imx8mm-pico-pi-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export AUDIOHAT_ACTIVE=true
-      fi
-    fi
-  elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
-    if [[ "$BASEBOARD" == "pi" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='flex-imx8mm_android_defconfig'
-      TARGET_DEVICE=flex_imx8mm
-      TARGET_DEVICE_NAME=imx8mm
-      if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-        DTB_TARGET='imx8mm-flex-pi-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
-        DTB_TARGET='imx8mm-flex-pi-ili9881c-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export AUDIOHAT_ACTIVE=true
-      fi
+    if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+      export DISPLAY_TARGET="DISP_HDMI"
+      sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+    elif [[ "$OUTPUT_DISPLAY" == "lcd-5-inch" ]]; then
+      export DISPLAY_TARGET="DISP_LCD_5INCH"
+      sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+    elif [[ "$OUTPUT_DISPLAY" == "lvds-7-inch" ]]; then
+      export DISPLAY_TARGET="DISP_LVDS_7INCH"
+      sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
     fi
   fi
 fi
@@ -136,14 +104,12 @@ heat() {
             fi
             ;;
         "${PATH_KERNEL}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
             cd "${PATH_KERNEL}"
             rm -rf ./modules/lib
             make "$@" $KERNEL_CFLAGS || return $?
             make "$@" modules_install INSTALL_MOD_PATH=./modules || return $?
             ;;
         "${PATH_UBOOT}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
             cd "${PATH_UBOOT}"
             make "$@" || return $?
             ;;
@@ -179,13 +145,11 @@ cook() {
             cd ${PATH_UBOOT} && cook "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
             cd "${PATH_KERNEL}"
             make "$@" $KERNEL_CONFIG || return $?
             heat "$@" || return $?
             ;;
         "${PATH_UBOOT}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
             cd "${PATH_UBOOT}"
             make "$@" $UBOOT_CONFIG || return $?
             heat "$@" || return $?

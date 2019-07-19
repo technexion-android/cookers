@@ -243,7 +243,7 @@ uuu_flashcard() {
   fi
 
   cd "${PATH_UBOOT}"
-  ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0
+  yes | ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0  > /dev/null
   cd -
 
   sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"

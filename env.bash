@@ -43,14 +43,14 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
     UBOOT_CONFIG='pico-imx6_android_spl_defconfig'
     TARGET_DEVICE=pico_imx6
     TARGET_DEVICE_NAME=imx6
-    DTB_TARGET='imx6q-pico-qca_pi.dtb imx6dl-pico-qca_pi.dtb imx6q-pico-qca_dwarf.dtb imx6dl-pico-qca_dwarf.dtb'
+    DTB_TARGET='imx6q-pico-qca_pi.dtb imx6dl-pico-qca_pi.dtb imx6q-pico-qca_dwarf.dtb imx6dl-pico-qca_dwarf.dtb imx6q-pico-qca_nymph.dtb imx6dl-pico-qca_nymph.dtb'
     if [[ "$BASEBOARD" == "pi" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"
     elif [[ "$BASEBOARD" == "dwarf" ]]; then
       export EXPORT_BASEBOARD_NAME="DWARF"
     elif [[ "$BASEBOARD" == "hobbit" ]]; then
       export EXPORT_BASEBOARD_NAME="HOBBIT"
-    elif [[ "$BASEBOARD" == "NYMPH" ]]; then
+    elif [[ "$BASEBOARD" == "nymph" ]]; then
       export EXPORT_BASEBOARD_NAME="NYMPH"
     fi
 

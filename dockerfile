@@ -22,7 +22,7 @@ RUN apt-get -q update &&\
 	uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop git-core curl u-boot-tools mtd-utils android-tools-fsutils \
 	device-tree-compiler gdisk gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib \
 	libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev libxml2-utils xsltproc unzip \
-	sshpass ssh-askpass zip xz-utils kpartx vim screen sudo wget bc locales openjdk-8-jdk rsync python3 kmod cgpt bsdmainutils lzip &&\
+	sshpass ssh-askpass zip xz-utils kpartx vim screen sudo wget bc locales openjdk-8-jdk rsync python3 kmod cgpt bsdmainutils lzip hdparm &&\
     apt-get -q autoremove &&\
     apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
 

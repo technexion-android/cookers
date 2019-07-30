@@ -65,6 +65,17 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
       sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
     fi
   fi
+elif [[ "$CPU_TYPE" == "imx7" ]]; then
+  if [[ "$CPU_MODULE" == "pico-imx7" ]]; then
+    if [[ "$BASEBOARD" == "pi" ]]; then
+      KERNEL_IMAGE='Image'
+      KERNEL_CONFIG='tn_android_defconfig'
+      UBOOT_CONFIG='pico-imx7d_android_spl_defconfig'
+      TARGET_DEVICE=pico_imx7
+      TARGET_DEVICE_NAME=imx7
+      DTB_TARGET='imx7d-pico-qca_pi.dtb'
+    fi
+  fi
 fi
 
 recipe() {

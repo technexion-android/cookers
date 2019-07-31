@@ -36,13 +36,13 @@ KERNEL_CFLAGS='KCFLAGS=-mno-android'
 
 PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
-if [[ "$CPU_TYPE" == "imx6" ]]; then
+if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx6" ]]; then
     KERNEL_IMAGE='Image'
     KERNEL_CONFIG='tn_android_defconfig'
     UBOOT_CONFIG='pico-imx6_android_spl_defconfig'
     TARGET_DEVICE=pico_imx6
-    TARGET_DEVICE_NAME=imx6
+    TARGET_DEVICE_NAME="${CPU_TYPE}"
     DTB_TARGET='imx6q-pico-qca_pi.dtb imx6dl-pico-qca_pi.dtb imx6q-pico-qca_dwarf.dtb imx6dl-pico-qca_dwarf.dtb imx6q-pico-qca_nymph.dtb imx6dl-pico-qca_nymph.dtb'
     if [[ "$BASEBOARD" == "pi" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"
@@ -65,14 +65,14 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
       sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
     fi
   fi
-elif [[ "$CPU_TYPE" == "imx7" ]]; then
+elif [[ "$CPU_TYPE" == "imx7d" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx7" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_android_defconfig'
       UBOOT_CONFIG='pico-imx7d_android_spl_defconfig'
       TARGET_DEVICE=pico_imx7
-      TARGET_DEVICE_NAME=imx7
+      TARGET_DEVICE_NAME="${CPU_TYPE}"
       DTB_TARGET='imx7d-pico-qca_pi.dtb'
     fi
   fi
@@ -203,35 +203,6 @@ throw() {
     cd "${TMP_PWD}"
 }
 
-uuu_flashcard() {
-
-  partition_size="$@"
-
-  local TMP_PWD="${PWD}"
-  PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
-  if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
-  UBOOT_PLATFORM="imx8mq-pico-pi"
-  elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
-  UBOOT_PLATFORM="imx8mm-pico-pi"
-  elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
-  UBOOT_PLATFORM="imx8mm-flex-pi"
-  fi
-
-  cd "${PATH_UBOOT}"
-  ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0
-  cd -
-
-  sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"
-  cd "${PATH_OUT}"
-  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}".imx
-  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx
-  #sudo tee < flash.bin u-boot-* > /dev/null
-  sync
-  sudo ./uuu_imx_android_flash.sh -c "${partition_size}" -f "${TARGET_DEVICE_NAME}" -e -D .
-  echo "Flash Done!!!"
-  cd "${TMP_PWD}"
-}
-
 flashcard() {
   local TMP_PWD="${PWD}"
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
@@ -239,10 +210,20 @@ flashcard() {
   echo "$dev_node start"
   sudo cp -rv ${TMP_PWD}/device/fsl/common/tools/gpt_partition_move ${PATH_OUT}/
   cd "${PATH_OUT}"
-  sudo $TOP/device/fsl/common/tools/tn-sd-emmc-partition.sh -f ${TARGET_DEVICE_NAME} -c 7 ${dev_node}
+  sudo ./fsl-sdcard-partition.sh -f ${TARGET_DEVICE_NAME} ${dev_node}
   sync
-  cd "${PATH_UBOOT}"
-  ./install_uboot_imx8.sh -b pico-imx8m -d ${dev_node}
+
+  sudo ./gpt_partition_move -d ${dev_node} -s 4096
+  SPL_IMAGE=$(ls u-boot-*.SPL)
+  UBOOT_RAW_IMAGE=$(ls u-boot-*.img)
+  sudo dd if=${SPL_IMAGE} of=${dev_node} bs=1k seek=1 conv=sync
+
+  if [[ "$TARGET_DEVICE" == "pico_imx6" ]]; then
+    sudo dd if=${UBOOT_RAW_IMAGE} of=${dev_node} bs=512 seek=92 oflag=dsync
+  elif [[ "$TARGET_DEVICE" == "pico_imx7" ]]; then
+    sudo dd if=${UBOOT_RAW_IMAGE} of=${dev_node} bs=512 seek=120 oflag=dsync
+  fi
+
   sync
   echo "Flash Done!!!"
   cd "${TMP_PWD}"
@@ -262,15 +243,14 @@ gen_mp_images() {
   mkdir -p auto_test/vendor/nxp-opensource
   mkdir -p auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/boot.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/dtbo-"${TARGET_DEVICE_NAME}".img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/dtbo-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/vbmeta-"${TARGET_DEVICE_NAME}".img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/vbmeta-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/vendor.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/system.img auto_test/out/target/product/"${TARGET_DEVICE}"/
 
-  cp -rv device/fsl/common/tools/uuu_imx_android_flash.sh auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv device/fsl/common/tools/uuu_imx_android_flash.bat auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv device/fsl/common/tools/fsl-sdcard-partition.sh auto_test/out/target/product/"${TARGET_DEVICE}"/
 
   cp -rv cookers auto_test/
   cp -rv vendor/nxp-opensource/uboot-imx auto_test/vendor/nxp-opensource/

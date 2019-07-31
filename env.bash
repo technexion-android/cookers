@@ -49,6 +49,10 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         DTB_TARGET='imx8mq-pico-pi.dtb'
         export DISPLAY_TARGET="DISP_HDMI"
+      elif [[ "$OUTPUT_DISPLAY" == "hdmi-nfc" ]]; then
+        DTB_TARGET='imx8mq-pico-pi.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
+        export NFC_TARGET="NFC_PN7150"
       elif [[ "$OUTPUT_DISPLAY" == "hdmi-voicehat" ]]; then
         DTB_TARGET='imx8mq-pico-pi-voicehat.dtb'
         export DISPLAY_TARGET="DISP_HDMI"

@@ -240,3 +240,18 @@ You can modify the global variable in cookers/env.bash
     + export DRAM_SIZE_1G=true
 
     Re-source again and start compiling the new images
+
+## Enabling NFC Support
+
+You can modify the global variable in cookers/env.bash
+
+    modify the argument NFC_ACTIVE
+
+    - export NFC_ACTIVE=false
+    to
+    + export NFC_ACTIVE=true
+
+    Re-source again and start compiling the new images
+
+Note:
+	Currently NFC only support PICO-IMX8M HDMI

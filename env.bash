@@ -43,7 +43,7 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
     UBOOT_CONFIG='pico-imx6_android_spl_defconfig'
     TARGET_DEVICE=pico_imx6
     TARGET_DEVICE_NAME="${CPU_TYPE}"
-    DTB_TARGET='imx6q-pico-qca_pi.dtb imx6dl-pico-qca_pi.dtb imx6q-pico-qca_dwarf.dtb imx6dl-pico-qca_dwarf.dtb imx6q-pico-qca_nymph.dtb imx6dl-pico-qca_nymph.dtb'
+    DTB_TARGET='imx6q-pico-qca_pi.dtb imx6dl-pico-qca_pi.dtb imx6q-pico-qca_dwarf.dtb imx6dl-pico-qca_dwarf.dtb imx6q-pico-qca_nymph.dtb imx6dl-pico-qca_nymph.dtb imx6q-pico-qca_hobbit.dtb imx6dl-pico-qca_hobbit.dtb'
     if [[ "$BASEBOARD" == "pi" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"
     elif [[ "$BASEBOARD" == "dwarf" ]]; then
@@ -52,6 +52,8 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
       export EXPORT_BASEBOARD_NAME="HOBBIT"
     elif [[ "$BASEBOARD" == "nymph" ]]; then
       export EXPORT_BASEBOARD_NAME="NYMPH"
+    elif [[ "$BASEBOARD" == "hobbit" ]]; then
+      export EXPORT_BASEBOARD_NAME="HOBBIT"
     fi
 
     if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then

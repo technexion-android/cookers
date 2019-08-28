@@ -24,6 +24,8 @@ export DRAM_SIZE_1G=false
 export AUDIOHAT_ACTIVE=false
 export EXPORT_BASEBOARD_NAME="PI"
 
+init_rc_file="${TOP}/device/fsl/imx6dq/pico_imx6/init.rc"
+
 # TARGET support: pico-imx8m, pico-imx8mm
 IMX_PATH="./mnt"
 SYS_PATH="./tmp"
@@ -55,16 +57,18 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
     elif [[ "$BASEBOARD" == "hobbit" ]]; then
       export EXPORT_BASEBOARD_NAME="HOBBIT"
     fi
-
-    if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-      export DISPLAY_TARGET="DISP_HDMI"
-      sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
-    elif [[ "$OUTPUT_DISPLAY" == "lcd-5-inch" ]]; then
-      export DISPLAY_TARGET="DISP_LCD_5INCH"
-      sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
-    elif [[ "$OUTPUT_DISPLAY" == "lvds-7-inch" ]]; then
-      export DISPLAY_TARGET="DISP_LVDS_7INCH"
-      sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+    if [ -f "$init_rc_file" ]; then
+      # echo "$init_rc_file exist"
+      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+        export DISPLAY_TARGET="DISP_HDMI"
+        sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+      elif [[ "$OUTPUT_DISPLAY" == "lcd-5-inch" ]]; then
+        export DISPLAY_TARGET="DISP_LCD_5INCH"
+        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+      elif [[ "$OUTPUT_DISPLAY" == "lvds-7-inch" ]]; then
+        export DISPLAY_TARGET="DISP_LVDS_7INCH"
+        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+      fi
     fi
   fi
 elif [[ "$CPU_TYPE" == "imx7d" ]]; then

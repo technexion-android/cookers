@@ -251,7 +251,11 @@ gen_mp_images() {
   cp -rv out/target/product/"${TARGET_DEVICE}"/vbmeta-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/vendor.img auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv out/target/product/"${TARGET_DEVICE}"/system.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/recovery*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/u-boot-*.SPL auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/u-boot-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
 
+  cp -rv device/fsl/common/tools/gpt_partition_move auto_test/out/target/product/"${TARGET_DEVICE}"/
   cp -rv device/fsl/common/tools/fsl-sdcard-partition.sh auto_test/out/target/product/"${TARGET_DEVICE}"/
 
   cp -rv cookers auto_test/

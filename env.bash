@@ -24,6 +24,7 @@ export LC_ALL=C
 export DRAM_SIZE_1G=false
 export AUDIOHAT_ACTIVE=false
 export NFC_ACTIVE=false
+export WM8960_AUDIO_CODEC_ACTIVE=false
 
 # TARGET support: pico-imx8m, pico-imx8mm
 IMX_PATH="./mnt"
@@ -95,6 +96,28 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         DTB_TARGET='imx8mm-flex-pi-ili9881c-voicehat.dtb'
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
         export AUDIOHAT_ACTIVE=true
+      fi
+    fi
+  elif [[ "$CPU_MODULE" == "edm-imx8m" ]]; then
+    if [[ "$BASEBOARD" == "wizard" ]]; then
+      KERNEL_IMAGE='Image'
+      KERNEL_CONFIG='tn_imx8_android_defconfig'
+      UBOOT_CONFIG='edm-imx8mq_android_defconfig'
+      TARGET_DEVICE=edm_imx8m
+      TARGET_DEVICE_NAME=imx8mq
+      sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx8m/edm_imx8m/init.rc
+
+      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+        DTB_TARGET='imx8mq-edm-wizard.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
+      elif [[ "$OUTPUT_DISPLAY" == "hdmi-voicehat" ]]; then
+        DTB_TARGET='imx8mq-edm-wizard-voicehat.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
+        export AUDIOHAT_ACTIVE=true
+      elif [[ "$OUTPUT_DISPLAY" == "hdmi-wm8960" ]]; then
+        DTB_TARGET='imx8mq-edm-wizard.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
+        export WM8960_AUDIO_CODEC_ACTIVE=true
       fi
     fi
   fi
@@ -241,6 +264,8 @@ uuu_flashcard() {
   UBOOT_PLATFORM="imx8mm-pico-pi"
   elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
   UBOOT_PLATFORM="imx8mm-flex-pi"
+  elif [[ "$CPU_MODULE" == "edm-imx8m" ]]; then
+  UBOOT_PLATFORM="imx8mq-edm-wizard"
   fi
 
   cd "${PATH_UBOOT}"

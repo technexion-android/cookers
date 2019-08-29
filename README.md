@@ -15,7 +15,7 @@ General Packages Installation ( Ubuntu 16.04 or above)
     gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib \
     libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev \
     libxml2-utils xsltproc unzip sshpass ssh-askpass zip xz-utils kpartx vim screen sudo wget \
-    bc locales openjdk-8-jdk rsync docker.io python3 kmod cgpt bsdmainutils lzip
+    bc locales openjdk-8-jdk rsync docker.io python3 kmod cgpt bsdmainutils lzip hdparm
 
 Technexion Docker Image Production
 
@@ -108,7 +108,7 @@ To Configuration in Linux Kernel part:
     $ cd vendor/nxp-opensource/kernel_imx/
     $ recipe (or make menuconfig)
 
-
+ 
 ## Flashing The Output Images
 
 Output relative image files of path:
@@ -127,7 +127,7 @@ Standard way using uuu based script:
 
 About uuu Detial:
 * [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)
-
+ 
 ## Enabling WiFi/BT function
  
 Prepare WiFi/BT firmware

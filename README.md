@@ -3,7 +3,7 @@
 
 Github way (Prepare repo command first is recommended)
 
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.0_8m-ga
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-wip
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup
@@ -34,11 +34,11 @@ Technexion Docker Image Production
 
 Source the compile relative commands:
 
-    For PICO-IMX8M HDMI
+    For PICO-IMX8M HDMI (1080p)
 
     $ source cookers/env.bash.imx8.pico-imx8m.pi.hdmi
 
-    For PICO-IMX8M 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX8M 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-imx8m.pi.mipi-dsi_ili9881c
 
@@ -46,22 +46,45 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx8.pico-imx8m.pi.hdmi-voicehat
 
-    For PICO-IMX8M-Mini 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX8M-Mini 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c
 
-    For PICO-IMX8M-Mini 5-inch LCD with Voice-HAT (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX8M-Mini 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
 
-    For FLEX-IMX8M-Mini 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+    For FLEX-IMX8M-Mini 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.flex-imx8m-mini.pi.mipi-dsi_ili9881c
 
-    For FLEX-IMX8M-Mini 5-inch LCD with Voice-HAT (1280x720 resolution via MIPI-DSI interface)
+    For FLEX-IMX8M-Mini 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.flex-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
 
+    For EDM-IMX8M HDMI (1080p)
+
+    $ source cookers/env.bash.imx8.edm-imx8m.wizard.hdmi
+
+    For EDM-IMX8M HDMI with wm8960 audio codec (1080p)
+
+    $ source cookers/env.bash.imx8.edm-imx8m.wizard.hdmi-wm8960
+
+    For EDM-IMX8M HDMI with Voice-HAT (1080p)
+
+    $ source cookers/env.bash.imx8.edm-imx8m.wizard.hdmi-voicehat
+
+    For EDM-IMX8M 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
+
+    $ source cookers/env.bash.imx8.edm-imx8m.wizard.mipi-dsi_ili9881c
+
+    For EDM-IMX8M 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
+
+    $ source cookers/env.bash.imx8.edm-imx8m.wizard.mipi-dsi_ili9881c-voicehat
+
+    For EDM-IMX8M Dual HDMI (1080p)
+
+    $ source cookers/env.bash.imx8.edm-imx8m.wizard.dual-hdmi
 
 Get the NXP restricted extra packages (recommended):
 

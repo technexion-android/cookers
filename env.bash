@@ -212,11 +212,12 @@ throw() {
 flashcard() {
   local TMP_PWD="${PWD}"
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
-  dev_node="$@"
+  dev_node="$1"
+  card_size="$2"
   echo "$dev_node start"
   sudo cp -rv ${TMP_PWD}/device/fsl/common/tools/gpt_partition_move ${PATH_OUT}/
   cd "${PATH_OUT}"
-  sudo ./fsl-sdcard-partition.sh -f ${TARGET_DEVICE_NAME} ${dev_node}
+  sudo ./fsl-sdcard-partition.sh -f ${TARGET_DEVICE_NAME} -c ${card_size} ${dev_node}
   sync
 
   sudo ./gpt_partition_move -d ${dev_node} -s 4096

@@ -1,9 +1,9 @@
-# Technexion Android 9 SDK for i.MX8 Platforms
+# Technexion Android 9 SDK for i.MX6/i.MX7 Platforms
 ## Download The Source code
 
 Github way (Prepare repo command first is recommended)
 
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.0_8m-ga
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup
@@ -15,13 +15,13 @@ General Packages Installation ( Ubuntu 16.04 or above)
     gnupg flex bison gperf build-essential zip curl zlib1g-dev gcc-multilib g++-multilib \
     libc6-dev-i386 lib32ncurses5-dev x11proto-core-dev libx11-dev lib32z-dev libgl1-mesa-dev \
     libxml2-utils xsltproc unzip sshpass ssh-askpass zip xz-utils kpartx vim screen sudo wget \
-    bc locales openjdk-8-jdk rsync docker.io python3 kmod cgpt bsdmainutils lzip
+    bc locales openjdk-8-jdk rsync docker.io python3 kmod cgpt bsdmainutils lzip hdparm
 
 Technexion Docker Image Production
 
     $ cd cookers
     $ docker build -t build_droid9 .
-    $ sudo docker run --privileged=true --name mx8_build  -v /home/<user name>/<source folder>:/home/mnt -t -i build_droid9 bash
+    $ sudo docker run --privileged=true --name mx9_build  -v /home/<user name>/<source folder>:/home/mnt -t -i build_droid9 bash
     (first time)
 
     $ sudo docker ps -a
@@ -34,34 +34,29 @@ Technexion Docker Image Production
 
 Source the compile relative commands:
 
-    For PICO-IMX8M HDMI
+    For PICO-IMX6Q with PI: 5-inch LCD (800x480 resolution via LCD interface)
 
-    $ source cookers/env.bash.imx8.pico-imx8m.pi.hdmi
+    $ source cookers/env.bash.imx6q.pico-imx6.pi.lcd-5-inch
 
-    For PICO-IMX8M 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX6DL with PI: 5-inch LCD (800x480 resolution via LCD interface)
 
-    $ source cookers/env.bash.imx8.pico-imx8m.pi.mipi-dsi_ili9881c
+    $ source cookers/env.bash.imx6dl.pico-imx6.pi.lcd-5-inch
 
-    For PICO-IMX8M HDMI with Voice-HAT
+    For PICO-IMX6Q with DWARF: HDMI (720p)
 
-    $ source cookers/env.bash.imx8.pico-imx8m.pi.hdmi-voicehat
+    $ source cookers/env.bash.imx6q.pico-imx6.dwarf.hdmi
 
-    For PICO-IMX8M-Mini 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX6DL with DWARF: HDMI (720p)
 
-    $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c
+    $ source cookers/env.bash.imx6dl.pico-imx6.dwarf.hdmi
 
-    For PICO-IMX8M-Mini 5-inch LCD with Voice-HAT (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX6Q with DWARF: 7-inch LCD (1024x600 resolution via LVDS interface)
 
-    $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
+    $ source cookers/env.bash.imx6q.pico-imx6.dwarf.lvds-7-inch
 
-    For FLEX-IMX8M-Mini 5-inch LCD (1280x720 resolution via MIPI-DSI interface)
+    For PICO-IMX6DL with DWARF: 7-inch LCD (1024x600 resolution via LVDS interface)
 
-    $ source cookers/env.bash.imx8.flex-imx8m-mini.pi.mipi-dsi_ili9881c
-
-    For FLEX-IMX8M-Mini 5-inch LCD with Voice-HAT (1280x720 resolution via MIPI-DSI interface)
-
-    $ source cookers/env.bash.imx8.flex-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
-
+    $ source cookers/env.bash.imx6dl.pico-imx6.dwarf.lvds-7-inch
 
 Get the NXP restricted extra packages (recommended):
 
@@ -215,28 +210,4 @@ Clicking "Reboot" after upgrade done
 Clicking the "Additional System Updates" to check the current revision is already upgraded
 ![ota-5](images/ota-5.png)
  
-## Change the Display Rotation Angle When Boot
 
-You can modify the boot argument in device/fsl/imx8m/pico_imx8m/BoardConfig.mk
-
-    modify the argument in BOARD_KERNEL_CMDLINE argument:
-
-    androidboot.hwrotation=0 (No change, Default is landscape mode)
-
-    androidboot.hwrotation=90 (rotate 90 degree)
-
-    androidboot.hwrotation=180 (rotate 180 degree)
-
-    androidboot.hwrotation=270 (rotate 270 degree)
- 
-## Enabling Low Memory Size Support
- 
-You can modify the global variable in cookers/env.bash
-
-    modify the argument DRAM_SIZE_1G
-
-    - export DRAM_SIZE_1G=false
-    to
-    + export DRAM_SIZE_1G=true
-
-    Re-source again and start compiling the new images

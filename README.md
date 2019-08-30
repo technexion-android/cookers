@@ -58,6 +58,34 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx6dl.pico-imx6.dwarf.lvds-7-inch
 
+    For PICO-IMX6Q with NYMPH: HDMI (720p)
+
+    $ source cookers/env.bash.imx6q.pico-imx6.nymph.hdmi
+
+    For PICO-IMX6DL with NYMPH: HDMI (720p)
+
+    $ source cookers/env.bash.imx6dl.pico-imx6.nymph.hdmi
+
+    For PICO-IMX6Q with NYMPH: 7-inch LCD (1024x600 resolution via LVDS interface)
+
+    $ source cookers/env.bash.imx6q.pico-imx6.nymph.lvds-7-inch
+
+    For PICO-IMX6DL with NYMPH: 7-inch LCD (1024x600 resolution via LVDS interface)
+
+    $ source cookers/env.bash.imx6dl.pico-imx6.nymph.lvds-7-inch
+
+    For PICO-IMX6Q with HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx6q.pico-imx6.hobbit.lcd-5-inch
+
+    For PICO-IMX6DL with HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx6dl.pico-imx6.hobbit.lcd-5-inch
+
+    For PICO-IMX7D with PI: 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx7d.pico-imx7.pi.lcd-5-inch
+
 Get the NXP restricted extra packages (recommended):
 
     $ merge_restricted_extras
@@ -87,15 +115,9 @@ Output relative image files of path:
 
     $ ls <source>/out/target/product/<target board>/ (pico-imx8m or others)
 
-Quick way for flashing to board (uuu tool):
+Quick way for flashing to board (legacy way, adapt mfgtool):
 
-    $ uuu_flashcard x (x is up to your eMMC size, 8GB: x=7, 16GB: x=13, 32GB: x=28)
-
-Standard way using uuu based script:
-
-    $ cd <source>/out/target/product/<target board>/ (pico-imx8m or others)
-    $ Ubuntu host: sudo ./uuu_imx_android_flash.sh -c <partition table size> -f <cpu type> -e -D . (cpu type is imx8mq, imx8mm, etc.)
-    $ Windows host: uuu_imx_android_flash.bat -c <partition table size> -f <cpu type> -e -D .
+    $ flashcard /dev/sdx y (x is your device node, y is up to your eMMC size, 4GB: y=3, 8GB: y=7, 16GB: y=13, 32GB: y=28)
 
 About uuu Detial:
 * [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)

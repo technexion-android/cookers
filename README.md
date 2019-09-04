@@ -86,6 +86,18 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx7d.pico-imx7.pi.lcd-5-inch
 
+    For PICO-IMX7D with DWARF: 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx7d.pico-imx7.dwarf.lcd-5-inch
+
+    For PICO-IMX7D with NYMPH: VGA (1024x768 resolution via VGA interface)
+
+    $ source cookers/env.bash.imx7d.pico-imx7.nymph.vga
+
+    For PICO-IMX7D with HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx7d.pico-imx7.hobbit.lcd-5-inch
+
 Get the NXP restricted extra packages (recommended):
 
     $ merge_restricted_extras

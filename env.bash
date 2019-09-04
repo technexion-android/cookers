@@ -24,7 +24,6 @@ export DRAM_SIZE_1G=false
 export AUDIOHAT_ACTIVE=false
 export EXPORT_BASEBOARD_NAME="PI"
 
-init_rc_file="${TOP}/device/fsl/imx6dq/pico_imx6/init.rc"
 
 # TARGET support: pico-imx8m, pico-imx8mm
 IMX_PATH="./mnt"
@@ -40,6 +39,7 @@ PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
 if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx6" ]]; then
+    init_rc_file="${TOP}/device/fsl/imx6dq/pico_imx6/init.rc"
     KERNEL_IMAGE='Image'
     KERNEL_CONFIG='tn_android_defconfig'
     UBOOT_CONFIG='pico-imx6_android_spl_defconfig'
@@ -73,13 +73,16 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
   fi
 elif [[ "$CPU_TYPE" == "imx7d" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx7" ]]; then
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_android_defconfig'
+    UBOOT_CONFIG='pico-imx7d_android_spl_defconfig'
+    DTB_TARGET='imx7d-pico-qca_pi.dtb imx7d-pico-qca_dwarf.dtb imx7d-pico-qca_nymph.dtb imx7d-pico-qca_hobbit.dtb'
+    TARGET_DEVICE=pico_imx7
+    TARGET_DEVICE_NAME="${CPU_TYPE}"
     if [[ "$BASEBOARD" == "pi" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_android_defconfig'
-      UBOOT_CONFIG='pico-imx7d_android_spl_defconfig'
-      TARGET_DEVICE=pico_imx7
-      TARGET_DEVICE_NAME="${CPU_TYPE}"
-      DTB_TARGET='imx7d-pico-qca_pi.dtb'
+      export EXPORT_BASEBOARD_NAME="PI"
+    elif [[ "$BASEBOARD" == "dwarf" ]]; then
+      export EXPORT_BASEBOARD_NAME="DWARF"
     fi
   fi
 fi

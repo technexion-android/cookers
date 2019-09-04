@@ -83,6 +83,8 @@ elif [[ "$CPU_TYPE" == "imx7d" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"
     elif [[ "$BASEBOARD" == "dwarf" ]]; then
       export EXPORT_BASEBOARD_NAME="DWARF"
+    elif [[ "$BASEBOARD" == "hobbit" ]]; then
+      export EXPORT_BASEBOARD_NAME="HOBBIT"
     fi
   fi
 fi

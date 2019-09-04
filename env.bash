@@ -280,3 +280,40 @@ gen_mp_images() {
   cp -rv prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 auto_test/prebuilts/gcc/linux-x86/aarch64/
   sync
 }
+
+gen_virtual_images() {
+
+  partition_size="$@"
+
+  local TMP_PWD="${PWD}"
+  PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
+
+  cd "${TMP_PWD}"
+
+  cd "${PATH_OUT}"
+  sudo dd if=/dev/zero of=test.img bs=1M count=3400
+  sudo kpartx -av test.img
+  loop_dev=$(losetup | grep "test.img" | awk  '{print $1}')
+  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c 3 "${loop_dev}"
+  sudo kpartx -d test.img
+  sync
+  sudo kpartx -av test.img
+  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c 3 "${loop_dev}"
+  sync
+
+  sudo ./gpt_partition_move -d ${loop_dev} -s 4096
+  SPL_IMAGE=$(ls u-boot-*.SPL)
+  UBOOT_RAW_IMAGE=$(ls u-boot-*.img)
+  sudo dd if=${SPL_IMAGE} of=${loop_dev} bs=1k seek=1 conv=sync
+
+  if [[ "$TARGET_DEVICE" == "pico_imx6" ]]; then
+    sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=92 oflag=dsync
+  elif [[ "$TARGET_DEVICE" == "pico_imx7" ]]; then
+    sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=120 oflag=dsync
+  fi
+
+  sync
+  sudo kpartx -d test.img
+  sync
+  cd "${TMP_PWD}"
+}

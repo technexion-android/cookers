@@ -125,7 +125,7 @@ To Configuration in Linux Kernel part:
 
 Output relative image files of path:
 
-    $ ls <source>/out/target/product/<target board>/ (pico-imx8m or others)
+    $ ls <source>/out/target/product/<target board>/ (pico-imx6q or others)
 
 Quick way for flashing to board (legacy way, adapt mfgtool):
 
@@ -170,64 +170,30 @@ On Android side, please change your path of OTA Client app if neceassary
 
 Correct the IP address, port and path from target OTA server to ota.conf
 
-    path: <source folder>device/fsl/imx8m/etc/ota.conf
+    path: <source folder>device/fsl/imx6dq/etc/ota.conf
 
-Compiling again and flashing to your system as fixed link of OTA server.
 
-Step 2. Backup your OTA package and build.prop of current system revision, compile manually if the zip file is no exist:
+Step 2. Generating an upgradabled OTA package
 
-    make otapackage -j4
-
-    path: <source folder>/out/target/product/pico_imx8m/obj/PACKAGING/target_files_intermediates/pico_imx8m-target_files-eng.root.zip
-    path: <source folder>/out/target/product/system/build.prop
-
-Step 3. Generating an incremental upgradabled OTA package
-
-When you're done the modified part for latest system revision, editing "<source>imx8m/pico_imx8m/build_id.mk" and modify the BUILD_ID to latest revision.
+When you're done the modified part for latest system revision, editing "<source>/device/fsl/imx6dq/pico_imx6/build_id.mk" and modify the BUILD_ID to latest revision.
 
 Note that the BUILD_ID must be newer than your current system revision and date.
 
-Re-compile source code again and generate the new pico_imx8m-target_files-eng.root.zip
+compile source code and generate the new ota package
 
-old zip file rename to old.zip, and new zip file rename to new.zip, issue the command to generate the incremental update package:
+    cook -j4
+    make otapackage -j4
 
-    cd <source folodr>
+    path: <source folder>/out/target/product/pico_imx6/pico_imx6-ota-eng.root.zip
+    path: <source folder>/out/target/product/pico_imx6/system/build.prop
 
-    ./build/tools/releasetools/ota_from_target_files -i old.zip new.zip incremental_ota_update.zip
+Step 3. Moving upgrade requirement files to OTA server:
 
-Step 4. Moving upgrade relative files to OTA server:
+    cp build.prop <your server ota folder>/build.prop
 
-    cp ${old_build.prop} <your server ota folder>/old_build.prop
+    cp pico_imx6-ota-eng.root.zip <your server ota folder>/pico_imx6-ota-<date>.zip
 
-    cp <your source folder>/out/target/product/pico-imx8m/system/build.prop <your server ota folder>/build_diff.prop
-
-    mkdir -p <your server ota folder>/diff_ota
-
-    cp <your source folder>/incremental_ota_update.zip <your server ota folder>/diff_ota/
-
-    cd <your server ota folder>/diff_ota
-
-    unzip incremental_ota_update.zip
-
-    mv payload.bin payload_diff.bin
-
-    mv payload_properties.txt payload_properties_diff.txt
-
-    mv payload_diff.bin payload_properties_diff.txt <your server ota folder>/
-
-    cd <your server ota folder>
-
-    echo -n "base." >> build_diff.prop
-
-    grep "ro.build.date.utc" old_build.prop >> build_diff.prop
-
-    cp build_diff.prop build.prop
-
-    cp -rv <your source folder>/out/target/product/pico_imx8m/pico_imx8m-ota-eng.root.zip .
-
-    unzip pico_imx8m-ota-eng.root.zip
-
-Step 5. Now, you can starting upgrade Android system using OTA function
+Step 4. Now, you can starting upgrade Android system using OTA function
 
 Clicking the "Additional System Updates" on the setting page to check the latest update revision
 ![ota-1](images/ota-1.png)
@@ -238,10 +204,7 @@ It will be showed the upgrade information when your OTA server is ready and dete
 Clicking the "Upgrade", starting download and install to your current system
 ![ota-3](images/ota-3.png)
 
-Clicking "Reboot" after upgrade done
-![ota-4](images/ota-4.png)
-
-Clicking the "Additional System Updates" to check the current revision is already upgraded
+Auto do "Verifying" after upgrade done, it will be rebooted automatically when vefifying done
 ![ota-5](images/ota-5.png)
- 
 
+Do system upgrade on recovery mode automatically, after that, reboot and upgrade finish.

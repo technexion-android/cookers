@@ -65,9 +65,13 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
       elif [[ "$OUTPUT_DISPLAY" == "lcd-5-inch" ]]; then
         export DISPLAY_TARGET="DISP_LCD_5INCH"
         sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+        sed -i 's/		# setprop hw.backlight.dev "backlight_lcd"/		setprop hw.backlight.dev "backlight_lcd"/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+        sed -i 's/		setprop hw.backlight.dev "backlight_lvds"/		# setprop hw.backlight.dev "backlight_lvds"/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
       elif [[ "$OUTPUT_DISPLAY" == "lvds-7-inch" ]]; then
         export DISPLAY_TARGET="DISP_LVDS_7INCH"
         sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+        sed -i 's/		setprop hw.backlight.dev "backlight_lcd"/		# setprop hw.backlight.dev "backlight_lcd"/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
+        sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
       fi
     fi
   fi

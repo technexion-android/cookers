@@ -153,21 +153,12 @@ This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configurat
 
 Contact Window: sales@technexion.com
 
-After getting the firmware binary: .. Decompress the tarball and put all the firmware files into░
+After getting the firmware binary: .. Decompress the tarball and put all the firmware files into
 
     <source folder>/device/fsl/<your target platform>/wifi-firmware/
 
 Then take the QCA9377 folder as target path such as:
 
     <source folder>/device/fsl/<your target platform>/wifi-firmware/QCA9377
-
-Enabling the WiFi function in Build file:
-
-    i.MX6: path: <source folder>/device/fsl/imx6/<your target platform>.mk
-    i.MX7: path: <source folder>/device/fsl/imx7/<your target platform>.mk
-
-    - BOARD_HAS_QCA9377_WLAN_FIRMWARE := false
-    to
-    + BOARD_HAS_QCA9377_WLAN_FIRMWARE := true
 
 Issue the command cook/heat again as previous Chapter "Compiling Environment Setup", WiFi/BT function will be working! Enjoy!

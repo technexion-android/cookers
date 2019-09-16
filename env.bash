@@ -276,6 +276,7 @@ gen_mp_images() {
 
   cp -rv device/fsl/common/tools/gpt_partition_move auto_test/
   cp -rv device/fsl/common/tools/fsl-sdcard-partition.sh auto_test/
+  cp -rv device/fsl/common/tools/fsl-sdcard-partition-virtual-image.sh auto_test/
 
   chmod -R 777 auto_test/
 

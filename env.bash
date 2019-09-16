@@ -258,30 +258,27 @@ merge_restricted_extras() {
 }
 
 gen_mp_images() {
-  mkdir -p auto_test/vendor/nxp-opensource
-  mkdir -p auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/boot.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/dtbo-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/partition-table.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/vbmeta-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/vendor.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/system.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/recovery*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/u-boot-*.SPL auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv out/target/product/"${TARGET_DEVICE}"/u-boot-*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  local TMP_PWD="${PWD}"
+  PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
 
-  cp -rv device/fsl/common/tools/gpt_partition_move auto_test/out/target/product/"${TARGET_DEVICE}"/
-  cp -rv device/fsl/common/tools/fsl-sdcard-partition.sh auto_test/out/target/product/"${TARGET_DEVICE}"/
+  mkdir -p auto_test
 
-  cp -rv cookers auto_test/
-  cp -rv vendor/nxp-opensource/uboot-imx auto_test/vendor/nxp-opensource/
-  rm -rf auto_test/cookers/.git
-  rm -rf auto_test/vendor/nxp-opensource/uboot-imx/.git
-  chmod -R 777 auto_test/vendor/nxp-opensource/uboot-imx/
+  cp -rv "${PATH_OUT}"/boot.img auto_test/
+  cp -rv "${PATH_OUT}"/dtbo-*.img auto_test/
+  cp -rv "${PATH_OUT}"/partition-table-*.img auto_test/
+  cp -rv "${PATH_OUT}"/partition-table.img auto_test/
+  cp -rv "${PATH_OUT}"/vbmeta-*.img auto_test/
+  cp -rv "${PATH_OUT}"/vendor.img auto_test/
+  cp -rv "${PATH_OUT}"/system.img auto_test/
+  cp -rv "${PATH_OUT}"/recovery*.img auto_test/
+  cp -rv "${PATH_OUT}"/u-boot-*.SPL auto_test/
+  cp -rv "${PATH_OUT}"/u-boot-*.img auto_test/
 
-  mkdir -p auto_test/prebuilts/gcc/linux-x86/aarch64
-  cp -rv prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 auto_test/prebuilts/gcc/linux-x86/aarch64/
+  cp -rv device/fsl/common/tools/gpt_partition_move auto_test/
+  cp -rv device/fsl/common/tools/fsl-sdcard-partition.sh auto_test/
+
+  chmod -R 777 auto_test/
+
   sync
 }
 

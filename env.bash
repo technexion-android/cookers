@@ -329,6 +329,8 @@ gen_mp_images() {
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
   if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
   UBOOT_PLATFORM="imx8mq-pico-pi"
+  elif [[ "$CPU_MODULE" == "edm-imx8m" ]]; then
+  UBOOT_PLATFORM="imx8mq-edm-wizard"
   elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
   UBOOT_PLATFORM="imx8mm-pico-pi"
   elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then

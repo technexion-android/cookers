@@ -34,11 +34,11 @@ Technexion Docker Image Production
 
 Source the compile relative commands:
 
-    For PICO-IMX6Q with PI: 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX6Q with PI: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6q.pico-imx6.pi.lcd-5-inch
 
-    For PICO-IMX6DL with PI: 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX6DL with PI: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6dl.pico-imx6.pi.lcd-5-inch
 
@@ -50,11 +50,11 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx6dl.pico-imx6.dwarf.hdmi
 
-    For PICO-IMX6Q with DWARF: 7-inch LCD (1024x600 resolution via LVDS interface)
+    For PICO-IMX6Q with DWARF: VL070-10260NL-C01 7-inch LCD (1024x600 resolution via LVDS interface)
 
     $ source cookers/env.bash.imx6q.pico-imx6.dwarf.lvds-7-inch
 
-    For PICO-IMX6DL with DWARF: 7-inch LCD (1024x600 resolution via LVDS interface)
+    For PICO-IMX6DL with DWARF: VL070-10260NL-C01 7-inch LCD (1024x600 resolution via LVDS interface)
 
     $ source cookers/env.bash.imx6dl.pico-imx6.dwarf.lvds-7-inch
 
@@ -66,27 +66,27 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx6dl.pico-imx6.nymph.hdmi
 
-    For PICO-IMX6Q with NYMPH: 7-inch LCD (1024x600 resolution via LVDS interface)
+    For PICO-IMX6Q with NYMPH: VL070-10260NL-C01 7-inch LCD (1024x600 resolution via LVDS interface)
 
     $ source cookers/env.bash.imx6q.pico-imx6.nymph.lvds-7-inch
 
-    For PICO-IMX6DL with NYMPH: 7-inch LCD (1024x600 resolution via LVDS interface)
+    For PICO-IMX6DL with NYMPH: VL070-10260NL-C01 7-inch LCD (1024x600 resolution via LVDS interface)
 
     $ source cookers/env.bash.imx6dl.pico-imx6.nymph.lvds-7-inch
 
-    For PICO-IMX6Q with HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX6Q with HOBBIT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6q.pico-imx6.hobbit.lcd-5-inch
 
-    For PICO-IMX6DL with HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX6DL with HOBBIT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6dl.pico-imx6.hobbit.lcd-5-inch
 
-    For PICO-IMX7D with PI: 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX7D with PI: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7d.pico-imx7.pi.lcd-5-inch
 
-    For PICO-IMX7D with DWARF: 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX7D with DWARF: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7d.pico-imx7.dwarf.lcd-5-inch
 
@@ -94,7 +94,7 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx7d.pico-imx7.nymph.vga
 
-    For PICO-IMX7D with HOBBIT: 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX7D with HOBBIT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7d.pico-imx7.hobbit.lcd-5-inch
 

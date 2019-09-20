@@ -224,7 +224,7 @@ Do system upgrade on recovery mode automatically, after that, reboot and upgrade
 ## Latest Demo Image
 
 Detail can refer relative documents as following link:
-* [Images Downloading](ftp://download.technexion.net/demo_software/)
+* Images Downloading: ftp://download.technexion.net/demo_software/
 * [User Guide](https://github.com/technexion-android/Documents/blob/android-9_imx6_imx7/pdf/Android-Pie_User-Manual_201900807.pdf)
 * [Release Note](https://github.com/technexion-android/Documents/blob/android-9_imx6_imx7/pdf/Android-Pie_Release-Note_20190725.pdf)
 * [Image Instruction](https://raw.githubusercontent.com/technexion-android/Documents/android-9_imx6_imx7/txt/README.txt)

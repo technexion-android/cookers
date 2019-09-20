@@ -127,12 +127,24 @@ Output relative image files of path:
 
     $ ls <source>/out/target/product/<target board>/ (pico-imx6q or others)
 
-Quick way for flashing to board (legacy way, adapt mfgtool):
+Quick way for flashing to board (legacy way, adapt mfgtool or ums command):
 
     $ flashcard /dev/sdx y (x is your device node, y is up to your eMMC size, 4GB: y=3, 8GB: y=7, 16GB: y=13, 32GB: y=28)
 
-About uuu Detial:
-* [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)
+About mfgtool detial (recommended):
+
+Before flash your images to the eMMC, please change the boot mode to serial download mode first, then mount eMMC as a storage on host PC using mfgtool, every boot mode configuration of Technexion boards as following document:
+
+* [mfgtool user guide](https://github.com/technexion-android/Documents/blob/android-9_imx6_imx7/pdf/PreBuilt_OS_Image_Installation_Guide_v3.5.pdf)
+
+About ums detial:
+
+Another modular way is use ums command on your currect u-boot inside the eMMC, connect the USB OTG cable to host PC, then ums will auto mounting a storage on host PC, ums command as following:
+
+    # ums 0 mmc 0 (mmc device number is up to your board, you can choose to 1 if 0 is not work)
+
+Remember the ums is no need change the boot mode, but the disadvangage is the flash speed is slower than mfgtool way, so we recommend the mfgtool is better.
+
 
 ## Enabling WiFi/BT function
  
@@ -208,3 +220,11 @@ Auto do "Verifying" after upgrade done, it will be rebooted automatically when v
 ![ota-5](images/ota-5.png)
 
 Do system upgrade on recovery mode automatically, after that, reboot and upgrade finish.
+
+## Latest Demo Image
+
+Detail can refer relative documents as following link:
+* [Images Downloading](ftp://download.technexion.net/demo_software/)
+* [User Guide](https://github.com/technexion-android/Documents/blob/android-9_imx6_imx7/pdf/Android-Pie_User-Manual_201900807.pdf)
+* [Release Note](https://github.com/technexion-android/Documents/blob/android-9_imx6_imx7/pdf/Android-Pie_Release-Note_20190725.pdf)
+* [Image Instruction](https://raw.githubusercontent.com/technexion-android/Documents/android-9_imx6_imx7/txt/README.txt)

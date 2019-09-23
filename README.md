@@ -3,11 +3,11 @@
 
 Github way (Prepare repo command first is recommended)
 
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga_tn1.0
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup
- 
+  
 General Packages Installation ( Ubuntu 16.04 or above)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \

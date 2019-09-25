@@ -3,11 +3,11 @@
 
 Github way (Prepare repo command first is recommended)
 
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-wip
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga_tn1.0
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup
- 
+  
 General Packages Installation ( Ubuntu 16.04 or above)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \
@@ -82,7 +82,7 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.mipi-dsi_ili9881c-voicehat
 
-    For EDM-IMX8M Dual HDMI (1080p)
+    For EDM-IMX8M Dual HDMI (1080p for primary screen and 720p for secondary screen)
 
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.dual-hdmi
 
@@ -108,7 +108,7 @@ To Configuration in Linux Kernel part:
     $ cd vendor/nxp-opensource/kernel_imx/
     $ recipe (or make menuconfig)
 
- 
+
 ## Flashing The Output Images
 
 Output relative image files of path:
@@ -122,12 +122,18 @@ Quick way for flashing to board (uuu tool):
 Standard way using uuu based script:
 
     $ cd <source>/out/target/product/<target board>/ (pico-imx8m or others)
-    $ Ubuntu host: sudo ./uuu_imx_android_flash.sh -c <partition table size> -f <cpu type> -e -D . (cpu type is imx8mq, imx8mm, etc.)
+    $ Ubuntu host: sudo ./uuu_imx_android_flash.sh -c <partition table size> -f <cpu type> -e -D .
     $ Windows host: uuu_imx_android_flash.bat -c <partition table size> -f <cpu type> -e -D .
+    (cpu type is imx8mq, imx8mm, etc.)
+    (partition table size is up to the eMMC size of target board: 8GB: x=7, 16GB: x=13, 32GB: x=28)
 
 About uuu Detial:
 * [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)
- 
+
+Firstly, the user should change the boot mode to serial download mode and connect a OTG cable from board to host PC. Then, running the uuu commands as above post. In the end, 
+
+change back the boot mode to eMMC boot mode, that's it.
+
 ## Enabling WiFi/BT function
  
 Prepare WiFi/BT firmware
@@ -253,7 +259,7 @@ You can modify the boot argument in device/fsl/imx8m/pico_imx8m/BoardConfig.mk
     androidboot.hwrotation=270 (rotate 270 degree)
  
 ## Enabling Low Memory Size Support
- 
+
 You can modify the global variable in cookers/env.bash
 
     modify the argument DRAM_SIZE_1G
@@ -263,6 +269,9 @@ You can modify the global variable in cookers/env.bash
     + export DRAM_SIZE_1G=true
 
     Re-source again and start compiling the new images
+
+NOTE:
+PICO-IMX8M and EDM-IMX8M with 1GB DRAM has a little bit slow when operation, we recommend running a specific application for this case.
 
 ## Enabling NFC Support
 
@@ -276,5 +285,5 @@ You can modify the global variable in cookers/env.bash
 
     Re-source again and start compiling the new images
 
-Note:
-	Currently NFC only support PICO-IMX8M HDMI
+NOTE:
+Currently NFC only support PICO-IMX8M HDMI

@@ -287,3 +287,11 @@ You can modify the global variable in cookers/env.bash
 
 NOTE:
 Currently NFC only support PICO-IMX8M HDMI
+
+## Latest Demo Image
+
+Detail can refer relative documents as following link:
+* Images Downloading: ftp://download.technexion.net/demo_software/
+* [User Guide](https://github.com/technexion-android/Documents/blob/android-9/pdf/)
+* [Release Note](https://github.com/technexion-android/Documents/blob/android-9/pdf/)
+* [Image Instruction](https://raw.githubusercontent.com/technexion-android/Documents/android-9/txt/README.txt)

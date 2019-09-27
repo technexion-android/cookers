@@ -255,6 +255,8 @@ throw() {
             cd "${PATH_UBOOT}"
 #           make "$@" $UBOOT_CONFIG || return $?
             make "$@" distclean || return $?
+            rm -rf firmware_imx8
+            rm -rf imx-mkimage
             ;;
         *)
             echo -e "Error: outside the project" >&2

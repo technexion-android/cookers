@@ -37,6 +37,8 @@ KERNEL_CFLAGS='KCFLAGS=-mno-android'
 
 PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
+export GLOBAL_CPU_TYPE=$(echo $CPU_TYPE | tr "[:lower:]" "[:upper:]")
+
 if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx6" ]]; then
     init_rc_file="${TOP}/device/fsl/imx6dq/pico_imx6/init.rc"

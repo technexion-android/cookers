@@ -78,10 +78,16 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
 		DTB_TARGET='imx6q-pico_dwarf.dtb imx6dl-pico_dwarf.dtb imx6q-pico_hobbit.dtb imx6dl-pico_hobbit.dtb imx6q-pico_nymph.dtb imx6dl-pico_nymph.dtb imx6q-pico_pi.dtb imx6dl-pico_pi.dtb imx6q-pico_nymph_lvds10.dtb imx6dl-pico_nymph_lvds10.dtb'
 		TARGET_DEVICE=pico_6dq
 		PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
-    if [[ "$OUTPUT_DISPLAY" == "VL101" ]]; then
+		if [[ -f "${PATH_UBOOT}/include/configs/pico-imx6_android_common.h" ]]; then
+			if [[ "$OUTPUT_DISPLAY" == "VL101" ]]; then
 	      sed -i 's/hj070na/10inch_v01/' ${PATH_UBOOT}/include/configs/pico-imx6_android_common.h
-		else
-	      sed -i 's/10inch_v01/hj070na/' ${PATH_UBOOT}/include/configs/pico-imx6_android_common.h
+			elif [[ "$OUTPUT_DISPLAY" == "lvds" ]]; then
+	      sed -i 's/FT5x06-WVGA/hj070na/' ${PATH_UBOOT}/include/configs/pico-imx6_android_common.h
+			elif [[ "$OUTPUT_DISPLAY" == "lcd" ]]; then
+	      sed -i 's/hj070na/FT5x06-WVGA/' ${PATH_UBOOT}/include/configs/pico-imx6_android_common.h
+			elif [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+	      sed -i 's/hj070na/HDMI/' ${PATH_UBOOT}/include/configs/pico-imx6_android_common.h
+			fi
 		fi
     elif [[ "$CPU_MODULE" == "edm1cf-nand-pmic" ]]; then
 		UBOOT_CONFIG='edm-cf-imx6_defconfig'
@@ -90,6 +96,15 @@ if [[ "$CPU_TYPE" == "imx6" ]]; then
 		DTB_TARGET='imx6dl-edm1_fairy.dtb imx6q-edm1_fairy.dtb imx6qp-edm1_fairy.dtb imx6dl-edm1_tc0700.dtb imx6q-edm1_tc0700.dtb imx6qp-edm1_tc0700.dtb imx6dl-edm1_tc1000.dtb imx6q-edm1_tc1000.dtb imx6qp-edm1_tc1000.dtb'
 		TARGET_DEVICE=edm1cf_pmic_6dq
     fi
+		if [[ -f "${TOP}/device/fsl/$TARGET_DEVICE/init.rc" ]]; then
+			if [[ "$OUTPUT_DISPLAY" == "lcd" ]]; then
+				sed -i 's/		# setprop hw.backlight.dev "backlight_lcd"/		setprop hw.backlight.dev "backlight_lcd"/' ${TOP}/device/fsl/$TARGET_DEVICE/init.rc
+				sed -i 's/		setprop hw.backlight.dev "backlight_lvds"/		# setprop hw.backlight.dev "backlight_lvds"/' ${TOP}/device/fsl/$TARGET_DEVICE/init.rc
+			elif [[ "$OUTPUT_DISPLAY" == "lvds" ]]; then
+				sed -i 's/		setprop hw.backlight.dev "backlight_lcd"/		# setprop hw.backlight.dev "backlight_lcd"/' ${TOP}/device/fsl/$TARGET_DEVICE/init.rc
+				sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${TOP}/device/fsl/$TARGET_DEVICE/init.rc
+			fi
+		fi
 elif [[ "$CPU_TYPE" == "imx7" ]]; then
 	if [[ "$CPU_MODULE" == "pico" ]]; then
 		UBOOT_CONFIG='pico-imx7d_spl_defconfig'

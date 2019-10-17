@@ -227,6 +227,11 @@ flashcard() {
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
   dev_node="$1"
   card_size="$2"
+
+  if [ -z "$card_size" ];then
+    card_size=7
+  fi
+
   echo "$dev_node start"
   sudo cp -rv ${TMP_PWD}/device/fsl/common/tools/gpt_partition_move ${PATH_OUT}/
   cd "${PATH_OUT}"

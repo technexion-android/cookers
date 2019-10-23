@@ -76,6 +76,15 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
         sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${TOP}/device/fsl/imx6dq/pico_imx6/init.rc
       fi
     fi
+  elif [[ "$CPU_MODULE" == "edm1-imx6" ]]; then
+    TARGET_DEVICE=edm1_imx6
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_android_defconfig'
+    UBOOT_CONFIG='edm-imx6_android_spl_defconfig'
+    TARGET_DEVICE_NAME="${CPU_TYPE}"
+    export EXPORT_BASEBOARD_NAME="FAIRY"
+    export DISPLAY_TARGET="DISP_HDMI"
+    DTB_TARGET='imx6dl-edm1-fairy-qca.dtb imx6q-edm1-fairy-qca.dtb imx6qp-edm1-fairy-qca.dtb'
   fi
 elif [[ "$CPU_TYPE" == "imx7d" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx7" ]]; then
@@ -242,8 +251,8 @@ flashcard() {
   SPL_IMAGE=$(ls u-boot-*.SPL)
   UBOOT_RAW_IMAGE=$(ls u-boot-*.img)
   sudo dd if=${SPL_IMAGE} of=${dev_node} bs=1k seek=1 conv=sync
-
-  if [[ "$TARGET_DEVICE" == "pico_imx6" ]]; then
+  if [[ "$TARGET_DEVICE" == "pico_imx6" || "$TARGET_DEVICE" == "edm1_imx6" ]]; then
+    echo "flash_partition: ${UBOOT_RAW_IMAGE} ---> ${dev_node}"
     sudo dd if=${UBOOT_RAW_IMAGE} of=${dev_node} bs=512 seek=92 oflag=dsync
   elif [[ "$TARGET_DEVICE" == "pico_imx7" ]]; then
     sudo dd if=${UBOOT_RAW_IMAGE} of=${dev_node} bs=512 seek=120 oflag=dsync
@@ -315,7 +324,7 @@ gen_virtual_images() {
   UBOOT_RAW_IMAGE=$(ls u-boot-*.img)
   sudo dd if=${SPL_IMAGE} of=${loop_dev} bs=1k seek=1 conv=sync
 
-  if [[ "$TARGET_DEVICE" == "pico_imx6" ]]; then
+  if [[ "$TARGET_DEVICE" == "pico_imx6" || "$TARGET_DEVICE" == "edm1_imx6" ]]; then
     sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=92 oflag=dsync
   elif [[ "$TARGET_DEVICE" == "pico_imx7" ]]; then
     sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=120 oflag=dsync

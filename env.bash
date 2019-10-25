@@ -78,13 +78,28 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
     fi
   elif [[ "$CPU_MODULE" == "edm1-imx6" ]]; then
     TARGET_DEVICE=edm1_imx6
+    init_rc_file="${TOP}/device/fsl/imx6dq/${TARGET_DEVICE}/init.rc"
     KERNEL_IMAGE='Image'
     KERNEL_CONFIG='tn_android_defconfig'
     UBOOT_CONFIG='edm-imx6_android_spl_defconfig'
     TARGET_DEVICE_NAME="${CPU_TYPE}"
     export EXPORT_BASEBOARD_NAME="FAIRY"
-    export DISPLAY_TARGET="DISP_HDMI"
     DTB_TARGET='imx6dl-edm1-fairy-qca.dtb imx6q-edm1-fairy-qca.dtb imx6qp-edm1-fairy-qca.dtb'
+    if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+      export DISPLAY_TARGET="DISP_HDMI"
+    elif [[ "$OUTPUT_DISPLAY" == "lcd-5-inch" ]]; then
+      export DISPLAY_TARGET="DISP_LCD_5INCH"
+    fi
+    if [ -f "$init_rc_file" ]; then
+      # echo "$init_rc_file exist"
+      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+        sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${init_rc_file}
+      elif [[ "$OUTPUT_DISPLAY" == "lcd-5-inch" ]]; then
+        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${init_rc_file}
+        sed -i 's/		# setprop hw.backlight.dev "backlight_lcd"/		setprop hw.backlight.dev "backlight_lcd"/' ${init_rc_file}
+        sed -i 's/		setprop hw.backlight.dev "backlight_lvds"/		# setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}
+      fi
+    fi
   fi
 elif [[ "$CPU_TYPE" == "imx7d" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx7" ]]; then

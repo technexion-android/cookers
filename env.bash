@@ -93,6 +93,10 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
       export DISPLAY_TARGET="DISP_LVDS_7INCH"
       export EXPORT_BASEBOARD_NAME="TC0700"
       DTB_TARGET='imx6dl-edm1-tc0700-qca.dtb imx6q-edm1-tc0700-qca.dtb imx6qp-edm1-tc0700-qca.dtb'
+    elif [[ "$OUTPUT_DISPLAY" == "tc1000" ]]; then
+      export DISPLAY_TARGET="DISP_LVDS_10INCH"
+      export EXPORT_BASEBOARD_NAME="TC1000"
+      DTB_TARGET='imx6dl-edm1-tc1000-qca.dtb imx6q-edm1-tc1000-qca.dtb imx6qp-edm1-tc1000-qca.dtb'
     fi
     if [ -f "$init_rc_file" ]; then
       # echo "$init_rc_file exist"
@@ -104,6 +108,10 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
         sed -i 's/		setprop hw.backlight.dev "backlight_lvds"/		# setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}
       elif [[ "$OUTPUT_DISPLAY" == "lvds-7-inch" || "$OUTPUT_DISPLAY" == "tc0700" ]]; then
         sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${init_rc_file}
+        sed -i 's/		setprop hw.backlight.dev "backlight_lcd"/		# setprop hw.backlight.dev "backlight_lcd"/' ${init_rc_file}
+        sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}
+      elif [[ "$OUTPUT_DISPLAY" == "tc1000" ]]; then
+        sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${init_rc_file}
         sed -i 's/		setprop hw.backlight.dev "backlight_lcd"/		# setprop hw.backlight.dev "backlight_lcd"/' ${init_rc_file}
         sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}
       fi

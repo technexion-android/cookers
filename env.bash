@@ -134,6 +134,15 @@ elif [[ "$CPU_TYPE" == "imx7d" ]]; then
     elif [[ "$BASEBOARD" == "nymph" ]]; then
       export EXPORT_BASEBOARD_NAME="NYMPH"
     fi
+  elif [[ "$CPU_MODULE" == "tep1-imx7" ]]; then
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_android_defconfig'
+    UBOOT_CONFIG='tep1-imx7d_android_spl_defconfig'
+    DTB_TARGET='imx7d-tep1.dtb imx7d-tep1-a2.dtb'
+    TARGET_DEVICE=tep1_imx7
+    TARGET_DEVICE_NAME="${CPU_TYPE}"
+    export EXPORT_BASEBOARD_NAME="TEP1"
+    export DISPLAY_TARGET="DISP_LCD_5INCH"
   fi
 fi
 
@@ -285,7 +294,7 @@ flashcard() {
   if [[ "$TARGET_DEVICE" == "pico_imx6" || "$TARGET_DEVICE" == "edm1_imx6" ]]; then
     echo "flash_partition: ${UBOOT_RAW_IMAGE} ---> ${dev_node}"
     sudo dd if=${UBOOT_RAW_IMAGE} of=${dev_node} bs=512 seek=92 oflag=dsync
-  elif [[ "$TARGET_DEVICE" == "pico_imx7" ]]; then
+  elif [[ "$TARGET_DEVICE" == "pico_imx7" || "$TARGET_DEVICE" == "tep1_imx7" ]]; then
     sudo dd if=${UBOOT_RAW_IMAGE} of=${dev_node} bs=512 seek=120 oflag=dsync
   fi
 

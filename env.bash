@@ -364,12 +364,16 @@ gen_mp_images() {
 }
 
 gen_virtual_images() {
-
   partition_size="$@"
-
   local TMP_PWD="${PWD}"
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
+  virtual_image_file="${PATH_OUT}/fsl-sdcard-partition-virtual-image.sh"
 
+  if [ -f "$virtual_image_file" ]; then
+    echo "Find ${virtual_image_file}"
+  else
+    cp -rv device/fsl/common/tools/fsl-sdcard-partition-virtual-image.sh ${virtual_image_file}
+  fi
   cd "${TMP_PWD}"
 
   cd "${PATH_OUT}"
@@ -388,9 +392,10 @@ gen_virtual_images() {
   UBOOT_RAW_IMAGE=$(ls u-boot-*.img)
   sudo dd if=${SPL_IMAGE} of=${loop_dev} bs=1k seek=1 conv=sync
 
-  if [[ "$TARGET_DEVICE" == "pico_imx6" || "$TARGET_DEVICE" == "edm1_imx6" ]]; then
+  if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
+    echo "flash_partition: ${UBOOT_RAW_IMAGE} ---> ${loop_dev}"
     sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=92 oflag=dsync
-  elif [[ "$TARGET_DEVICE" == "pico_imx7" ]]; then
+  elif [[ "$CPU_TYPE" == "imx7d" ]]; then
     sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=120 oflag=dsync
   fi
 

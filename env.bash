@@ -116,6 +116,30 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
         sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}
       fi
     fi
+  elif [[ "$CPU_MODULE" == "tep5-imx6" ]]; then
+    TARGET_DEVICE=tep5_imx6
+    init_rc_file="${TOP}/device/fsl/imx6dq/${TARGET_DEVICE}/init.rc"
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_android_defconfig'
+    UBOOT_CONFIG='tek-imx6_android_spl_defconfig'
+    TARGET_DEVICE_NAME="${CPU_TYPE}"
+    export EXPORT_BASEBOARD_NAME="TEP5"
+    DTB_TARGET='imx6dl-tep5.dtb imx6q-tep5.dtb'
+    if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+      export DISPLAY_TARGET="DISP_HDMI"
+    elif [[ "$OUTPUT_DISPLAY" == "lvds-10-inch" ]]; then
+      export DISPLAY_TARGET="DISP_LVDS_10INCH"
+    fi
+    if [ -f "$init_rc_file" ]; then
+      # echo "$init_rc_file exist"
+      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+        sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${init_rc_file}
+      elif [[ "$OUTPUT_DISPLAY" == "lvds-10-inch" ]]; then
+        sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${init_rc_file}
+        sed -i 's/		setprop hw.backlight.dev "backlight_lcd"/		# setprop hw.backlight.dev "backlight_lcd"/' ${init_rc_file}
+        sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}
+      fi
+    fi
   fi
 elif [[ "$CPU_TYPE" == "imx7d" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx7" ]]; then
@@ -291,10 +315,10 @@ flashcard() {
   SPL_IMAGE=$(ls u-boot-*.SPL)
   UBOOT_RAW_IMAGE=$(ls u-boot-*.img)
   sudo dd if=${SPL_IMAGE} of=${dev_node} bs=1k seek=1 conv=sync
-  if [[ "$TARGET_DEVICE" == "pico_imx6" || "$TARGET_DEVICE" == "edm1_imx6" ]]; then
+  if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
     echo "flash_partition: ${UBOOT_RAW_IMAGE} ---> ${dev_node}"
     sudo dd if=${UBOOT_RAW_IMAGE} of=${dev_node} bs=512 seek=92 oflag=dsync
-  elif [[ "$TARGET_DEVICE" == "pico_imx7" || "$TARGET_DEVICE" == "tep1_imx7" ]]; then
+  elif [[ "$CPU_TYPE" == "imx7d" ]]; then
     sudo dd if=${UBOOT_RAW_IMAGE} of=${dev_node} bs=512 seek=120 oflag=dsync
   fi
 

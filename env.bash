@@ -245,6 +245,15 @@ cook() {
               cd -
               make "$@" || return $?
             fi
+
+            if [ "$CPU_MODULE" == "tep1-imx7" ] ; then
+              echo 'Packaging Bluetooth USB library...'
+              cd "${TOP}"/out/target/product/"$TARGET_DEVICE"/vendor/lib/hw/
+              sudo ln -sn android.hardware.bluetooth@1.0-usb_impl.so android.hardware.bluetooth@1.0-impl.so
+              cd -
+              make "$@" || return $?
+            fi
+
             cd ${PATH_UBOOT} && cook "$@" || return $?
             ;;
         "${PATH_KERNEL}"*)

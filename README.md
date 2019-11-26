@@ -147,7 +147,7 @@ Remember the ums is no need change the boot mode, but the disadvangage is the fl
 
 
 ## Enabling WiFi/BT function
- 
+
 Prepare WiFi/BT firmware
 
 This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configuration, Because of the license restriction, please contact TechNexion FAE or Sales to get licensed firmware files, default is disabled.
@@ -156,11 +156,24 @@ This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configurat
 
 After getting the firmware binary: .. Decompress the tarball and put all the firmware files into 
 
-    <source folder>/device/fsl/pico_8m/wifi-firmware/
+    <source folder>/device/fsl/imx8m/pico_imx8m/wifi-firmware/
 
 Then take the QCA9377 folder as target path such as:
 
-    <source folder>/device/fsl/pico_8m/wifi-firmware/QCA9377
+    <source folder>/device/fsl/imx8m/pico_imx8m/wifi-firmware/QCA9377
+
+Issue the command cook/heat again as previous Chapter "Compiling Environment Setup", WiFi/BT function will be working! Enjoy!
+
+
+11/26 Update: Add QCA9377-5 M.2 WiFi/BT supporting:
+
+Please take the WiFi via mPCIE firmware files to
+
+    <source folder>/device/fsl/imx7d/tep1_imx7/qca9377-5_wifi_firmware/ath10k/QCA9377/hw1.0/
+
+Please take the Bluetooth via USB firmware files to
+
+    <source folder>/device/fsl/imx7d/tep1_imx7/bluetooth/
 
 Issue the command cook/heat again as previous Chapter "Compiling Environment Setup", WiFi/BT function will be working! Enjoy!
 

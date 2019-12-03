@@ -146,11 +146,14 @@ elif [[ "$CPU_TYPE" == "imx7d" ]]; then
     KERNEL_IMAGE='Image'
     KERNEL_CONFIG='tn_android_defconfig'
     UBOOT_CONFIG='pico-imx7d_android_spl_defconfig'
-    DTB_TARGET='imx7d-pico-qca_pi.dtb imx7d-pico-qca_dwarf.dtb imx7d-pico-qca_nymph.dtb imx7d-pico-qca_hobbit.dtb'
+    DTB_TARGET='imx7d-pico-qca_pi.dtb imx7d-pico-qca_pi-voicehat.dtb imx7d-pico-qca_dwarf.dtb imx7d-pico-qca_nymph.dtb imx7d-pico-qca_hobbit.dtb'
     TARGET_DEVICE=pico_imx7
     TARGET_DEVICE_NAME="${CPU_TYPE}"
     if [[ "$BASEBOARD" == "pi" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"
+      if [[ "$OUTPUT_DISPLAY" == "lcd-5-inch-voicehat" ]]; then
+        export AUDIOHAT_ACTIVE=true
+      fi
     elif [[ "$BASEBOARD" == "dwarf" ]]; then
       export EXPORT_BASEBOARD_NAME="DWARF"
     elif [[ "$BASEBOARD" == "hobbit" ]]; then

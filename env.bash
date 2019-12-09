@@ -124,17 +124,20 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
     UBOOT_CONFIG='tek-imx6_android_spl_defconfig'
     TARGET_DEVICE_NAME="${CPU_TYPE}"
     export EXPORT_BASEBOARD_NAME="TEP5"
-    DTB_TARGET='imx6dl-tep5.dtb imx6q-tep5.dtb'
     if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
       export DISPLAY_TARGET="DISP_HDMI"
     elif [[ "$OUTPUT_DISPLAY" == "lvds-10-inch" ]]; then
       export DISPLAY_TARGET="DISP_LVDS_10INCH"
+      DTB_TARGET='imx6dl-tep5.dtb imx6q-tep5.dtb'
+    elif [[ "$OUTPUT_DISPLAY" == "lvds-15-inch" ]]; then
+      export DISPLAY_TARGET="DISP_LVDS_15INCH"
+      DTB_TARGET='imx6dl-tep5-15.dtb imx6q-tep5-15.dtb'
     fi
     if [ -f "$init_rc_file" ]; then
       # echo "$init_rc_file exist"
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${init_rc_file}
-      elif [[ "$OUTPUT_DISPLAY" == "lvds-10-inch" ]]; then
+      elif [[ "$OUTPUT_DISPLAY" == "lvds-10-inch" || "$OUTPUT_DISPLAY" == "lvds-15-inch" ]]; then
         sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${init_rc_file}
         sed -i 's/		setprop hw.backlight.dev "backlight_lcd"/		# setprop hw.backlight.dev "backlight_lcd"/' ${init_rc_file}
         sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}

@@ -42,22 +42,6 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx6dl.pico-imx6.pi.lcd-5-inch
 
-    For PICO-IMX6Q with DWARF: HDMI (720p)
-
-    $ source cookers/env.bash.imx6q.pico-imx6.dwarf.hdmi
-
-    For PICO-IMX6DL with DWARF: HDMI (720p)
-
-    $ source cookers/env.bash.imx6dl.pico-imx6.dwarf.hdmi
-
-    For PICO-IMX6Q with DWARF: VL070-10260NL-C01 7-inch LCD (1024x600 resolution via LVDS interface)
-
-    $ source cookers/env.bash.imx6q.pico-imx6.dwarf.lvds-7-inch
-
-    For PICO-IMX6DL with DWARF: VL070-10260NL-C01 7-inch LCD (1024x600 resolution via LVDS interface)
-
-    $ source cookers/env.bash.imx6dl.pico-imx6.dwarf.lvds-7-inch
-
     For PICO-IMX6Q with NYMPH: HDMI (720p)
 
     $ source cookers/env.bash.imx6q.pico-imx6.nymph.hdmi
@@ -74,29 +58,57 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx6dl.pico-imx6.nymph.lvds-7-inch
 
-    For PICO-IMX6Q with HOBBIT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For EDM-IMX6Q with FAIRY: HDMI (720p)
 
-    $ source cookers/env.bash.imx6q.pico-imx6.hobbit.lcd-5-inch
+    $ source cookers/env.bash.imx6q.edm1-imx6.fairy.hdmi
 
-    For PICO-IMX6DL with HOBBIT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For EDM-IMX6DL with FAIRY: HDMI (720p)
 
-    $ source cookers/env.bash.imx6dl.pico-imx6.hobbit.lcd-5-inch
+    $ source cookers/env.bash.imx6dl.edm1-imx6.fairy.hdmi
+
+    For EDM-IMX6Q with FAIRY: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx6q.edm1-imx6.fairy.lcd-5-inch
+
+    For EDM-IMX6DL with FAIRY: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx6dl.edm1-imx6.fairy.lcd-5-inch
+
+    For TC0700 HMI: 7-inch LCD (1024x600 resolution via LVDS interface)
+
+    $ source cookers/env.bash.imx6dl.edm1-imx6.fairy.tc0700
+
+    For TC1000 HMI: 10-inch LCD (1280x800 resolution via LVDS interface)
+
+    $ source cookers/env.bash.imx6dl.edm1-imx6.fairy.tc1000
+
+    For TEP-1010 HMI: 10.1-inch LCD (1280x800 resolution via LVDS interface)
+
+    $ source cookers/env.bash.imx6dl.tep5-imx6.fairy.lvds-10-inch
+
+    For TEP-1560 HMI: 15.6-inch LCD (1366x768 resolution via LVDS interface)
+
+    $ source cookers/env.bash.imx6dl.tep5-imx6.fairy.lvds-15-inch
 
     For PICO-IMX7D with PI: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7d.pico-imx7.pi.lcd-5-inch
 
-    For PICO-IMX7D with DWARF: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX7D with PI + VOICEHAT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
-    $ source cookers/env.bash.imx7d.pico-imx7.dwarf.lcd-5-inch
+    $ source cookers/env.bash.imx7d.pico-imx7.pi.lcd-5-inch-voicehat
 
     For PICO-IMX7D with NYMPH: VGA (1024x768 resolution via VGA interface)
 
     $ source cookers/env.bash.imx7d.pico-imx7.nymph.vga
 
-    For PICO-IMX7D with HOBBIT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX7D with NYMPH: VGA (1024x768 resolution via VGA interface)
 
-    $ source cookers/env.bash.imx7d.pico-imx7.hobbit.lcd-5-inch
+    $ source cookers/env.bash.imx7d.pico-imx7.nymph.vga
+
+    For TEP1-IMX7 HDMI : VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+
+    $ source cookers/env.bash.imx7d.tep1-imx7.tep1.lcd-5-inch
 
 Get the NXP restricted extra packages (recommended):
 
@@ -233,6 +245,19 @@ Auto do "Verifying" after upgrade done, it will be rebooted automatically when v
 ![ota-5](images/ota-5.png)
 
 Do system upgrade on recovery mode automatically, after that, reboot and upgrade finish.
+
+## LIBGPIOD JNI APIs
+
+TN2.0 provide a demo app about libgpiod JNI Test, specific source code as following:
+* [source code](https://github.com/technexion-android/packages_apps_GpiodJniTest.git)
+
+Users can implement own GUI using our INPUT/OUTPUT APIs
+
+    Setting GPIO as output with specific value:
+    public native String  setGpioInfo(int gpiobank,int gpioline, int value)
+
+    Setting GPIO as input and get a value:
+    public native String  getGpioInfo(int gpiobank,int gpioline);
 
 ## Latest Demo Image
 

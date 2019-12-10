@@ -271,7 +271,20 @@ You can modify the global variable in cookers/env.bash
     Re-source again and start compiling the new images
 
 NOTE:
-PICO-IMX8M and EDM-IMX8M with 1GB DRAM has a little bit slow when operation, we recommend running a specific application for this case.
+PICO-IMX8M and EDM-IMX8M with 1GB DRAM has a little bit slow when operation, we recommend running a specific application only for this case.
+
+## LIBGPIOD JNI APIs
+
+TN2.0 provide a demo app about libgpiod JNI Test, specific source code as following:
+* [source code](https://github.com/technexion-android/packages_apps_GpiodJniTest.git)
+
+Users can implement own GUI using our INPUT/OUTPUT APIs
+
+    Setting GPIO as output with specific value:
+    public native String  setGpioInfo(int gpiobank,int gpioline, int value)
+
+    Setting GPIO as input and get a value:
+    public native String  getGpioInfo(int gpiobank,int gpioline);
 
 ## Enabling NFC Support
 

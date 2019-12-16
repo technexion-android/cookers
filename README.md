@@ -3,6 +3,18 @@
 
 Github way (Prepare repo command first is recommended)
 
+    Latest release: TN2.0 (20191216)
+    Changelog:
+    1. Add new platforms: EDM-IMX6, TC series, TEP series
+    2. Add LIBGPIOD JNI app
+    3. Tweak Bluetooth HAL driver
+    4. Add Bluetooth A2DP source function
+    5. Add M.2 PIXI-9377-P support to TEP-IMX7
+
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga_tn2.0
+    $ repo sync -j<N> (N is up to cors numbers on your host PC)
+
+    Earlier release: TN1.0 (20191020)
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga_tn1.0
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 

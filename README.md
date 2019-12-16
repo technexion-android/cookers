@@ -301,6 +301,26 @@ You can modify the global variable in cookers/env.bash
 NOTE:
 Currently NFC only support PICO-IMX8M HDMI
 
+## VIRTUALIZATION OS
+
+In order to fix some compatible issues, Technexion Android Pie can running virtual OS on it including Linux and Android at the same time.
+NOTE: IMX8 with 4GB DDR memory products is better for virtualization apps running.
+
+
+Linux OS: Termux()
+It's very popular because it does support apt-get commands and source list, the users can develop linux applications on Android easily especially IoT apps.
+But note that it need a very high sytem permission, so the selinux need be disabled before run it, the users can choose disable it on bootargs of SDK or runtime level:
+
+    Add this LINE to bootargs:
+    androidboot.selinux=permissive
+
+    or issue a command on runtime level:
+    # setenforce 0
+
+Android OS: VMOS
+It's a very modular technology, it's a virtual machine based rooted Android 5.1 OS on our runtime Android Pie, if the users has earlier developed apps and don't want to spend effort to upgrade, it's a very good choice because you don't need change any permission on your host Pie.
+
+
 ## Latest Demo Image
 
 Detail can refer relative documents as following link:

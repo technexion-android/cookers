@@ -317,17 +317,19 @@ In order to fix some compatible issues, Technexion Android Pie can running virtu
 NOTE: IMX8 with 4GB DDR memory products is better for virtualization apps running.
 
 
-Linux OS: Termux()
+Linux OS: Termux
+
 It's very popular because it does support apt-get commands and source list, the users can develop linux applications on Android easily especially IoT apps.
 But note that it need a very high sytem permission, so the selinux need be disabled before run it, the users can choose disable it on bootargs of SDK or runtime level:
 
-    Add this LINE to bootargs:
+    Add this line to bootargs:
     androidboot.selinux=permissive
 
     or issue a command on runtime level:
     # setenforce 0
 
 Android OS: VMOS
+
 It's a very modular technology, it's a virtual machine based rooted Android 5.1 OS on our runtime Android Pie, if the users has earlier developed apps and don't want to spend effort to upgrade, it's a very good choice because you don't need change any permission on your host Pie.
 
 

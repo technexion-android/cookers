@@ -170,6 +170,25 @@ Another modular way is use ums command on your currect u-boot inside the eMMC, c
 Remember the ums is no need change the boot mode, but the disadvangage is the flash speed is slower than mfgtool way, so we recommend the mfgtool is better.
 
 
+About uuu tool:
+
+* [Generic instructions](https://github.com/TechNexion/u-boot-tn-imx/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)
+* [Download link](ftp://ftp.technexion.net/development_resources/development_tools/installer/imx-mfg-uuu-tool_20191226.zip)
+
+Please issue command to generate a binary image:
+
+    $  gen_virtual_images
+
+Then output a full image named 'test.img' after run this command, put this image to the root folder of uuu tool(download from above download link), then issue uuu commands:
+
+    Windows host:
+    $ E:\imx-mfg-uuu-tool>uuu\windows64\uuu.exe -b emmc_imx6_img imx6\imx6-SPL imx6\imx6-u-boot.img test.img
+
+    Linux host:
+    $ sudo  sudo uuu/linux64/uuu -b emmc_imx6_img imx6/imx6-SPL imx6/imx6-u-boot.img test.img
+
+It will start flash user's own custom build image, enjoy.
+
 ## Enabling WiFi/BT function
 
 Prepare WiFi/BT firmware

@@ -170,10 +170,10 @@ Another modular way is use ums command on your currect u-boot inside the eMMC, c
 Remember the ums is no need change the boot mode, but the disadvangage is the flash speed is slower than mfgtool way, so we recommend the mfgtool is better.
 
 
-About uuu tool:
+About uuu detail (modular way):
 
 * [Generic instructions](https://github.com/TechNexion/u-boot-tn-imx/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)
-* [Download link](ftp://ftp.technexion.net/development_resources/development_tools/installer/imx-mfg-uuu-tool_20191226.zip)
+* Download link: ftp://ftp.technexion.net/development_resources/development_tools/installer/imx-mfg-uuu-tool_20191226.zip
 
 Please issue command to generate a binary image:
 

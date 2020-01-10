@@ -46,11 +46,11 @@ Technexion Docker Image Production
 
 Source the compile relative commands:
 
-    For PICO-IMX6Q with PI: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX6Q with PI REV.B1: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6q.pico-imx6.pi.lcd-5-inch
 
-    For PICO-IMX6DL with PI: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX6DL with PI REV.B1: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx6dl.pico-imx6.pi.lcd-5-inch
 
@@ -102,11 +102,11 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx6dl.tep5-imx6.fairy.lvds-15-inch
 
-    For PICO-IMX7D with PI: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX7D with PI REV.B1: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7d.pico-imx7.pi.lcd-5-inch
 
-    For PICO-IMX7D with PI + VOICEHAT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For PICO-IMX7D with PI REV.B1 + VOICEHAT: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7d.pico-imx7.pi.lcd-5-inch-voicehat
 
@@ -118,7 +118,7 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx7d.pico-imx7.nymph.vga
 
-    For TEP1-IMX7 HDMI : VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For TEP1-IMX7 REV.A2: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
     $ source cookers/env.bash.imx7d.tep1-imx7.tep1.lcd-5-inch
 
@@ -173,7 +173,10 @@ Remember the ums is no need change the boot mode, but the disadvangage is the fl
 About uuu detail (modular way):
 
 * [Generic instructions](https://github.com/TechNexion/u-boot-tn-imx/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)
-* Download link: ftp://ftp.technexion.net/development_resources/development_tools/installer/imx-mfg-uuu-tool_20191226.zip
+
+Download link:
+
+    ftp://ftp.technexion.net/development_resources/development_tools/installer/imx-mfg-uuu-tool_20191226.zip
 
 Please issue command to generate a binary image:
 

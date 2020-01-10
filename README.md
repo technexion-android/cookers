@@ -3,7 +3,8 @@
 
 Github way (Prepare repo command first is recommended)
 
-    Latest release: TN2.0 (20191216)
+Latest release: TN2.0 (20191216)
+
     Changelog:
     1. GPU performance improvement
     2. Add LIBGPIOD JNI app
@@ -12,8 +13,14 @@ Github way (Prepare repo command first is recommended)
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga_tn2.0
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
-    Earlier release: TN1.0 (20191020)
+Earlier release: TN1.0 (20191020)
+
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga_tn1.0
+    $ repo sync -j<N> (N is up to cors numbers on your host PC)
+
+LTS branch (stable):
+
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup

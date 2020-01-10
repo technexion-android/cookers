@@ -1,9 +1,10 @@
 # Technexion Android 9 SDK for i.MX6/i.MX7 Platforms
-## Download The Source code
+## Download The Source Code
 
 Github way (Prepare repo command first is recommended)
 
-    Latest release: TN2.0 (20191216)
+Latest release: TN2.0 (20191216)
+
     Changelog:
     1. Add new platforms: EDM-IMX6, TC series, TEP series
     2. Add LIBGPIOD JNI app
@@ -12,14 +13,20 @@ Github way (Prepare repo command first is recommended)
     5. Add M.2 PIXI-9377-P support to TEP-IMX7
 
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga_tn2.0
-    $ repo sync -j<N> (N is up to cors numbers on your host PC)
+    $ repo sync -j<N> (N is up to cores numbers on your host PC)
 
-    Earlier release: TN1.0 (20191020)
+Earlier release: TN1.0 (20191020)
+
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga_tn1.0
-    $ repo sync -j<N> (N is up to cors numbers on your host PC)
+    $ repo sync -j<N> (N is up to cores numbers on your host PC)
+
+LTS branch (stable):
+
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga
+    $ repo sync -j<N> (N is up to cores numbers on your host PC)
 
 ## Compiling Environment Setup
-  
+
 General Packages Installation ( Ubuntu 16.04 or above)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \

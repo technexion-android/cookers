@@ -1,5 +1,5 @@
 # Technexion Android 9 SDK for i.MX8 Platforms
-## Download The Source code
+## Download The Source Code
 
 Github way (Prepare repo command first is recommended)
 

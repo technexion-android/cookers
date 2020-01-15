@@ -103,11 +103,11 @@ Source the compile relative commands:
 
     For TEP-1010 HMI: 10.1-inch LCD (1280x800 resolution via LVDS interface)
 
-    $ source cookers/env.bash.imx6dl.tep5-imx6.fairy.lvds-10-inch
+    $ source cookers/env.bash.imx6dl.hmi.tep5-imx6.lvds-10-inch
 
     For TEP-1560 HMI: 15.6-inch LCD (1366x768 resolution via LVDS interface)
 
-    $ source cookers/env.bash.imx6dl.tep5-imx6.fairy.lvds-15-inch
+    $ source cookers/env.bash.imx6dl.hmi.tep5-imx6.lvds-15-inch
 
     For PICO-IMX7D with PI REV.B1: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
@@ -125,9 +125,9 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx7d.pico-imx7.nymph.vga
 
-    For TEP1-IMX7 REV.A2: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
+    For TEP1-IMX7 HMI REV.A2: VL050-8048NT-C01 5-inch LCD (800x480 resolution via LCD interface)
 
-    $ source cookers/env.bash.imx7d.tep1-imx7.tep1.lcd-5-inch
+    $ source cookers/env.bash.imx7d.hmi.tep1-imx7.lcd-5-inch
 
 Get the NXP restricted extra packages (recommended):
 

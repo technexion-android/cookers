@@ -116,7 +116,7 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
         sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}
       fi
     fi
-  elif [[ "$CPU_MODULE" == "tep5-imx6" ]]; then
+  elif [[ "$CPU_MODULE" == "hmi-imx6" ]]; then
     TARGET_DEVICE=tep5_imx6
     init_rc_file="${TOP}/device/fsl/imx6dq/${TARGET_DEVICE}/init.rc"
     KERNEL_IMAGE='Image'

@@ -164,7 +164,7 @@ elif [[ "$CPU_TYPE" == "imx7d" ]]; then
     elif [[ "$BASEBOARD" == "nymph" ]]; then
       export EXPORT_BASEBOARD_NAME="NYMPH"
     fi
-  elif [[ "$CPU_MODULE" == "tep1-imx7" ]]; then
+  elif [[ "$CPU_MODULE" == "hmi" ]]; then
     KERNEL_IMAGE='Image'
     KERNEL_CONFIG='tn_android_defconfig'
     UBOOT_CONFIG='tep1-imx7d_android_spl_defconfig'
@@ -252,7 +252,7 @@ cook() {
               make "$@" || return $?
             fi
 
-            if [ "$CPU_MODULE" == "tep1-imx7" ] ; then
+            if [ "$BASEBOARD" == "tep1-imx7" ] ; then
               echo 'Packaging Bluetooth USB library...'
               cd "${TOP}"/out/target/product/"$TARGET_DEVICE"/vendor/lib/hw/
               sudo ln -sn android.hardware.bluetooth@1.0-usb_impl.so android.hardware.bluetooth@1.0-impl.so

@@ -116,7 +116,7 @@ if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
         sed -i 's/		# setprop hw.backlight.dev "backlight_lvds"/		setprop hw.backlight.dev "backlight_lvds"/' ${init_rc_file}
       fi
     fi
-  elif [[ "$CPU_MODULE" == "tep5-imx6" ]]; then
+  elif [[ "$CPU_MODULE" == "hmi" ]]; then
     TARGET_DEVICE=tep5_imx6
     init_rc_file="${TOP}/device/fsl/imx6dq/${TARGET_DEVICE}/init.rc"
     KERNEL_IMAGE='Image'
@@ -164,7 +164,7 @@ elif [[ "$CPU_TYPE" == "imx7d" ]]; then
     elif [[ "$BASEBOARD" == "nymph" ]]; then
       export EXPORT_BASEBOARD_NAME="NYMPH"
     fi
-  elif [[ "$CPU_MODULE" == "tep1-imx7" ]]; then
+  elif [[ "$CPU_MODULE" == "hmi" ]]; then
     KERNEL_IMAGE='Image'
     KERNEL_CONFIG='tn_android_defconfig'
     UBOOT_CONFIG='tep1-imx7d_android_spl_defconfig'
@@ -252,7 +252,7 @@ cook() {
               make "$@" || return $?
             fi
 
-            if [ "$CPU_MODULE" == "tep1-imx7" ] ; then
+            if [ "$BASEBOARD" == "tep1-imx7" ] ; then
               echo 'Packaging Bluetooth USB library...'
               cd "${TOP}"/out/target/product/"$TARGET_DEVICE"/vendor/lib/hw/
               sudo ln -sn android.hardware.bluetooth@1.0-usb_impl.so android.hardware.bluetooth@1.0-impl.so

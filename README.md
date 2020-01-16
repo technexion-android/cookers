@@ -18,7 +18,7 @@ Supported hardware boards list:
 
 Latest releases:
 
-Download link
+Quick Started Link
 -----------
 Latest Pie sources for IMX8 series are in [tn-p9.0.0\_2.0.1\_8m-ga][latest-pie-8m]
 

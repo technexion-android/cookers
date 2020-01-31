@@ -199,6 +199,17 @@ Then output a full image named 'test.img' after run this command, put this image
 
 It will start flash user's own custom build image, enjoy.
 
+
+About Mass Production images flashing (Linux Host PC only)
+
+    $ gen_mp_images
+    $ cd auto_test
+    $ sudo ./fsl-sdcard-partition.sh -f imx6dl -c 14 /dev/sdx (-f is cpu type, -c is eMMC size, 4GB=3, 8GB=7, 16GB=14, 32GB=28)
+    $ sudo ./gpt_partition_move -d /dev/sdx -s 4096
+    $ sudo dd if=u-boot-pico-imx6_android_spl_defconfig.SPL of=/dev/sdx bs=1k seek=1 conv=sync
+    $ sudo dd if=u-boot-pico-imx6_android_spl_defconfig.img of=/dev/sdx bs=512 seek=92 oflag=dsync
+
+
 ## Enabling WiFi/BT function
 
 Prepare WiFi/BT firmware

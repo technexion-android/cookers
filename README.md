@@ -160,7 +160,7 @@ Output relative image files of path:
 
 Quick way for flashing to board (legacy way, adapt mfgtool or ums command):
 
-    $ flashcard /dev/sdx y (x is your device node, y is up to your eMMC size, 4GB: y=3, 8GB: y=7, 16GB: y=13, 32GB: y=28)
+    $ flashcard /dev/sdx y (x is your device node, y is up to your eMMC size, 4GB: y=3, 8GB: y=7, 16GB: y=14, 32GB: y=28)
 
 About mfgtool detial (recommended):
 

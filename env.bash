@@ -19,7 +19,6 @@ export DISPLAY=:0
 export PATH=$PATH:/opt/gcc-5.1-2015.08-x86_64_arm-linux-gnueabihf/bin
 export CROSS_COMPILE=/opt/gcc-5.1-2015.08-x86_64_arm-linux-gnueabihf/bin/arm-linux-gnueabihf-
 export LC_ALL=C
-source build/envsetup.sh
 
 # TARGET support: wandboard,edm1cf,picosom,edm1cf_6sx
 IMX_PATH="./mnt"
@@ -134,6 +133,7 @@ heat() {
     case "${PWD}" in
         "${TOP}")
             cd "${TMP_PWD}"
+            source build/envsetup.sh
             cd ${PATH_UBOOT} && heat "$@" || return $?
             cd ${PATH_KERNEL} && heat "$@" || return $?
             cd "${TMP_PWD}"
@@ -170,6 +170,7 @@ cook() {
 
     case "${PWD}" in
         "${TOP}")
+            source build/envsetup.sh
             cd ${PATH_UBOOT} && cook "$@" || return $?
             cd ${PATH_KERNEL} && cook "$@" || return $?
             cd "${TMP_PWD}"
@@ -308,7 +309,7 @@ flashcard() {
 
     # download the android system
     echo == download the system ==
-    sudo dd if=./out/target/product/$TARGET_DEVICE/system_raw.img of=${dev_node}5 bs=1M oflag=dsync
+    sudo dd if=./out/target/product/$TARGET_DEVICE/system_raw.img of=${dev_node}5 bs=1M oflag=dsync status=progress
     sleep 1
     # donwload the audio settings
     if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
@@ -424,7 +425,7 @@ flashemmc() {
 
     # download the android system
     echo == download the system ==
-    sudo dd if=./out/target/product/$TARGET_DEVICE/system_raw.img of=${dev_node}5 bs=1M oflag=dsync
+    sudo dd if=./out/target/product/$TARGET_DEVICE/system_raw.img of=${dev_node}5 bs=1M oflag=dsync status=progress
     sleep 1
     # donwload the audio settings
     if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
@@ -456,4 +457,35 @@ flashemmc() {
     echo "Flash Done!!!"
 
     cd "${TMP_PWD}"
+}
+
+gen_mp_images() {
+  rm -rf auto_test
+  sync
+
+  mkdir -p auto_test/device/fsl/common/tools
+  mkdir -p auto_test/device/fsl/"$TARGET_DEVICE"/uenv
+  mkdir -p auto_test/kernel_imx/arch/arm/boot
+  mkdir -p auto_test/kernel_imx/arch/arm/boot/dts
+  mkdir -p auto_test/bootable/bootloader/uboot-imx
+  mkdir -p auto_test/out/target/product/"${TARGET_DEVICE}"
+
+  cp -rv device/fsl/common/tools/* auto_test/device/fsl/common/tools/
+  cp -rv $PATH_UBOOT/u-boot.img auto_test/bootable/bootloader/uboot-imx/
+  cp -rv $PATH_UBOOT/SPL auto_test/bootable/bootloader/uboot-imx/
+  cp -rv $PATH_KERNEL/arch/arm/boot/zImage auto_test/kernel_imx/arch/arm/boot/zImage
+  cp -rv out/target/product/"${TARGET_DEVICE}"/u-boot.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/obj/KERNEL_OBJ/arch/arm/boot/zImage auto_test/out/target/product/"${TARGET_DEVICE}"/obj/KERNEL_OBJ/arch/arm/boot/
+  cp -rv $PATH_KERNEL/arch/arm/boot/dts/*.dtb auto_test/kernel_imx/arch/arm/boot/dts/
+  cp -rv device/fsl/"$TARGET_DEVICE"/uenv/. auto_test/device/fsl/"$TARGET_DEVICE"/uenv/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/ramdisk.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/uramdisk.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/system_raw.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+  cp -rv device/fsl/"${TARGET_DEVICE}"/audio_policy_hdmi.conf auto_test/device/fsl/"${TARGET_DEVICE}"/
+  cp -rv out/target/product/"${TARGET_DEVICE}"/recovery*.img auto_test/out/target/product/"${TARGET_DEVICE}"/
+
+  cp -rv cookers auto_test/
+  rm -rf auto_test/cookers/.git
+
+  sync
 }

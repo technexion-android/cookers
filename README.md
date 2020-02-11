@@ -36,7 +36,7 @@ General Packages Installation ( Ubuntu 16.04 or above)
     libxml2-utils xsltproc unzip sshpass ssh-askpass zip xz-utils kpartx vim screen sudo wget \
     bc locales openjdk-8-jdk rsync docker.io python3 kmod cgpt bsdmainutils lzip hdparm
 
-Technexion Docker Image Production
+Or adapt Docker Container based compile environment (Optional)
 
     $ cd cookers
     $ docker build -t build_droid9 .

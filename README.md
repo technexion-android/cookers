@@ -3,6 +3,10 @@
 
 Github way (Prepare repo command first is recommended)
 
+Install repo first:
+
+    $ sudo apt-get install repo
+
 Latest release: TN2.0 (20191216)
 
     Changelog:
@@ -24,7 +28,10 @@ LTS branch (stable):
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
 ## Compiling Environment Setup
-  
+
+There are two different methods you can use to set up the build environment. One is to install the required packages onto your host filesystem. 
+Another is to use a docker container, where the installation of the required packages is automated for you.
+
 General Packages Installation ( Ubuntu 16.04 or above)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \
@@ -132,7 +139,14 @@ Output relative image files of path:
 
     $ ls <source>/out/target/product/<target board>/ (pico-imx8m or others)
 
-Quick way for flashing to board (uuu tool):
+Download official uuu tool first:
+* [NXP uuu release](https://github.com/NXPmicro/mfgtools/releases)
+
+Then install uuu to different environment:
+
+* [Refer Q&A item 3 of Chapter 5 on User Manual](https://github.com/technexion-android/Documents/blob/android-9/pdf/Android-Pie_User-Manual_20191220.pdf)
+
+Quick way for flashing to board (use uuu tool):
 
     $ uuu_flashcard x (x is up to your eMMC size, 8GB: x=7, 16GB: x=13, 32GB: x=28)
 
@@ -144,7 +158,7 @@ Standard way using uuu based script:
     (cpu type is imx8mq, imx8mm, etc.)
     (partition table size is up to the eMMC size of target board: 8GB: x=7, 16GB: x=13, 32GB: x=28)
 
-About uuu Detial:
+About Technexion uuu Detial:
 * [HERE](https://github.com/TechNexion/u-boot-edm/wiki/Use-mfgtool-%22uuu%22-to-flash-eMMC)
 
 Firstly, the user should change the boot mode to serial download mode and connect a OTG cable from board to host PC. Then, running the uuu commands as above post. In the end, 

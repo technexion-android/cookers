@@ -3,6 +3,10 @@
 
 Github way (Prepare repo command first is recommended)
 
+Install repo first:
+
+    $ sudo apt-get install repo
+
 Latest release: TN2.0 (20191216)
 
     Changelog:
@@ -26,6 +30,9 @@ LTS branch (stable):
     $ repo sync -j<N> (N is up to cores numbers on your host PC)
 
 ## Compiling Environment Setup
+
+There are two different methods you can use to set up the build environment. One is to install the required packages onto your host filesystem. 
+Another is to use a docker container, where the installation of the required packages is automated for you.
 
 General Packages Installation ( Ubuntu 16.04 or above)
 

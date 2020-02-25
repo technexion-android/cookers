@@ -16,6 +16,8 @@ Supported hardware boards list:
 * TEP-1560
 * TEP1-IMX7
 
+NOTE that please double confirm up to 1GB memory size is requirement for your Technexion boards.
+
 Latest releases:
 
 Quick Started Link

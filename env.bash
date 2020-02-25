@@ -47,9 +47,11 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       TARGET_DEVICE=pico_imx8m
       TARGET_DEVICE_NAME=imx8mq
       if [[ "$DRAM_SIZE_1G" == "true" ]]; then
+        sed -i 's/"schedutil"/"powersave"/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.imx8mq.rc
         sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
       else
         sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
+        sed -i 's/"powersave"/"schedutil"/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.imx8mq.rc
       fi
 
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then

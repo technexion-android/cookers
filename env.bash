@@ -134,6 +134,14 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
         export AUDIOHAT_ACTIVE=true
         sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/edm_imx8m/init.rc
+      elif [[ "$OUTPUT_DISPLAY" == "mipi-g101uan02" ]]; then
+        DTB_TARGET='imx8mq-edm-wizard-dcss-g101uan02.dtb'
+        export DISPLAY_TARGET="DISP_MIPI_G101UAN02"
+        export WM8960_AUDIO_CODEC_ACTIVE=true
+      elif [[ "$OUTPUT_DISPLAY" == "mipi-g080uan01" ]]; then
+        DTB_TARGET='imx8mq-edm-wizard-dcss-g080uan01.dtb'
+        export DISPLAY_TARGET="DISP_MIPI_G080UAN01"
+        export WM8960_AUDIO_CODEC_ACTIVE=true
       elif [[ "$OUTPUT_DISPLAY" == "dual-hdmi" ]]; then
         DTB_TARGET='imx8mq-edm-wizard-dual-display-adv7535.dtb'
         export DISPLAY_TARGET="DISP_DUAL_HDMI"

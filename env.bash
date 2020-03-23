@@ -384,6 +384,8 @@ gen_virtual_images() {
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
   virtual_image_file="${PATH_OUT}/fsl-sdcard-partition-virtual-image.sh"
 
+  sudo cp -rv ${TMP_PWD}/device/fsl/common/tools/gpt_partition_move ${PATH_OUT}/
+
   if [ -f "$virtual_image_file" ]; then
     echo "Find ${virtual_image_file}"
   else

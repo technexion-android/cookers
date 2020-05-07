@@ -152,7 +152,13 @@ Quick way for flashing to board (use uuu tool):
 
 Standard way using uuu based script:
 
-    $ cd <source>/out/target/product/<target board>/ (pico-imx8m or others)
+Issue command to generate a mass production folder:
+
+    $ gen_mp_images
+
+then issue uuu command to flash the images to eMMC
+
+    $ cd <source>/auto_test/
     $ Ubuntu host: sudo ./uuu_imx_android_flash.sh -c <partition table size> -f <cpu type> -e -D .
     $ Windows host: uuu_imx_android_flash.bat -c <partition table size> -f <cpu type> -e -D .
     (cpu type is imx8mq, imx8mm, etc.)

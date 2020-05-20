@@ -254,60 +254,7 @@ Issue the command cook/heat again as previous Chapter "Compiling Environment Set
 
 ## OTA Upgrade
 
-Step 1. Setup an OTA server:
-
-You can setup OTA server using any simple REST base http server such as LineageOTA:
-
-* [LineageOTA](https://github.com/julianxhokaxhiu/LineageOTA)
-
-On Android side, please change your path of OTA Client app if neceassary
-
-    path: <source folder>/vendor/nxp-opensource/fsl_imx_demo/FSLOta/src/com/fsl/android/ota/OTAServerConfig.java
-
-    - ota_folder = new String(product + "_" + android_name + "_" + version + "/");
-    to
-    + ota_folder = "builds/full/"; (just example, you can change to your path of the ota server)
-
-Correct the IP address, port and path from target OTA server to ota.conf
-
-    path: <source folder>device/fsl/imx6dq/etc/ota.conf
-
-
-Step 2. Generating an upgradabled OTA package
-
-When you're done the modified part for latest system revision, editing "<source>/device/fsl/imx6dq/pico_imx6/build_id.mk" and modify the BUILD_ID to latest revision.
-
-Note that the BUILD_ID must be newer than your current system revision and date.
-
-compile source code and generate the new ota package
-
-    cook -j4
-    make otapackage -j4
-
-    path: <source folder>/out/target/product/pico_imx6/pico_imx6-ota-eng.root.zip
-    path: <source folder>/out/target/product/pico_imx6/system/build.prop
-
-Step 3. Moving upgrade requirement files to OTA server:
-
-    cp build.prop <your server ota folder>/build.prop
-
-    cp pico_imx6-ota-eng.root.zip <your server ota folder>/pico_imx6-ota-<date>.zip
-
-Step 4. Now, you can starting upgrade Android system using OTA function
-
-Clicking the "Additional System Updates" on the setting page to check the latest update revision
-![ota-1](images/ota-1.png)
-
-It will be showed the upgrade information when your OTA server is ready and detect the newer version
-![ota-2](images/ota-2.png)
-
-Clicking the "Upgrade", starting download and install to your current system
-![ota-3](images/ota-3.png)
-
-Auto do "Verifying" after upgrade done, it will be rebooted automatically when vefifying done
-![ota-5](images/ota-5.png)
-
-Do system upgrade on recovery mode automatically, after that, reboot and upgrade finish.
+Contact Technexion sales: sales@technexion.com to get detail
 
 ## LIBGPIOD JNI APIs
 

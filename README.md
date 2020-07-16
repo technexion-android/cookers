@@ -111,6 +111,7 @@ Source the compile relative commands:
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.dual-hdmi
 
     For PICO-IMX8M-Mini + PICO-WIZARD 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
+    (LTS branch only)
 
     $ source cookers/env.bash.imx8.pico-imx8m-mini.wizard.mipi-dsi_ili9881c
 

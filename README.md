@@ -58,57 +58,62 @@ Or adapt Docker Container based compile environment (Optional)
 
 Source the compile relative commands:
 
-    For PICO-IMX8M HDMI (1080p)
+    For PICO-IMX8M + PICO-PI-IMX8M HDMI (1080p)
 
     $ source cookers/env.bash.imx8.pico-imx8m.pi.hdmi
 
-    For PICO-IMX8M 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
+    For PICO-IMX8M + PICO-PI-IMX8M 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-imx8m.pi.mipi-dsi_ili9881c
 
-    For PICO-IMX8M HDMI with Voice-HAT
+    For PICO-IMX8M + PICO-PI-IMX8M HDMI with Voice-HAT
 
     $ source cookers/env.bash.imx8.pico-imx8m.pi.hdmi-voicehat
 
-    For PICO-IMX8M-Mini 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
+    For PICO-IMX8M-Mini + PICO-PI-IMX8M 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c
 
-    For PICO-IMX8M-Mini 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
+    For PICO-IMX8M-Mini + PICO-PI-IMX8M 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.pico-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
 
-    For FLEX-IMX8M-Mini 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
+    For FLEX-IMX8M-Mini + PICO-PI-IMX8M 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.flex-imx8m-mini.pi.mipi-dsi_ili9881c
 
-    For FLEX-IMX8M-Mini 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
+    For FLEX-IMX8M-Mini + PICO-PI-IMX8M 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.flex-imx8m-mini.pi.mipi-dsi_ili9881c-voicehat
 
-    For EDM-IMX8M HDMI (1080p)
+    For EDM-IMX8M + EDM-WIZARD HDMI (1080p)
 
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.hdmi
 
-    For EDM-IMX8M HDMI with wm8960 audio codec (1080p)
+    For EDM-IMX8M + EDM-WIZARD HDMI with wm8960 audio codec (1080p)
 
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.hdmi-wm8960
 
-    For EDM-IMX8M HDMI with Voice-HAT (1080p)
+    For EDM-IMX8M + EDM-WIZARD HDMI with Voice-HAT (1080p)
 
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.hdmi-voicehat
 
-    For EDM-IMX8M 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
+    For EDM-IMX8M + EDM-WIZARD 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.mipi-dsi_ili9881c
 
-    For EDM-IMX8M 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
+    For EDM-IMX8M + EDM-WIZARD 5-inch LCD with Voice-HAT (ili9881c 720p via MIPI-DSI interface)
 
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.mipi-dsi_ili9881c-voicehat
 
-    For EDM-IMX8M Dual HDMI (1080p for primary screen and 720p for secondary screen)
+    For EDM-IMX8M + EDM-WIZARD Dual HDMI (1080p for primary screen and 720p for secondary screen)
 
     $ source cookers/env.bash.imx8.edm-imx8m.wizard.dual-hdmi
+
+    For PICO-IMX8M-Mini + PICO-WIZARD 5-inch LCD (ili9881c 720p via MIPI-DSI interface)
+
+    $ source cookers/env.bash.imx8.pico-imx8m-mini.wizard.mipi-dsi_ili9881c
+
 
 Get the NXP restricted extra packages (recommended):
 
@@ -359,9 +364,9 @@ Android OS: VMOS
 
 It's a very modular technology, it's a virtual machine based rooted Android 5.1 OS on our runtime Android Pie, if the users has earlier developed apps and don't want to spend effort to upgrade, it's a very good choice because you don't need change any permission on your host Pie.
 ![vmos](images/vmos.png)
-
+ 
 ## Latest Demo Image
-
+ 
 Detail can refer relative documents as following link:
 * Images Downloading: ftp://download.technexion.net/demo_software/
 * [User Guide](https://github.com/technexion-android/Documents/blob/android-9/pdf/)

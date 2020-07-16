@@ -25,6 +25,7 @@ export DRAM_SIZE_1G=false
 export AUDIOHAT_ACTIVE=false
 export NFC_ACTIVE=false
 export WM8960_AUDIO_CODEC_ACTIVE=false
+export EXPORT_BASEBOARD_NAME="PI"
 
 # TARGET support: pico-imx8m, pico-imx8mm
 IMX_PATH="./mnt"
@@ -73,12 +74,13 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       fi
     fi
   elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
-    if [[ "$BASEBOARD" == "pi" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
       UBOOT_CONFIG='pico-imx8mm_android_defconfig'
       TARGET_DEVICE=pico_imx8mm
       TARGET_DEVICE_NAME=imx8mm
+    if [[ "$BASEBOARD" == "pi" ]]; then
+      export EXPORT_BASEBOARD_NAME="PI"
       if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
         DTB_TARGET='imx8mm-pico-pi-ili9881c.dtb'
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
@@ -86,6 +88,13 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         DTB_TARGET='imx8mm-pico-pi-voicehat.dtb'
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
         export AUDIOHAT_ACTIVE=true
+      fi
+    elif [[ "$BASEBOARD" == "wizard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WIZARD"
+      if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
+        DTB_TARGET='imx8mm-pico-wizard-ili9881c.dtb'
+        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
+        export WM8960_AUDIO_CODEC_ACTIVE=true
       fi
     fi
   elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then

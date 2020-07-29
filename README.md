@@ -22,16 +22,8 @@ Latest releases:
 
 Quick Started Link
 -----------
-Latest Pie sources for IMX8 series are in [tn-p9.0.0\_2.0.1\_8m-ga][latest-pie-8m]
 
-Latest Pie sources for IMX6/IMX7 series are in [tn-p9.0.0\_2.2.0-ga][latest-pie]
-
-Latest Oreo sources for PICO-IMX8M are in [tn-o8.1.0\_1.3.0\_8m-ga][latest-oreo-8m]
-
-Latest Oreo sources for IMX6/IMX7 series are in [tn-o8.0.0\_1.0.0-ga][latest-oreo]
-
-[latest-pie-8m]:https://github.com/technexion-android/cookers/tree/tn-p9.0.0_2.0.1_8m-ga#technexion-android-9-sdk-for-imx8-platforms "Pie for IMX8M"
-[latest-pie]:https://github.com/technexion-android/cookers/tree/tn-p9.0.0_2.2.0-ga#technexion-android-9-sdk-for-imx6imx7-platforms "Pie for IMX6/IMX7"
-[latest-oreo-8m]:https://github.com/technexion-android/cookers/tree/tn-o8.1.0_1.3.0_8m-ga#technexion-android-8-sdk-for-imx8-platforms "Oreo for IMX8M"
-[latest-oreo]:https://github.com/technexion-android/cookers/tree/tn-o8.0.0_1.0.0-ga#technexion-android-8-sdk-for-imx6imx7-platforms "Oreo for IMX6/IMX7"
-
+|Revision|Android Oreo|Android Pie|Android 10|
+|---|---|---|---|
+|IMX8 series | [tn-o8.1.0_1.3.0_8m-ga](https://github.com/technexion-android/cookers/tree/tn-p9.0.0_2.0.1_8m-ga#technexion-android-9-sdk-for-imx8-platforms) |[tn-p9.0.0_2.0.1_8m-ga](https://github.com/technexion-android/cookers/tree/tn-p9.0.0_2.0.1_8m-ga#technexion-android-9-sdk-for-imx8-platforms)|Coming soon |
+|IMX6/IMX7 series |[tn-o8.0.0_1.0.0-ga](https://github.com/technexion-android/cookers/tree/tn-o8.0.0_1.0.0-ga#technexion-android-8-sdk-for-imx6imx7-platforms) |[tn-p9.0.0_2.2.0-ga](https://github.com/technexion-android/cookers/tree/tn-p9.0.0_2.2.0-ga#technexion-android-9-sdk-for-imx6imx7-platforms)||

@@ -41,7 +41,6 @@ PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
   if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
-    if [[ "$BASEBOARD" == "pi" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
       UBOOT_CONFIG='pico-imx8mq_android_defconfig'
@@ -54,7 +53,8 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
         sed -i 's/"powersave"/"schedutil"/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.imx8mq.rc
       fi
-
+    if [[ "$BASEBOARD" == "pi" ]]; then
+      export EXPORT_BASEBOARD_NAME="PI"
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         DTB_TARGET='imx8mq-pico-pi.dtb'
         export DISPLAY_TARGET="DISP_HDMI"
@@ -71,6 +71,12 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
         export AUDIOHAT_ACTIVE=true
         sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
+      fi
+    elif [[ "$BASEBOARD" == "wizard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WIZARD"
+       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+        DTB_TARGET='imx8mq-pico-wizard.dtb'
+        export DISPLAY_TARGET="DISP_HDMI"
       fi
     fi
   elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then

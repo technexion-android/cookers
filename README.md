@@ -115,6 +115,11 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx8.pico-imx8m-mini.wizard.mipi-dsi_ili9881c
 
+    For PICO-IMX8M + PICO-WIZARD HDMI (1080p)
+    (LTS branch only)
+
+    $ source cookers/env.bash.imx8.pico-imx8m.wizard.hdmi
+
 
 Get the NXP restricted extra packages (recommended):
 

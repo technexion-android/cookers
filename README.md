@@ -7,6 +7,11 @@ Install repo first:
 
     $ sudo apt-get install repo
 
+Earlier release: TN1.0 (20191020)
+
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga_tn1.0
+    $ repo sync -j<N> (N is up to cors numbers on your host PC)
+
 Latest release: TN2.0 (20191216)
 
     Changelog:
@@ -17,12 +22,14 @@ Latest release: TN2.0 (20191216)
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga_tn2.0
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
-Earlier release: TN1.0 (20191020)
-
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga_tn1.0
-    $ repo sync -j<N> (N is up to cors numbers on your host PC)
-
 LTS branch (stable):
+
+    Latest update (20200826):
+    1. [PICO-IMX8MM] enable NFC support
+    2. [PICO-IMX8M] tweak GPU performance for 1GiB memory
+    3. [EDM-IMX8M] enable g080uan01 and g101uan02 panels support
+    4. Add PICO-WIZARD baseboard to PICO-IMX8M and PICO-IMX8MM SOM list (HDMI version)
+    5. Support 44.1KHz sample rate on HDMI audio interface
 
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga
     $ repo sync -j<N> (N is up to cors numbers on your host PC)

@@ -26,8 +26,9 @@ Latest release: TN2.0 (20191216)
 
 LTS branch (stable):
 
-    Latest update (20200826):
-    1. enable WiFi P2P HAL layer support
+    Latest update (20200916):
+    1. enalbe screen rotation function
+    2. enable WiFi P2P HAL layer support (20200826)
 
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga
     $ repo sync -j<N> (N is up to cores numbers on your host PC)
@@ -271,6 +272,20 @@ Users can implement own GUI using our INPUT/OUTPUT APIs
 
     Setting GPIO as input and get a value:
     public native String  getGpioInfo(int gpiobank,int gpioline);
+
+## Change the Display Rotation Angle When Boot
+
+You can modify the boot argument in device/fsl/imx6dq/pico_imx6/BoardConfig.mk
+
+    modify the argument in BOARD_KERNEL_CMDLINE argument:
+
+    androidboot.hwrotation=0 (No change, Default is landscape mode)
+
+    androidboot.hwrotation=90 (rotate 90 degree)
+
+    androidboot.hwrotation=180 (rotate 180 degree)
+
+    androidboot.hwrotation=270 (rotate 270 degree)
 
 ## Latest Demo Image
 

@@ -416,9 +416,9 @@ gen_virtual_images() {
   fi
 
   cd "${PATH_UBOOT}"
-  sed -i '225,235 s/^/#/' install_uboot_imx8.sh
+  sed -i '250,253 s/^/#/' install_uboot_imx8.sh
   yes | ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0  > /dev/null
-  sed -i '225,235 s/#//' install_uboot_imx8.sh
+  sed -i '250,253 s/#//' install_uboot_imx8.sh
   cd -
 
   sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"

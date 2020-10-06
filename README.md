@@ -26,9 +26,10 @@ Latest release: TN2.0 (20191216)
 
 LTS branch (stable):
 
-    Latest update (20200916):
-    1. enalbe screen rotation function
-    2. enable WiFi P2P HAL layer support (20200826)
+    Latest update (20201006):
+    1. support ubuntu 20.04 host compile environment
+    2. enalbe screen rotation function (20200916)
+    3. enable WiFi P2P HAL layer support (20200826)
 
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.2.0-ga
     $ repo sync -j<N> (N is up to cores numbers on your host PC)
@@ -38,7 +39,7 @@ LTS branch (stable):
 There are two different methods you can use to set up the build environment. One is to install the required packages onto your host filesystem. 
 Another is to use a docker container, where the installation of the required packages is automated for you.
 
-General Packages Installation ( Ubuntu 16.04 or above)
+General Packages Installation ( Ubuntu 16.04 or Ubuntu 18.04)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \
     git-core curl u-boot-tools mtd-utils android-tools-fsutils device-tree-compiler gdisk \

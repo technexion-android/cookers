@@ -24,12 +24,13 @@ Latest release: TN2.0 (20191216)
 
 LTS branch (stable):
 
-    Latest update (20200826):
-    1. [PICO-IMX8MM] enable NFC support
-    2. [PICO-IMX8M] tweak GPU performance for 1GiB memory
-    3. [EDM-IMX8M] enable g080uan01 and g101uan02 panels support
-    4. Add PICO-WIZARD baseboard to PICO-IMX8M and PICO-IMX8MM SOM list (HDMI version)
-    5. Support 44.1KHz sample rate on HDMI audio interface
+    Latest update (20201006):
+    1. support ubuntu 20.04 host compile environment
+    2. add PICO-WIZARD baseboard to PICO-IMX8M and PICO-IMX8MM SOM list (20200826)
+    3. [EDM-IMX8M] enable g080uan01 and g101uan02 panels support (20200405)
+    4. [PICO-IMX8MM] enable NFC support (20200330)
+    5. [PICO-IMX8M] tweak GPU performance for 1GiB memory (20200225)
+    6. support 44.1KHz sample rate on HDMI audio interface (20200224)
 
     $ repo init -u https://github.com/technexion-android/manifest -b tn-p9.0.0_2.0.1_8m-ga
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
@@ -39,7 +40,7 @@ LTS branch (stable):
 There are two different methods you can use to set up the build environment. One is to install the required packages onto your host filesystem. 
 Another is to use a docker container, where the installation of the required packages is automated for you.
 
-General Packages Installation ( Ubuntu 16.04 or above)
+General Packages Installation ( Ubuntu 16.04 or Ubuntu 18.04)
 
     $ sudo apt-get install uuid uuid-dev zlib1g-dev liblz-dev liblzo2-2 liblzo2-dev lzop \
     git-core curl u-boot-tools mtd-utils android-tools-fsutils device-tree-compiler gdisk \

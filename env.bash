@@ -186,6 +186,14 @@ heat() {
     local TMP_PWD="${PWD}"
     case "${PWD}" in
         "${TOP}")
+            if [[ $(cat /etc/issue | grep "20.04") ]]; then
+              cd "${PATH_KERNEL}"
+              cp -rv "${TOP}"/cookers/patches/selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff .
+              git apply selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff
+              rm selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff
+              cd "${TOP}"
+            fi
+
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
@@ -228,6 +236,14 @@ cook() {
 
     case "${PWD}" in
         "${TOP}")
+            if [[ $(cat /etc/issue | grep "20.04") ]]; then
+              cd "${PATH_KERNEL}"
+              cp -rv "${TOP}"/cookers/patches/selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff .
+              git apply selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff
+              rm selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff
+              cd "${TOP}"
+            fi
+
             cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug

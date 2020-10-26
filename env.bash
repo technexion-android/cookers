@@ -12,12 +12,10 @@ export PATH="${PATH_UBOOT}/tools:${PATH}"
 JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"
 CLASSPATH=".:$JAVA_HOME/lib:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar"
 PATH="$JAVA_HOME/bin:${PATH}"
-export DISPLAY=:0
-
 export ARCH=arm64
-export CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
-export CROSS32CC=arm-linux-gnueabi-gcc
+export AARCH64_GCC_CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/aarch64/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-"
 export USER=$(whoami)
+export USE_CCACHE=1
 
 export MY_ANDROID=$TOP
 export LC_ALL=C
@@ -28,144 +26,60 @@ export WM8960_AUDIO_CODEC_ACTIVE=false
 export EXPORT_BASEBOARD_NAME="PI"
 
 # TARGET support: pico-imx8m, pico-imx8mm
-IMX_PATH="./mnt"
-SYS_PATH="./tmp"
 MODULE=$(basename $BASH_SOURCE)
 CPU_TYPE=$(echo $MODULE | awk -F. '{print $3}')
 CPU_MODULE=$(echo $MODULE | awk -F. '{print $4}')
 BASEBOARD=$(echo $MODULE | awk -F. '{print $5}')
 OUTPUT_DISPLAY=$(echo $MODULE | awk -F. '{print $6}')
-KERNEL_CFLAGS='KCFLAGS=-mno-android'
 
 PATH_TOOLS="${TOP}/device/fsl/common/tools"
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
-  if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
-    if [[ "$BASEBOARD" == "pi" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='pico-imx8mq_android_defconfig'
-      TARGET_DEVICE=pico_imx8m
-      TARGET_DEVICE_NAME=imx8mq
-      if [[ "$DRAM_SIZE_1G" == "true" ]]; then
-        sed -i 's/"schedutil"/"powersave"/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.imx8mq.rc
-        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
-      else
-        sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
-        sed -i 's/"powersave"/"schedutil"/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.imx8mq.rc
-      fi
-
-      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-        DTB_TARGET='imx8mq-pico-pi.dtb'
-        export DISPLAY_TARGET="DISP_HDMI"
-      elif [[ "$OUTPUT_DISPLAY" == "hdmi-voicehat" ]]; then
-        DTB_TARGET='imx8mq-pico-pi-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_HDMI"
-        export AUDIOHAT_ACTIVE=true
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-        DTB_TARGET='imx8mq-pico-pi-dcss-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
-        DTB_TARGET='imx8mq-pico-pi-dcss-ili9881c-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export AUDIOHAT_ACTIVE=true
-        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8m/init.rc
-      fi
-    fi
-  elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='pico-imx8mm_android_defconfig'
-      TARGET_DEVICE=pico_imx8mm
-      TARGET_DEVICE_NAME=imx8mm
-    if [[ "$BASEBOARD" == "pi" ]]; then
-      export EXPORT_BASEBOARD_NAME="PI"
-      if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-        DTB_TARGET='imx8mm-pico-pi-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
-        DTB_TARGET='imx8mm-pico-pi-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export AUDIOHAT_ACTIVE=true
-      fi
-    elif [[ "$BASEBOARD" == "wizard" ]]; then
-      export EXPORT_BASEBOARD_NAME="WIZARD"
-      if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-        DTB_TARGET='imx8mm-pico-wizard-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export WM8960_AUDIO_CODEC_ACTIVE=true
-      fi
-    fi
-  elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
-    if [[ "$BASEBOARD" == "pi" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='flex-imx8mm_android_defconfig'
-      TARGET_DEVICE=flex_imx8mm
-      TARGET_DEVICE_NAME=imx8mm
-      if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-        DTB_TARGET='imx8mm-flex-pi-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
-        DTB_TARGET='imx8mm-flex-pi-ili9881c-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export AUDIOHAT_ACTIVE=true
-      fi
-    fi
-  elif [[ "$CPU_MODULE" == "edm-imx8m" ]]; then
+  if [[ "$CPU_MODULE" == "axon-imx8mp" ]]; then
     if [[ "$BASEBOARD" == "wizard" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='edm-imx8mq_android_defconfig'
-      TARGET_DEVICE=edm_imx8m
-      TARGET_DEVICE_NAME=imx8mq
-      sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 213/' ${TOP}/device/fsl/imx8m/edm_imx8m/init.rc
+      UBOOT_CONFIG='axon-imx8mp_android_defconfig'
+      TARGET_DEVICE=evk_8mp
+      TARGET_DEVICE_NAME=imx8mp
+      export EXPORT_BASEBOARD_NAME="PI"
 
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-        DTB_TARGET='imx8mq-edm-wizard.dtb'
         export DISPLAY_TARGET="DISP_HDMI"
-      elif [[ "$OUTPUT_DISPLAY" == "hdmi-voicehat" ]]; then
-        DTB_TARGET='imx8mq-edm-wizard-voicehat.dtb'
+      fi
+    fi
+  elif [[ "$CPU_MODULE" == "edm-g-imx8mp" ]]; then
+    if [[ "$BASEBOARD" == "wandboard" ]]; then
+      KERNEL_IMAGE='Image'
+      KERNEL_CONFIG='tn_imx8_android_defconfig'
+      UBOOT_CONFIG='edm-g-imx8mp_android_defconfig'
+      TARGET_DEVICE=evk_8mp
+      TARGET_DEVICE_NAME=imx8mp
+      export EXPORT_BASEBOARD_NAME="WANDBOARD"
+
+      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         export DISPLAY_TARGET="DISP_HDMI"
-        export AUDIOHAT_ACTIVE=true
-      elif [[ "$OUTPUT_DISPLAY" == "hdmi-wm8960" ]]; then
-        DTB_TARGET='imx8mq-edm-wizard.dtb'
-        export DISPLAY_TARGET="DISP_HDMI"
-        export WM8960_AUDIO_CODEC_ACTIVE=true
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-        DTB_TARGET='imx8mq-edm-wizard-dcss-ili9881c.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export WM8960_AUDIO_CODEC_ACTIVE=true
-        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/edm_imx8m/init.rc
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c-voicehat" ]]; then
-        DTB_TARGET='imx8mq-edm-wizard-dcss-ili9881c-voicehat.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
-        export AUDIOHAT_ACTIVE=true
-        sed -i 's/ro.sf.lcd_density\ 213/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/edm_imx8m/init.rc
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-g101uan02" ]]; then
-        DTB_TARGET='imx8mq-edm-wizard-dcss-g101uan02.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_G101UAN02"
-        export WM8960_AUDIO_CODEC_ACTIVE=true
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-g080uan01" ]]; then
-        DTB_TARGET='imx8mq-edm-wizard-dcss-g080uan01.dtb'
-        export DISPLAY_TARGET="DISP_MIPI_G080UAN01"
-        export WM8960_AUDIO_CODEC_ACTIVE=true
-      elif [[ "$OUTPUT_DISPLAY" == "dual-hdmi" ]]; then
-        DTB_TARGET='imx8mq-edm-wizard-dual-display-adv7535.dtb'
-        export DISPLAY_TARGET="DISP_DUAL_HDMI"
       fi
     fi
   fi
 fi
 
+PATH_UBOOT_OUTPUT="${PWD}/out/target/product/${TARGET_DEVICE}/obj/UBOOT_OBJ"
+PATH_KERNEL_OUTPUT="${PWD}/out/target/product/${TARGET_DEVICE}/obj/KERNEL_OBJ"
+
 recipe() {
     local TMP_PWD="${PWD}"
 
     case "${PWD}" in
-        "${PATH_KERNEL}"*)
-            cd "${PATH_KERNEL}"
+        "${PATH_UBOOT_OUTPUT}"*)
+            cd "${PATH_UBOOT_OUTPUT}"
             make "$@" menuconfig || return $?
+            cd -
+            ;;
+        "${PATH_KERNEL_OUTPUT}"*)
+            cd "${PATH_KERNEL_OUTPUT}"
+            make "$@" menuconfig || return $?
+            cd -
             ;;
         *)
             echo -e "Error: outside the project" >&2
@@ -203,7 +117,7 @@ heat() {
             make "$@" modules_install INSTALL_MOD_PATH=./modules || return $?
             ;;
         "${PATH_UBOOT}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-"
             cd "${PATH_UBOOT}"
             make "$@" || return $?
             ;;
@@ -223,32 +137,30 @@ cook() {
     case "${PWD}" in
         "${TOP}")
             cd "${TMP_PWD}"
+            cd ${PATH_UBOOT} && throw "$@" || return $?
+            cd "${TMP_PWD}"
             source build/envsetup.sh
             lunch "$TARGET_DEVICE"-userdebug
-            make "$@" || return $?
-
-            if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
-              echo 'Compile Audio-Hat relative drivers...'
-              cd "${PATH_OUT_DRIVERS}"/tfa98xx/
-              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make clean
-              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make
-              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make modules_install
-              cd -
-              make "$@" || return $?
-            fi
+            ./imx-make.sh "$@" || return $?
             cd ${PATH_UBOOT} && cook "$@" || return $?
+            sed -i '278,281 s/^/#/' install_uboot_imx8.sh
+            yes | ./install_uboot_imx8.sh -b imx8mp-axon -d /dev/loop0  > /dev/null
+            sed -i '278,281 s/#//' install_uboot_imx8.sh
+            sudo cp -rv "./imx-mkimage/iMX8M/flash.bin" "${TOP}/out/target/product/${TARGET_DEVICE}"
+            cd "${TMP_PWD}"
+            sudo cp -rv "${TOP}/out/target/product/${TARGET_DEVICE}/flash.bin" "${TOP}/out/target/product/${TARGET_DEVICE}/u-boot-"${TARGET_DEVICE_NAME}".imx"
+            sudo cp -rv "${TOP}/out/target/product/${TARGET_DEVICE}/flash.bin" "${TOP}/out/target/product/${TARGET_DEVICE}/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx"
+            sudo cp -rv "${TOP}/out/target/product/${TARGET_DEVICE}/flash.bin" "${TOP}/out/target/product/${TARGET_DEVICE}/u-boot.bin"
             ;;
         "${PATH_KERNEL}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
-            cd "${PATH_KERNEL}"
-            make "$@" $KERNEL_CONFIG || return $?
-            heat "$@" || return $?
+            cd "${TMP_PWD}"
+            ./imx-make.sh kernel "$@" || return $?
             ;;
         "${PATH_UBOOT}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-"
             cd "${PATH_UBOOT}"
             make "$@" $UBOOT_CONFIG || return $?
-            heat "$@" || return $?
+            make "$@" || return $?
             ;;
         *)
             echo -e "Error: outside the project" >&2
@@ -270,16 +182,12 @@ throw() {
             ;;
         "${PATH_KERNEL}"*)
             cd "${PATH_KERNEL}"
-#           make "$@" $KERNEL_CONFIG || return $?
-#           make "$@" $KERNEL_CFLAGS || return $?
             make "$@" distclean || return $?
             ;;
         "${PATH_UBOOT}"*)
             cd "${PATH_UBOOT}"
-#           make "$@" $UBOOT_CONFIG || return $?
             make "$@" distclean || return $?
-            rm -rf firmware_imx8
-            rm -rf imx-mkimage
+            make "$@" mrproper  || return $?
             ;;
         *)
             echo -e "Error: outside the project" >&2
@@ -338,12 +246,35 @@ flashcard() {
 }
 
 merge_restricted_extras() {
-  wget -c -t 0 --timeout=60 --waitretry=60 https://github.com/technexion-android/android_restricted_extra/raw/master/imx8-p9-2.0.tar.gz
-  tar zxvf imx8-p9-2.0.tar.gz
-  cp -rv imx-p9.0.0_2.0.0-ga/vendor/nxp/* vendor/nxp/
-  cp -rv imx-p9.0.0_2.0.0-ga/EULA.txt .
-  cp -rv imx-p9.0.0_2.0.0-ga/SCR* .
-  rm -rf imx8-p9-2.0.tar.gz imx-p9.0.0_2.0.0-ga
+  wget -c -t 0 --timeout=60 --waitretry=60 ftp://ftp.technexion.net/development_resources/NXP/android/10.0/imx-android-10.0.0_2.5.tar.gz
+  tar zxvf imx8-android-10.0.0_2.5.tar.gz
+  # prebuilt libraries
+  cp -rv imx-android-10.0.0_2.5.0/EULA.txt .
+  cat EULA.txt
+
+  while true; do
+    read -p $'\e[31mCould you agree this EULA and keep install packages?' yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) rm -rf imx8-android-10.0.0-2.5.tar.gz imx-android-10.0.0_2.5.0 fsl_aacp_dec_4.5.6; sync; exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+  done
+
+  cp -rv imx-android-10.0.0_2.5.0/vendor/nxp/* vendor/nxp/
+  cp -rv imx-android-10.0.0_2.5.0/SCR* .
+  # prebuilt audio codec files
+  cp -rv fsl_aacp_dec_4.5.6/fsl_aacp_dec external
+
+  rm -rf imx8-android-10.0.0-2.5.tar.gz imx-android-10.0.0_2.5.0 fsl_aacp_dec_4.5.6
+  sync
+
+  # download toolchain
+  wget -c -t 0 --timeout=60 --waitretry=60 "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz?revision=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9&la=en&hash=167687FADA00B73D20EED2A67D0939A197504ACD"
+  mv gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz\?revision\=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9\&la\=en\&hash\=167687FADA00B73D20EED2A67D0939A197504ACD gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz
+  tar Jxvf gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz
+  mv gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu prebuilts/gcc/linux-x86/aarch64/
+  rm -rf gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz
   sync
 }
 

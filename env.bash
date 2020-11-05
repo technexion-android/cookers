@@ -90,46 +90,6 @@ recipe() {
     cd "${TMP_PWD}"
 }
 
-heat() {
-    local TMP_PWD="${PWD}"
-    case "${PWD}" in
-        "${TOP}")
-            cd "${TMP_PWD}"
-            source build/envsetup.sh
-            lunch "$TARGET_DEVICE"-userdebug
-            make "$@" || return $?
-
-            if [ "${AUDIOHAT_ACTIVE}" = true ] ; then
-              echo 'Compile Audio-Hat relative drivers...'
-              cd "${PATH_OUT_DRIVERS}"/tfa98xx/
-              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make clean
-              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make
-              KDIR="${TOP}"/out/target/product/"$TARGET_DEVICE"/obj/KERNEL_OBJ make modules_install
-              cd -
-              make "$@" || return $?
-            fi
-            ;;
-        "${PATH_KERNEL}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
-            cd "${PATH_KERNEL}"
-            rm -rf ./modules/lib
-            make "$@" $KERNEL_CFLAGS || return $?
-            make "$@" modules_install INSTALL_MOD_PATH=./modules || return $?
-            ;;
-        "${PATH_UBOOT}"*)
-            export CROSS_COMPILE="${TOP}/prebuilts/gcc/linux-x86/aarch64/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-"
-            cd "${PATH_UBOOT}"
-            make "$@" || return $?
-            ;;
-        *)
-            echo -e "Error: outside the project" >&2
-            return 1
-            ;;
-    esac
-
-    cd "${TMP_PWD}"
-}
-
 cook() {
     local TMP_PWD="${PWD}"
     echo "$TMP_PWD"

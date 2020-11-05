@@ -53,7 +53,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
       UBOOT_CONFIG='edm-g-imx8mp_android_defconfig'
-      TARGET_DEVICE=evk_8mp
+      TARGET_DEVICE=edm_g_imx8mp
       TARGET_DEVICE_NAME=imx8mp
       export EXPORT_BASEBOARD_NAME="WANDBOARD"
 

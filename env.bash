@@ -138,11 +138,6 @@ throw() {
         "${TOP}")
             rm -rf out
             cd ${PATH_UBOOT} && throw "$@" || return $?
-            cd ${PATH_KERNEL} && throw "$@" || return $?
-            ;;
-        "${PATH_KERNEL}"*)
-            cd "${PATH_KERNEL}"
-            make "$@" distclean || return $?
             ;;
         "${PATH_UBOOT}"*)
             cd "${PATH_UBOOT}"

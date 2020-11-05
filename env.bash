@@ -289,44 +289,25 @@ gen_mp_images() {
   sync
 }
 
-gen_virtual_images() {
+gen_local_images() {
 
-  partition_size="$@"
-
-  local TMP_PWD="${PWD}"
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
-  if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
-  UBOOT_PLATFORM="imx8mq-pico-pi"
-  elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
-  UBOOT_PLATFORM="imx8mm-pico-pi"
-  elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
-  UBOOT_PLATFORM="imx8mm-flex-pi"
+
+  img_size="$@"
+
+  if [[ "$img_size" == "" ]];then
+    img_size=13
   fi
 
-  cd "${PATH_UBOOT}"
-  sed -i '225,235 s/^/#/' install_uboot_imx8.sh
-  yes | ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0  > /dev/null
-  sed -i '225,235 s/#//' install_uboot_imx8.sh
-  cd -
-
-  sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"
   cd "${PATH_OUT}"
-  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}".imx
-  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx
-  sync
-  cd "${TMP_PWD}"
-
-  sudo cp -rv device/fsl/common/tools/fsl-sdcard-partition-virtual-image.sh "${PATH_OUT}/"
-
-  cd "${PATH_OUT}"
-  sudo dd if=/dev/zero of=test.img bs=7M count=1024
+  sudo dd if=/dev/zero of=test.img bs="$img_size"M count=1024
   sudo kpartx -av test.img
   loop_dev=$(losetup | grep "test.img" | awk  '{print $1}')
-  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c 7 "${loop_dev}"
+  sudo ./fsl-sdcard-partition-gen_image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
   sudo kpartx -d test.img
   sync
   sudo kpartx -av test.img
-  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c 7 "${loop_dev}"
+  sudo ./fsl-sdcard-partition-gen_image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
   sudo kpartx -d test.img
   sync
   cd "${TMP_PWD}"

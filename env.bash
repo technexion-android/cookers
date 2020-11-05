@@ -206,8 +206,8 @@ flashcard() {
 }
 
 merge_restricted_extras() {
-  wget -c -t 0 --timeout=60 --waitretry=60 ftp://ftp.technexion.net/development_resources/NXP/android/10.0/imx-android-10.0.0_2.5.tar.gz
-  tar zxvf imx8-android-10.0.0_2.5.tar.gz
+  wget -c -t 0 --timeout=60 --waitretry=60 ftp://ftp.technexion.net/development_resources/NXP/android/10.0/imx-android-10.0.0_2.5.0.tar.gz
+  tar zxvf imx-android-10.0.0_2.5.0.tar.gz
   # prebuilt libraries
   cp -rv imx-android-10.0.0_2.5.0/EULA.txt .
   cat EULA.txt
@@ -216,7 +216,7 @@ merge_restricted_extras() {
     read -p $'\e[31mCould you agree this EULA and keep install packages?' yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) rm -rf imx8-android-10.0.0-2.5.tar.gz imx-android-10.0.0_2.5.0 fsl_aacp_dec_4.5.6; sync; exit;;
+        [Nn]* ) rm -rf imx-android-10.0.0-2.5.0.tar.gz imx-android-10.0.0_2.5.0 fsl_aacp_dec_4.5.6; sync; exit;;
         * ) echo "Please answer yes or no.";;
     esac
   done
@@ -226,7 +226,10 @@ merge_restricted_extras() {
   # prebuilt audio codec files
   cp -rv fsl_aacp_dec_4.5.6/fsl_aacp_dec external
 
-  rm -rf imx8-android-10.0.0-2.5.tar.gz imx-android-10.0.0_2.5.0 fsl_aacp_dec_4.5.6
+  # fix compile bug
+  cp -rv vendor/nxp/fsl-proprietary/media-profile/imx8mp/media_codecs_c2.xml vendor/nxp/fsl-proprietary/media-profile/imx8mp/media_codecs_c2_temp.xml
+
+  rm -rf imx-android-10.0.0_2.5.0.tar.gz imx-android-10.0.0_2.5.0 fsl_aacp_dec_4.5.6
   sync
 
   # download toolchain

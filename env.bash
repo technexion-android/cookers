@@ -219,12 +219,12 @@ merge_restricted_extras() {
   cp -rv imx-android-10.0.0_2.5.0/vendor/nxp/* vendor/nxp/
   cp -rv imx-android-10.0.0_2.5.0/SCR* .
   # prebuilt audio codec files
-  cp -rv fsl_aacp_dec_4.5.6/fsl_aacp_dec external
+  cp -rv imx-android-10.0.0_2.5.0/fsl_aacp_dec_4.5.6/fsl_aacp_dec external
 
   # fix compile bug
   cp -rv vendor/nxp/fsl-proprietary/media-profile/imx8mp/media_codecs_c2.xml vendor/nxp/fsl-proprietary/media-profile/imx8mp/media_codecs_c2_temp.xml
 
-  rm -rf imx-android-10.0.0_2.5.0.tar.gz imx-android-10.0.0_2.5.0 fsl_aacp_dec_4.5.6
+  rm -rf imx-android-10.0.0_2.5.0.tar.gz imx-android-10.0.0_2.5.0
   sync
 
   # download toolchain

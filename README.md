@@ -69,8 +69,8 @@ Or adapt Docker Container based compile environment (Optional)
 
 Source the compile relative commands:
 
-    For EDM-G-IMX8MP + WANDBOARD (HDMI with 1080p)
-
+    For EDM-G-IMX8MP + WANDBOARD (HDMI)
+    Overlayable displays: HDMI, LVDS: VL10112880, VL215192108
     $ source cookers/env.bash.imx8.edm-g-imx8mp.wandboard.hdmi
 
 
@@ -90,6 +90,7 @@ For clean the all compiled files:
 
     $ throw
 
+****
 ## Flashing-The-Output-Images
 
 Output relative image files of path:
@@ -138,6 +139,7 @@ Step 3. You'll see a test.img in <source>/out/target/product/<target board>/
 Step 4. You can use flash this image to eMMC using uuu tool, ums or other classic ways.
 Note: users need change to serial download mode if adapt uuu tool, and ums just keep eMMC boot mode is enough.
 
+****
 ## Enabling-WiFi_BT-function
 
 Prepare WiFi/BT firmware
@@ -165,6 +167,7 @@ After getting the firmware binary: .. Decompress the tarball and put all the fir
 
 Issue the command cook again as previous Chapter "Compiling Environment Setup", WiFi/BT function will be packaged in output image!
 
+****
 ## Features
 
 #### LIBGPIOD JNI APIs
@@ -179,3 +182,28 @@ Users can implement own GUI using our INPUT/OUTPUT APIs
 
     Setting GPIO as input and get a value:
     public native String  getGpioInfo(int gpiobank,int gpioline);
+
+#### Device Tree Overlay Configuration
+
+Technexion implement a device-tree overlay method using DTBO image.
+Please boot up into u-boot prompt, and issue commands as follows:
+
+    Overlay 10" vl10112880 lvds panel:
+    # setenv overlay_name 'lvds_10'
+    Overlay 21" vl215192108 lvds panel:
+    # setenv overlay_name 'lvds_21'
+    Change back original device tree without overlay (HDMI)
+    # setenv overlay_name 'no_overlay'
+
+    save your overlay configuration for every boot later, if you just want to boot current setting once, you can ignore this step.
+    # saveenv
+    boot into Android system
+    # boot
+
+
+#### New OTA system: systemupgrade
+
+Our Android 10 does support full update and incremental update, please contact our window to get detail instruction:
+sales@technexion.com
+
+****

@@ -239,46 +239,24 @@ merge_restricted_extras() {
 
 gen_mp_images() {
 
-  local TMP_PWD="${PWD}"
-  PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
-  if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
-  UBOOT_PLATFORM="imx8mq-pico-pi"
-  elif [[ "$CPU_MODULE" == "edm-imx8m" ]]; then
-  UBOOT_PLATFORM="imx8mq-edm-wizard"
-  elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
-  UBOOT_PLATFORM="imx8mm-pico-pi"
-  elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
-  UBOOT_PLATFORM="imx8mm-flex-pi"
-  fi
-
-  cd "${PATH_UBOOT}"
-  sed -i '250,253 s/^/#/' install_uboot_imx8.sh
-  yes | ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0  > /dev/null
-  sed -i '250,253 s/#//' install_uboot_imx8.sh
-  cd -
-
-  sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"
-  cd "${PATH_OUT}"
-  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}".imx
-  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx
-  sync
-  cd "${TMP_PWD}"
-
   mkdir -p auto_test
   cp -rv "${PATH_OUT}"/boot.img auto_test/
-  cp -rv "${PATH_OUT}"/dtbo-"${TARGET_DEVICE_NAME}".img auto_test/
+  cp -rv "${PATH_OUT}"/dtbo*.img auto_test/
   cp -rv "${PATH_OUT}"/partition-table-*.img auto_test/
   cp -rv "${PATH_OUT}"/partition-table.img auto_test/
-  cp -rv "${PATH_OUT}"/vbmeta-"${TARGET_DEVICE_NAME}".img auto_test/
+  cp -rv "${PATH_OUT}"/vbmeta*.img auto_test/
   cp -rv "${PATH_OUT}"/vendor.img auto_test/
   cp -rv "${PATH_OUT}"/system.img auto_test/
+  cp -rv "${PATH_OUT}"/product.img auto_test/
+  cp -rv "${PATH_OUT}"/super*.img auto_test/
   cp -rv "${PATH_OUT}"/flash.bin auto_test/
   cp -rv "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx auto_test/
   cp -rv "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx auto_test/
+  cp -rv "${PATH_OUT}"/u-boot.bin auto_test/
 
   cp -rv device/fsl/common/tools/uuu_imx_android_flash.sh auto_test/
   cp -rv device/fsl/common/tools/uuu_imx_android_flash.bat auto_test/
-  cp -rv device/fsl/common/tools/fsl-sdcard-partition-virtual-image.sh auto_test/
+  cp -rv device/fsl/common/tools/fsl-sdcard-partition-gen_image.sh auto_test/
   cp -rv device/fsl/common/tools/fsl-sdcard-partition.sh auto_test/
 
   sync

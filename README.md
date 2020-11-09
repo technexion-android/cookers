@@ -20,6 +20,8 @@
     * Bluetooth part
 * [Features](#Features)
     * LIBGPIOD JNI APIs
+    * Device Tree Overlay Configuration
+    * New OTA system
 
 ****
 ## Download-The-Source-Code

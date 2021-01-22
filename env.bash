@@ -97,10 +97,16 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       fi
     elif [[ "$BASEBOARD" == "wizard" ]]; then
       export EXPORT_BASEBOARD_NAME="WIZARD"
+      sed -i 's/ro.sf.lcd_density\ 320/ro.sf.lcd_density\ 160/' ${TOP}/device/fsl/imx8m/pico_imx8mm/init.rc
       if [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
         DTB_TARGET='imx8mm-pico-wizard-ili9881c.dtb'
         export DISPLAY_TARGET="DISP_MIPI_ILI9881C"
         export WM8960_AUDIO_CODEC_ACTIVE=true
+      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_g101uan02" ]]; then
+        DTB_TARGET='imx8mm-pico-wizard-g101uan02.dtb'
+        export DISPLAY_TARGET="DISP_MIPI_G101UAN02"
+        export WM8960_AUDIO_CODEC_ACTIVE=true
+        sed -i 's/ro.sf.lcd_density\ 160/ro.sf.lcd_density\ 320/' ${TOP}/device/fsl/imx8m/pico_imx8mm/init.rc
       fi
     fi
   elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then

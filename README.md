@@ -123,6 +123,11 @@ Source the compile relative commands:
 
     $ source cookers/env.bash.imx8.pico-imx8m-mini.wizard.mipi-dsi_ili9881c
 
+    For PICO-IMX8M-Mini + PICO-WIZARD 10-inch LCD (g101uan02 1920x1200 via MIPI-DSI interface)
+    (LTS branch only)
+
+    $ source cookers/env.bash.imx8.pico-imx8m-mini.wizard.mipi-dsi_g101uan02
+
     For PICO-IMX8M + PICO-WIZARD HDMI (1080p)
     (LTS branch only)
 

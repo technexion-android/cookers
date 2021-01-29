@@ -34,10 +34,10 @@ Install repo first:
 
 Download the source code:
 
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-android-10.0.0-2.5.0_8m-next
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-android-10.0.0-2.6.0_8m-next
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
-    Latest update (20201106):
+    Latest update (20210131):
     1. [EDM-G-IMX8MP] First release
 
 ****

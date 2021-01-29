@@ -55,6 +55,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       UBOOT_CONFIG='edm-g-imx8mp_android_defconfig'
       TARGET_DEVICE=edm_g_imx8mp
       TARGET_DEVICE_NAME=imx8mp
+      UBOOT_TARGET=imx8mp-edm-g
       export EXPORT_BASEBOARD_NAME="WANDBOARD"
 
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
@@ -103,9 +104,9 @@ cook() {
             lunch "$TARGET_DEVICE"-userdebug
             ./imx-make.sh "$@" || return $?
             cd ${PATH_UBOOT} && cook "$@" || return $?
-            sed -i '278,281 s/^/#/' install_uboot_imx8.sh
-            yes | ./install_uboot_imx8.sh -b imx8mp-axon -d /dev/loop0  > /dev/null
-            sed -i '278,281 s/#//' install_uboot_imx8.sh
+            sed -i "$(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}'),$(($(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}') +3)) s/^/#/" install_uboot_imx8.sh
+            yes | ./install_uboot_imx8.sh -b "$UBOOT_TARGET".dtb -d /dev/loop0  > /dev/null
+            sed -i "$(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}'),$(($(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}') +3)) s/#//" install_uboot_imx8.sh
             sudo cp -rv "./imx-mkimage/iMX8M/flash.bin" "${TOP}/out/target/product/${TARGET_DEVICE}"
             cd "${TMP_PWD}"
             sudo cp -rv "${TOP}/out/target/product/${TARGET_DEVICE}/flash.bin" "${TOP}/out/target/product/${TARGET_DEVICE}/u-boot-"${TARGET_DEVICE_NAME}".imx"
@@ -153,78 +154,31 @@ throw() {
     cd "${TMP_PWD}"
 }
 
-uuu_flashcard() {
-
-  partition_size="$@"
-
-  local TMP_PWD="${PWD}"
-  PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
-  if [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
-  UBOOT_PLATFORM="imx8mq-pico-pi"
-  elif [[ "$CPU_MODULE" == "pico-imx8m-mini" ]]; then
-  UBOOT_PLATFORM="imx8mm-pico-pi"
-  elif [[ "$CPU_MODULE" == "flex-imx8m-mini" ]]; then
-  UBOOT_PLATFORM="imx8mm-flex-pi"
-  elif [[ "$CPU_MODULE" == "edm-imx8m" ]]; then
-  UBOOT_PLATFORM="imx8mq-edm-wizard"
-  fi
-
-  cd "${PATH_UBOOT}"
-  yes | ./install_uboot_imx8.sh -b ${UBOOT_PLATFORM} -d /dev/loop0  > /dev/null
-  cd -
-
-  sudo cp -rv "${PATH_UBOOT}/imx-mkimage/iMX8M/flash.bin" "${PATH_OUT}/"
-  cd "${PATH_OUT}"
-  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}".imx
-  sudo cp -rv flash.bin u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx
-  #sudo tee < flash.bin u-boot-* > /dev/null
-  sync
-  sudo ./uuu_imx_android_flash.sh -c "${partition_size}" -f "${TARGET_DEVICE_NAME}" -e -D .
-  echo "Flash Done!!!"
-  cd "${TMP_PWD}"
-}
-
-flashcard() {
-  local TMP_PWD="${PWD}"
-  PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
-  dev_node="$@"
-  echo "$dev_node start"
-  sudo cp -rv ${TMP_PWD}/device/fsl/common/tools/gpt_partition_move ${PATH_OUT}/
-  cd "${PATH_OUT}"
-  sudo $TOP/device/fsl/common/tools/tn-sd-emmc-partition.sh -f ${TARGET_DEVICE_NAME} -c 7 ${dev_node}
-  sync
-  cd "${PATH_UBOOT}"
-  ./install_uboot_imx8.sh -b pico-imx8m -d ${dev_node}
-  sync
-  echo "Flash Done!!!"
-  cd "${TMP_PWD}"
-}
-
 merge_restricted_extras() {
-  wget -c -t 0 --timeout=60 --waitretry=60 ftp://ftp.technexion.net/development_resources/NXP/android/10.0/imx-android-10.0.0_2.5.0.tar.gz
-  tar zxvf imx-android-10.0.0_2.5.0.tar.gz
+  wget -c -t 0 --timeout=60 --waitretry=60 ftp://ftp.technexion.net/development_resources/NXP/android/10.0/imx-android-10.0.0_2.6.0.tar.gz
+  tar zxvf imx-android-10.0.0_2.6.0.tar.gz
   # prebuilt libraries
-  cp -rv imx-android-10.0.0_2.5.0/EULA.txt .
+  cp -rv imx-android-10.0.0_2.6.0/EULA.txt .
   cat EULA.txt
 
   while true; do
     read -p $'\e[31mCould you agree this EULA and keep install packages?' yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) rm -rf imx-android-10.0.0-2.5.0.tar.gz imx-android-10.0.0_2.5.0 fsl_aacp_dec_4.5.6; sync; exit;;
+        [Nn]* ) rm -rf imx-android-10.0.0-2.6.0.tar.gz imx-android-10.0.0_2.6.0 fsl_aacp_dec_4.5.6; sync; exit;;
         * ) echo "Please answer yes or no.";;
     esac
   done
 
-  cp -rv imx-android-10.0.0_2.5.0/vendor/nxp/* vendor/nxp/
-  cp -rv imx-android-10.0.0_2.5.0/SCR* .
+  cp -rv imx-android-10.0.0_2.6.0/vendor/nxp/* vendor/nxp/
+  cp -rv imx-android-10.0.0_2.6.0/SCR* .
   # prebuilt audio codec files
-  cp -rv imx-android-10.0.0_2.5.0/fsl_aacp_dec_4.5.6/fsl_aacp_dec external
+  cp -rv imx-android-10.0.0_2.6.0/fsl_aacp_dec_4.5.6/fsl_aacp_dec external
 
   # fix compile bug
   cp -rv vendor/nxp/fsl-proprietary/media-profile/imx8mp/media_codecs_c2.xml vendor/nxp/fsl-proprietary/media-profile/imx8mp/media_codecs_c2_temp.xml
 
-  rm -rf imx-android-10.0.0_2.5.0.tar.gz imx-android-10.0.0_2.5.0
+  rm -rf imx-android-10.0.0_2.6.0.tar.gz imx-android-10.0.0_2.6.0
   sync
 
   # download toolchain

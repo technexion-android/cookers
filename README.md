@@ -22,6 +22,7 @@
     * LIBGPIOD JNI APIs
     * Device Tree Overlay Configuration
     * New OTA system
+    * TensorFlow-Lite for Machine Learning
 
 ****
 ## Download-The-Source-Code
@@ -207,5 +208,40 @@ Please boot up into u-boot prompt, and issue commands as follows:
 
 Our Android 10 does support full update and incremental update, please contact our window to get detail instruction:
 sales@technexion.com
+
+#### TensorFlow-Lite for Machine Learning
+
+EDM-G-IMX8MP has a NPU (Neural Processing Unit) inside the SoC for machine learning applications, it has a very good performance using TFL (tensorflow-lite), Technexion provide two simple TFL apps let users testing as follows steps:
+Note that other platforms
+
+    Image classification using CPU/NPU
+    $ wget ftp://ftp.technexion.com/development_resources/NXP/android/10.0/TFL-ImageClassify.zip
+    $ unzip TFL-ImageClassify.zip
+
+    Speech commands using CPU
+    $ wget ftp://ftp.technexion.com/development_resources/NXP/android/10.0/TFL-SpeechCommand.zip
+    $ unzip TFL-SpeechCommand.zip
+
+
+
+    Quick install to Android image
+    $ adb install TFL-ImageClassify.apk
+    $ adb install TFL-SpeechCommand.apk
+
+
+    Build-in to Technexion Android BSP
+    $ mkdir -p <source code>/packages/apps/TFL-ImageClassify
+    $ mv TFL-ImageClassify.apk Android.mk <source code>/packages/apps/TFL-ImageClassify
+    $ cd <source code>/packages/apps/TFL-ImageClassify
+    $ mm
+    $ cd -
+    $ cook -j4
+
+    $ mkdir -p <source code>/packages/apps/TFL-SpeechCommand
+    $ mv TFL-ImageClassify.apk Android.mk <source code>/packages/apps/TFL-SpeechCommand
+    $ cd <source code>/packages/apps/TFL-SpeechCommand
+    $ mm
+    $ cd -
+    $ cook -j4
 
 ****

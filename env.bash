@@ -196,27 +196,23 @@ gen_mp_images() {
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
 
   mkdir -p auto_test
-  cp -rv "${PATH_OUT}"/boot.img auto_test/
+  cp -rv "${PATH_OUT}"/boot*.img auto_test/
   cp -rv "${PATH_OUT}"/dtbo*.img auto_test/
-  cp -rv "${PATH_OUT}"/partition-table-*.img auto_test/
-  cp -rv "${PATH_OUT}"/partition-table.img auto_test/
+  cp -rv "${PATH_OUT}"/partition-table*.img auto_test/
   cp -rv "${PATH_OUT}"/vbmeta*.img auto_test/
-  cp -rv "${PATH_OUT}"/vendor.img auto_test/
-  cp -rv "${PATH_OUT}"/system.img auto_test/
+  cp -rv "${PATH_OUT}"/vendor*.img auto_test/
+  cp -rv "${PATH_OUT}"/system*.img auto_test/
   cp -rv "${PATH_OUT}"/product.img auto_test/
   cp -rv "${PATH_OUT}"/super*.img auto_test/
   cp -rv "${PATH_OUT}"/flash.bin auto_test/
   cp -rv "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx auto_test/
   cp -rv "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx auto_test/
   cp -rv "${PATH_OUT}"/u-boot.bin auto_test/
-  cp -rv "${PATH_OUT}"/lpmake auto_test/
-  cp -rv "${PATH_OUT}"/lpmake.exe auto_test/
 
   cp -rv device/nxp/common/tools/uuu_imx_android_flash.sh auto_test/
   cp -rv device/nxp/common/tools/uuu_imx_android_flash.bat auto_test/
   cp -rv device/nxp/common/tools/imx-sdcard-partition-gen_image.sh auto_test/
   cp -rv device/nxp/common/tools/imx-sdcard-partition.sh auto_test/
-
   sync
 }
 

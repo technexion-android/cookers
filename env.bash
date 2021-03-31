@@ -32,7 +32,7 @@ CPU_MODULE=$(echo $MODULE | awk -F. '{print $4}')
 BASEBOARD=$(echo $MODULE | awk -F. '{print $5}')
 OUTPUT_DISPLAY=$(echo $MODULE | awk -F. '{print $6}')
 
-PATH_TOOLS="${TOP}/device/fsl/common/tools"
+PATH_TOOLS="${TOP}/device/nxp/common/tools"
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
   if [[ "$CPU_MODULE" == "axon-imx8mp" ]]; then
@@ -212,10 +212,10 @@ gen_mp_images() {
   cp -rv "${PATH_OUT}"/lpmake auto_test/
   cp -rv "${PATH_OUT}"/lpmake.exe auto_test/
 
-  cp -rv device/fsl/common/tools/uuu_imx_android_flash.sh auto_test/
-  cp -rv device/fsl/common/tools/uuu_imx_android_flash.bat auto_test/
-  cp -rv device/fsl/common/tools/fsl-sdcard-partition-gen_image.sh auto_test/
-  cp -rv device/fsl/common/tools/fsl-sdcard-partition.sh auto_test/
+  cp -rv device/nxp/common/tools/uuu_imx_android_flash.sh auto_test/
+  cp -rv device/nxp/common/tools/uuu_imx_android_flash.bat auto_test/
+  cp -rv device/nxp/common/tools/imx-sdcard-partition-gen_image.sh auto_test/
+  cp -rv device/nxp/common/tools/imx-sdcard-partition.sh auto_test/
 
   sync
 }
@@ -234,12 +234,16 @@ gen_local_images() {
   sudo dd if=/dev/zero of=test.img bs="$img_size"M count=1024
   sudo kpartx -av test.img
   loop_dev=$(losetup | grep "test.img" | awk  '{print $1}')
-  sudo ./fsl-sdcard-partition-gen_image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
+  sudo ./imx-sdcard-partition-gen_image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
   sudo kpartx -d test.img
+  sudo kpartx -d "${loop_dev}"
+  sudo losetup -d "${loop_dev}"
   sync
   sudo kpartx -av test.img
-  sudo ./fsl-sdcard-partition-gen_image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
+  sudo ./imx-sdcard-partition-gen_image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
   sudo kpartx -d test.img
+  sudo kpartx -d "${loop_dev}"
+  sudo losetup -d "${loop_dev}"
   sync
   cd "${TMP_PWD}"
 }

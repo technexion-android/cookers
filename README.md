@@ -1,15 +1,15 @@
-# Technexion Android 10 BSP for i.MX8 Platforms
+# Technexion Android 11 BSP for i.MX8 Platforms
 
 
 ## Support Hardware
-
+ 
 |System-On-Module|Baseboard|
 |---|---|
 |EDM-G-IMX8M-PLUS|WANDBOARD|
 
 ****
 ## Contents
-* [Download-The-Source-Code](#Download-The-Source-Code)
+*  [Download-The-Source-Code](#Download-The-Source-Code)
 * [Compiling-Environment-Setup](#Compiling-Environment-Setup)
 * [Starting-Compile-The-Source-Code](#Starting-Compile-The-Source-Code)
 * [Flashing-The-Output-Images](#Flashing-The-Output-Images)
@@ -35,15 +35,15 @@ Install repo first:
 
 Download the source code:
 
-    $ repo init -u https://github.com/technexion-android/manifest -b tn-android-10.0.0-2.6.0_8m-next
+    $ repo init -u https://github.com/technexion-android/manifest -b tn-android-11.0.0_1.2.0_8m-next
     $ repo sync -j<N> (N is up to cors numbers on your host PC)
 
-    Latest update (20210131):
+    Latest update (20210331):
     1. [EDM-G-IMX8MP] First release
 
 ****
 ## Compiling-Environment-Setup
-
+ 
 There are two different methods you can use to set up the build environment. One is to install the required packages onto your host filesystem. 
 Another is to use a docker container, where the installation of the required packages is automated for you.
 
@@ -129,22 +129,37 @@ Step 3. Quick way for flashing to board (adapt uuu based flash script):
 Note: Steps for boot mode change when flash the image:
 Firstly, the user must be change the boot mode to serial download mode and connect a OTG cable from board to host PC. Then, running the uuu commands as above post. In the end, 
 change back the boot mode to eMMC boot mode, that's it.
-
+ 
 #### big image way (easier but spend much time for image flashing)
 
 Step 1. Source the compile relative commands first.
 Step 2. issue command to auto generate a local image for flashing
 
     $ gen_local_images <image_size>
-    (eMMC_size is up to your eMMC size, 16GB: image_size=13, 32GB: image_size=28, minimal 9GB size for demo: image_size=9)
+    (eMMC_size is up to your eMMC size, 16GB: image_size=13, 32GB: image_size=28)
 
 Step 3. You'll see a test.img in <source>/out/target/product/<target board>/
 Step 4. You can use flash this image to eMMC using uuu tool, ums or other classic ways.
 Note: users need change to serial download mode if adapt uuu tool, and ums just keep eMMC boot mode is enough.
 
-****
-## Enabling-WiFi_BT-function
 
+#### Generate mass production image folder
+
+Another situation is when you need move your image flash tool to factory side for MP, you can do these steps:
+
+Step 1. issue command to generate a protable MP image folder, the output folder name is 'auto_test'
+
+    $ gen_mp_images
+
+Step 2. compress auto_test folder to zip file, then you can take it to factory.
+Step 3. prepare computers for MP, install Ubuntu host PC with require packages as Compiling-Environment-Setup chapter.
+Step 4. extract auto_test.zip, then issue flash command as uuu way commands to flash image to target boards.
+
+Technexion also provide a quicker way for MP stage, welcome to send mail to sales@technexion.com if you have interesting.
+
+** **
+## Enabling-WiFi_BT-function
+ 
 Prepare WiFi/BT firmware
 
 This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configuration, Because of the license restriction, please contact TechNexion FAE or Sales to get licensed firmware files, default is disabled.
@@ -155,26 +170,26 @@ This SDK is supporting Qualcomm(QCA) WLAN module - QCA9377 as default configurat
 
 After getting the firmware binary: .. Decompress the tarball and put all the firmware files into a created 'wifi-firmware' folder such as
 
-    <source folder>/device/fsl/imx8m/edm_g_imx8mp/wifi-firmware/
+    <source folder>/device/nxp/imx8m/edm_g_imx8mp/wifi-firmware/
 
 Then take the qca9377 and wlan folder to the specific path such as:
 
-    $ cp -rv qca9377/ <source folder>/device/fsl/edm_g_imx8mp/wifi-firmware/
-    $ cp -rv wlan/ <source folder>/device/fsl/edm_g_imx8mp/wifi-firmware/qca9377/
-
+    $ cp -rv qca9377/ <source folder>/device/nxp/edm_g_imx8mp/wifi-firmware/
+    $ cp -rv wlan/ <source folder>/device/nxp/edm_g_imx8mp/wifi-firmware/qca9377/
+ 
 #### Bluetooth part
 
 After getting the firmware binary: .. Decompress the tarball and put all the firmware files to specific path such as:
 
-    $ cp -rv qca/ <source folder>/device/fsl/edm_g_imx8mp/bluetooth/
+    $ cp -rv qca/ <source folder>/device/nxp/edm_g_imx8mp/bluetooth/
 
 Issue the command cook again as previous Chapter "Compiling Environment Setup", WiFi/BT function will be packaged in output image!
 
-****
+* * * *
 ## Features
 
 #### LIBGPIOD JNI APIs
-
+ 
 Technexion provide a demo app about libgpiod JNI Test, specific source code as following:
 * [source code](https://github.com/technexion-android/packages_apps_GpiodJniTest.git)
 
@@ -203,10 +218,10 @@ Please boot up into u-boot prompt, and issue commands as follows:
     boot into Android system
     # boot
 
-
+ 
 #### New OTA system: systemupgrade
 
-Our Android 10 does support full update and incremental update, please contact our window to get detail instruction:
+Our Android 11 does support full update and incremental update, please contact our window to get detail instruction:
 sales@technexion.com
 
 #### TensorFlow-Lite for Machine Learning

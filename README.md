@@ -195,7 +195,7 @@ About uuu detail (modular way):
 
 Download link:
 
-    ftp://ftp.technexion.net/development_resources/development_tools/installer/imx-mfg-uuu-tool_20191226.zip
+    ftp://ftp.technexion.net/development_resources/development_tools/installer/imx-mfg-uuu-tool_20200629.zip
 
 Please issue command to generate a binary image:
 

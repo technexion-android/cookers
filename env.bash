@@ -69,34 +69,39 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     fi
   elif [[ "$CPU_MODULE" == "pico-imx8mm" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='pico-imx8mm_android_defconfig'
-      TARGET_DEVICE=pico_imx8mm
-      TARGET_DEVICE_NAME=imx8mm
-      UBOOT_TARGET=imx8mm-pico-pi
       export EXPORT_BASEBOARD_NAME="PI"
-      export TN_DEFAULT_CAMERA="TEVI_OV564X"
+    elif [[ "$BASEBOARD" == "wizard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WIZARD"
     fi
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_imx8_android_defconfig'
+    UBOOT_CONFIG='pico-imx8mm_android_defconfig'
+    TARGET_DEVICE=pico_imx8mm
+    TARGET_DEVICE_NAME=imx8mm
+    UBOOT_TARGET=imx8mm-pico-pi
+    export TN_DEFAULT_CAMERA="TEVI_OV564X"
   elif [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='pico-imx8mq_android_defconfig'
-      TARGET_DEVICE=pico_imx8m
-      TARGET_DEVICE_NAME=imx8mq
-      UBOOT_TARGET=imx8mq-pico-pi
       export EXPORT_BASEBOARD_NAME="PI"
-      export TN_DEFAULT_CAMERA="TEVI_OV564X"
-      if [[ "$TN_DEFAULT_CAMERA" == "TEVI_OV564X" ]]; then
-        sed -i "$BASE_LINE s/Wall\"/Wall\",/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
-        sed -i "$BASE_LINE_OV564X s/.*/\t\t\ \ \"-DOV564X_8MQ\"/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
-      fi
-      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-        export DISPLAY_TARGET="DISP_HDMI"
-      elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-         export DISPLAY_TARGET="DISP_ILI9881C"
-      fi
+    elif [[ "$BASEBOARD" == "wizard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WIZARD"
+    fi
+
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_imx8_android_defconfig'
+    UBOOT_CONFIG='pico-imx8mq_android_defconfig'
+    TARGET_DEVICE=pico_imx8m
+    TARGET_DEVICE_NAME=imx8mq
+    UBOOT_TARGET=imx8mq-pico-pi
+    export TN_DEFAULT_CAMERA="TEVI_OV564X"
+    if [[ "$TN_DEFAULT_CAMERA" == "TEVI_OV564X" ]]; then
+      sed -i "$BASE_LINE s/Wall\"/Wall\",/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
+      sed -i "$BASE_LINE_OV564X s/.*/\t\t\ \ \"-DOV564X_8MQ\"/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
+    fi
+    if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
+      export DISPLAY_TARGET="DISP_HDMI"
+    elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
+       export DISPLAY_TARGET="DISP_ILI9881C"
     fi
   fi
 fi

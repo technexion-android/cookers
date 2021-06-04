@@ -40,33 +40,33 @@ sed -i "$BASE_LINE s/Wall\",/Wall\"/" ${TOP}/vendor/nxp-opensource/imx/camera/An
 sed -i "$BASE_LINE_OV564X s/.*//" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
-  if [[ "$CPU_MODULE" == "axon-imx8mp" ]]; then
-    if [[ "$BASEBOARD" == "wizard" ]]; then
-      KERNEL_IMAGE='Image'
-      KERNEL_CONFIG='tn_imx8_android_defconfig'
-      UBOOT_CONFIG='axon-imx8mp_android_defconfig'
-      TARGET_DEVICE=evk_8mp
-      TARGET_DEVICE_NAME=imx8mp
-      export EXPORT_BASEBOARD_NAME="PI"
-
-      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-        export DISPLAY_TARGET="DISP_HDMI"
-      fi
-    fi
-  elif [[ "$CPU_MODULE" == "edm-g-imx8mp" ]]; then
+  if [[ "$CPU_MODULE" == "edm-g-imx8mp" ]]; then
     if [[ "$BASEBOARD" == "wandboard" ]]; then
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
       UBOOT_CONFIG='edm-g-imx8mp_android_defconfig'
       TARGET_DEVICE=edm_g_imx8mp
       TARGET_DEVICE_NAME=imx8mp
-      UBOOT_TARGET=imx8mp-edm-g
+      UBOOT_TARGET='imx8mp-edm-g.dtb'
       export EXPORT_BASEBOARD_NAME="WANDBOARD"
       export NFC_ACTIVE=true
       if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
         export DISPLAY_TARGET="DISP_HDMI"
       fi
     fi
+    env.bash.imx8.edm-g-imx8mm.wandboard.lvds_vl10112880
+  elif [[ "$CPU_MODULE" == "edm-g-imx8mm" ]]; then
+    if [[ "$BASEBOARD" == "wandboard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WANDBOARD"
+    fi
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_imx8_android_defconfig'
+    UBOOT_CONFIG='edm-g-imx8mm_android_defconfig'
+    TARGET_DEVICE=edm_g_imx8mm
+    TARGET_DEVICE_NAME=imx8mm
+    UBOOT_TARGET='imx8mm-edm-g-wb.dtb'
+    export TN_DEFAULT_CAMERA="TEVI_OV564X"
+
   elif [[ "$CPU_MODULE" == "pico-imx8mm" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"
@@ -78,7 +78,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     UBOOT_CONFIG='pico-imx8mm_android_defconfig'
     TARGET_DEVICE=pico_imx8mm
     TARGET_DEVICE_NAME=imx8mm
-    UBOOT_TARGET=imx8mm-pico-pi
+    UBOOT_TARGET='imx8mm-pico-pi -b imx8mm-pico-wizard.dtb'
     export TN_DEFAULT_CAMERA="TEVI_OV564X"
   elif [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
@@ -92,7 +92,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     UBOOT_CONFIG='pico-imx8mq_android_defconfig'
     TARGET_DEVICE=pico_imx8m
     TARGET_DEVICE_NAME=imx8mq
-    UBOOT_TARGET=imx8mq-pico-pi
+    UBOOT_TARGET='imx8mq-pico-pi.dtb -b imx8mq-pico-wizard.dtb'
     export TN_DEFAULT_CAMERA="TEVI_OV564X"
     if [[ "$TN_DEFAULT_CAMERA" == "TEVI_OV564X" ]]; then
       sed -i "$BASE_LINE s/Wall\"/Wall\",/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
@@ -146,7 +146,7 @@ cook() {
             ./imx-make.sh "$@" || return $?
             cd ${PATH_UBOOT} && cook "$@" || return $?
             sed -i "$(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}'),$(($(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}') +3)) s/^/#/" install_uboot_imx8.sh
-            yes | ./install_uboot_imx8.sh -b "$UBOOT_TARGET".dtb -d /dev/loop0  > /dev/null
+            yes | ./install_uboot_imx8.sh -b "$UBOOT_TARGET" -d /dev/loop0  > /dev/null
             sed -i "$(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}'),$(($(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}') +3)) s/#//" install_uboot_imx8.sh
             sudo cp -rv "./imx-mkimage/iMX8M/flash.bin" "${TOP}/out/target/product/${TARGET_DEVICE}"
             cd "${TMP_PWD}"

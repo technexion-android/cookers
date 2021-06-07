@@ -54,7 +54,6 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
         export DISPLAY_TARGET="DISP_HDMI"
       fi
     fi
-    env.bash.imx8.edm-g-imx8mm.wandboard.lvds_vl10112880
   elif [[ "$CPU_MODULE" == "edm-g-imx8mm" ]]; then
     if [[ "$BASEBOARD" == "wandboard" ]]; then
       export EXPORT_BASEBOARD_NAME="WANDBOARD"

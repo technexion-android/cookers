@@ -145,7 +145,7 @@ cook() {
             ./imx-make.sh "$@" || return $?
             cd ${PATH_UBOOT} && cook "$@" || return $?
             sed -i "$(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}'),$(($(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}') +3)) s/^/#/" install_uboot_imx8.sh
-            yes | ./install_uboot_imx8.sh -b "$UBOOT_TARGET" -d /dev/loop0  > /dev/null
+            yes | ./install_uboot_imx8.sh -b "$UBOOT_TARGET" -d /dev/null
             sed -i "$(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}'),$(($(grep -rn "id -u" ./install_uboot_imx8.sh | awk -F: '{print $1}') +3)) s/#//" install_uboot_imx8.sh
             sudo cp -rv "./imx-mkimage/iMX8M/flash.bin" "${TOP}/out/target/product/${TARGET_DEVICE}"
             cd "${TMP_PWD}"

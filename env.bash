@@ -23,6 +23,7 @@ export DRAM_SIZE_1G=false
 export AUDIOHAT_ACTIVE=false
 export NFC_ACTIVE=false
 export WM8960_AUDIO_CODEC_ACTIVE=false
+export SIM8202_MODEM_ACTIVE=false
 export EXPORT_BASEBOARD_NAME="PI"
 
 # TARGET support: pico-imx8m, pico-imx8mm
@@ -65,7 +66,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     TARGET_DEVICE_NAME=imx8mm
     UBOOT_TARGET=imx8mm-edm-g-wb
     export TN_DEFAULT_CAMERA="TEVI_OV564X"
-
+    export SIM8202_MODEM_ACTIVE=false
   elif [[ "$CPU_MODULE" == "pico-imx8mm" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"
@@ -81,6 +82,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     TARGET_DEVICE=pico_imx8mm
     TARGET_DEVICE_NAME=imx8mm
     export TN_DEFAULT_CAMERA="TEVI_OV564X"
+    export SIM8202_MODEM_ACTIVE=false
   elif [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"
@@ -96,6 +98,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     TARGET_DEVICE=pico_imx8m
     TARGET_DEVICE_NAME=imx8mq
     export TN_DEFAULT_CAMERA="TEVI_OV564X"
+    export SIM8202_MODEM_ACTIVE=false
     if [[ "$TN_DEFAULT_CAMERA" == "TEVI_OV564X" ]]; then
       sed -i "$BASE_LINE s/Wall\"/Wall\",/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
       sed -i "$BASE_LINE_OV564X s/.*/\t\t\ \ \"-DOV564X_8MQ\"/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp

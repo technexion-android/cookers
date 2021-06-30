@@ -201,7 +201,7 @@ throw() {
 }
 
 merge_restricted_extras() {
-  wget -c -t 0 --timeout=60 --waitretry=60 ftp://ftp.technexion.net/development_resources/NXP/android/11.0/imx-android-11.0.0_1.2.0.tar.gz
+  wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/11.0/proprietary-package/imx-android-11.0.0_1.2.0.tar.gz
   tar zxvf imx-android-11.0.0_1.2.0.tar.gz
   # prebuilt libraries
   cp -rv imx-android-11.0.0_1.2.0/EULA.txt .

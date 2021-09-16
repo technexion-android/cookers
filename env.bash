@@ -415,6 +415,8 @@ gen_virtual_images() {
   loop_dev=$(losetup | grep "test.img" | awk  '{print $1}')
   sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c 3 "${loop_dev}"
   sudo kpartx -d test.img
+  sudo kpartx -d "${loop_dev}"
+  sudo losetup -d "${loop_dev}"
   sync
   sudo kpartx -av test.img
   sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c 3 "${loop_dev}"
@@ -434,6 +436,8 @@ gen_virtual_images() {
 
   sync
   sudo kpartx -d test.img
+  sudo kpartx -d "${loop_dev}"
+  sudo losetup -d "${loop_dev}"
   sync
   cd "${TMP_PWD}"
 }

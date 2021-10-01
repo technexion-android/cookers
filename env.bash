@@ -103,11 +103,6 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       sed -i "$BASE_LINE s/Wall\"/Wall\",/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
       sed -i "$BASE_LINE_OV564X s/.*/\t\t\ \ \"-DOV564X_8MQ\"/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
     fi
-    if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-      export DISPLAY_TARGET="DISP_HDMI"
-    elif [[ "$OUTPUT_DISPLAY" == "mipi-dsi_ili9881c" ]]; then
-       export DISPLAY_TARGET="DISP_ILI9881C"
-    fi
   fi
 fi
 

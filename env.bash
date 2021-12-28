@@ -195,6 +195,8 @@ heat() {
             if [[ $(cat /etc/issue | grep "20.04") ]]; then
               cd "${PATH_KERNEL}"
               cp -rv "${TOP}"/cookers/patches/selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff .
+              git checkout scripts/selinux/genheaders/genheaders.c
+              git checkout scripts/selinux/mdp/mdp.c
               git apply selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff
               rm selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff
               cd "${TOP}"
@@ -245,6 +247,8 @@ cook() {
             if [[ $(cat /etc/issue | grep "20.04") ]]; then
               cd "${PATH_KERNEL}"
               cp -rv "${TOP}"/cookers/patches/selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff .
+              git checkout scripts/selinux/genheaders/genheaders.c
+              git checkout scripts/selinux/mdp/mdp.c
               git apply selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff
               rm selinux-use-kernel-definition-of-PF_MAX-in-scripts.diff
               cd "${TOP}"

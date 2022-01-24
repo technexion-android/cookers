@@ -67,6 +67,18 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     UBOOT_TARGET=imx8mm-edm-g-wb
     export TN_DEFAULT_CAMERA="TEVI_OV564X"
     export SIM8202_MODEM_ACTIVE=false
+  elif [[ "$CPU_MODULE" == "edm-g-imx8mn" ]]; then
+    if [[ "$BASEBOARD" == "wandboard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WANDBOARD"
+    fi
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_imx8_android_defconfig'
+    UBOOT_CONFIG='edm-g-imx8mn_android_defconfig'
+    TARGET_DEVICE=edm_g_imx8mn
+    TARGET_DEVICE_NAME=imx8mn
+    UBOOT_TARGET=imx8mn-edm-g
+    export TN_DEFAULT_CAMERA="TEVI_OV564X"
+    export SIM8202_MODEM_ACTIVE=false
   elif [[ "$CPU_MODULE" == "pico-imx8mm" ]]; then
     if [[ "$BASEBOARD" == "pi" ]]; then
       export EXPORT_BASEBOARD_NAME="PI"

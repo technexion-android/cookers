@@ -395,49 +395,100 @@ gen_mp_images() {
 }
 
 gen_virtual_images() {
-  partition_size="$@"
   local TMP_PWD="${PWD}"
   PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
+
+  img_size="$@"
+
   virtual_image_file="${PATH_OUT}/fsl-sdcard-partition-virtual-image.sh"
 
-  sudo cp -rv ${TMP_PWD}/device/fsl/common/tools/gpt_partition_move ${PATH_OUT}/
+  sudo cp -rv ${TOP}/device/fsl/common/tools/gpt_partition_move ${PATH_OUT}/
 
   if [ -f "$virtual_image_file" ]; then
     echo "Find ${virtual_image_file}"
   else
     cp -rv device/fsl/common/tools/fsl-sdcard-partition-virtual-image.sh ${virtual_image_file}
   fi
+
   cd "${TMP_PWD}"
 
+  if [[ "$img_size" == "" ]];then
+    img_size=3
+  fi
+
   cd "${PATH_OUT}"
-  sudo dd if=/dev/zero of=test.img bs=1M count=3400
+  echo "Create an empty image with size $img_size:"
+  sudo dd if=/dev/zero of=test.img bs="$img_size"M count=1024
+
+  echo "Attach the image to a loop device:"
   sudo kpartx -av test.img
   loop_dev=$(losetup | grep "test.img" | awk  '{print $1}')
-  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c 3 "${loop_dev}"
+  echo "Image was attached on $loop_dev"
+
+  echo Partition with:\
+  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
+  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
+  sync
+
+  echo "Detach the loop dev $loop_dev and reattach it"
   sudo kpartx -d test.img
   sudo kpartx -d "${loop_dev}"
   sudo losetup -d "${loop_dev}"
   sync
+
   sudo kpartx -av test.img
-  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c 3 "${loop_dev}"
+  loop_dev=$(losetup | grep "test.img" | awk  '{print $1}')
+  echo "Image was reattached on $loop_dev"
+
+  echo Partition it again with:\
+  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
+  sudo ./fsl-sdcard-partition-virtual-image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
   sync
 
+  echo "Detach the loop dev $loop_dev and reattach it"
+  sudo kpartx -d test.img
+  sudo kpartx -d "${loop_dev}"
+  sudo losetup -d "${loop_dev}"
+  sync
+
+  sudo kpartx -av test.img
+  loop_dev=$(losetup | grep "test.img" | awk  '{print $1}')
+  echo "Image was reattached on $loop_dev"
+
+  echo Move the GPT partition header to make room for SPL and Bootloader:\
   sudo ./gpt_partition_move -d ${loop_dev} -s 4096
+  sudo ./gpt_partition_move -d ${loop_dev} -s 4096
+  sync
+
+  echo Write SPL and Bootloader into the now empty space before the header:
   SPL_IMAGE=$(ls u-boot-*.SPL)
   UBOOT_RAW_IMAGE=$(ls u-boot-*.img)
+  echo - sudo dd if=${SPL_IMAGE} of=${loop_dev} bs=1k seek=1 conv=sync
   sudo dd if=${SPL_IMAGE} of=${loop_dev} bs=1k seek=1 conv=sync
 
   if [[ "$CPU_TYPE" == "imx6q" || "$CPU_TYPE" == "imx6dl" ]]; then
-    echo "flash_partition: ${UBOOT_RAW_IMAGE} ---> ${loop_dev}"
+    echo - sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=92 oflag=dsync
     sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=92 oflag=dsync
   elif [[ "$CPU_TYPE" == "imx7d" ]]; then
+    echo - sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=120 oflag=dsync
     sudo dd if=${UBOOT_RAW_IMAGE} of=${loop_dev} bs=512 seek=120 oflag=dsync
   fi
-
   sync
+
+  echo Detach the loop dev $loop_dev with the image for the last time:
   sudo kpartx -d test.img
   sudo kpartx -d "${loop_dev}"
   sudo losetup -d "${loop_dev}"
   sync
+
+  echo Clean up loop devices # Technically not needed if everything went OK
+  for i in $(losetup |grep 'test.img' |awk '{print $1}') ; do
+    echo - sudo kpartx -d "${loop_dev}"
+    sudo kpartx -d "${loop_dev}"
+    echo - sudo losetup -d "$i"
+    sudo losetup -d "$i"
+  done
+
   cd "${TMP_PWD}"
+  echo Done
 }

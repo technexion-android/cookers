@@ -14,17 +14,12 @@ CLASSPATH=".:$JAVA_HOME/lib:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar"
 PATH="$JAVA_HOME/bin:${PATH}"
 export ARCH=arm64
 export AARCH64_GCC_CROSS_COMPILE="${PWD}/prebuilts/gcc/linux-x86/aarch64/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu/bin/aarch64-linux-gnu-"
+export ARMGCC_DIR="${PWD}/gcc-arm-none-eabi-7-2018-q2-update/"
 export USER=$(whoami)
 export USE_CCACHE=1
 
 export MY_ANDROID=$TOP
 export LC_ALL=C
-export DRAM_SIZE_1G=false
-export AUDIOHAT_ACTIVE=false
-export NFC_ACTIVE=false
-export WM8960_AUDIO_CODEC_ACTIVE=false
-export SIM8202_MODEM_ACTIVE=false
-export EXPORT_BASEBOARD_NAME="PI"
 
 # TARGET support: pico-imx8m, pico-imx8mm
 MODULE=$(basename $BASH_SOURCE)
@@ -33,88 +28,19 @@ CPU_MODULE=$(echo $MODULE | awk -F. '{print $4}')
 BASEBOARD=$(echo $MODULE | awk -F. '{print $5}')
 OUTPUT_DISPLAY=$(echo $MODULE | awk -F. '{print $6}')
 
-PATH_TOOLS="${TOP}/device/nxp/common/tools"
-
-BASE_LINE=$(grep -rn "Wall"  ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp |  awk -F: '{print $1}')
-BASE_LINE_OV564X=$((BASE_LINE+1))
-sed -i "$BASE_LINE s/Wall\",/Wall\"/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
-sed -i "$BASE_LINE_OV564X s/.*//" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
-
 if [[ "$CPU_TYPE" == "imx8" ]]; then
   if [[ "$CPU_MODULE" == "edm-g-imx8mp" ]]; then
     if [[ "$BASEBOARD" == "wandboard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WANDBOARD"
+    elif [[ "$BASEBOARD" == "wizard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WIZARD"
+    fi
       KERNEL_IMAGE='Image'
       KERNEL_CONFIG='tn_imx8_android_defconfig'
       UBOOT_CONFIG='edm-g-imx8mp_android_defconfig'
       TARGET_DEVICE=edm_g_imx8mp
       TARGET_DEVICE_NAME=imx8mp
       UBOOT_TARGET=imx8mp-edm-g
-      export EXPORT_BASEBOARD_NAME="WANDBOARD"
-      export NFC_ACTIVE=true
-      if [[ "$OUTPUT_DISPLAY" == "hdmi" ]]; then
-        export DISPLAY_TARGET="DISP_HDMI"
-      fi
-    fi
-  elif [[ "$CPU_MODULE" == "edm-g-imx8mm" ]]; then
-    if [[ "$BASEBOARD" == "wandboard" ]]; then
-      export EXPORT_BASEBOARD_NAME="WANDBOARD"
-    fi
-    KERNEL_IMAGE='Image'
-    KERNEL_CONFIG='tn_imx8_android_defconfig'
-    UBOOT_CONFIG='edm-g-imx8mm_android_defconfig'
-    TARGET_DEVICE=edm_g_imx8mm
-    TARGET_DEVICE_NAME=imx8mm
-    UBOOT_TARGET=imx8mm-edm-g-wb
-    export TN_DEFAULT_CAMERA="TEVI_OV564X"
-    export SIM8202_MODEM_ACTIVE=false
-  elif [[ "$CPU_MODULE" == "edm-g-imx8mn" ]]; then
-    if [[ "$BASEBOARD" == "wandboard" ]]; then
-      export EXPORT_BASEBOARD_NAME="WANDBOARD"
-    fi
-    KERNEL_IMAGE='Image'
-    KERNEL_CONFIG='tn_imx8_android_defconfig'
-    UBOOT_CONFIG='edm-g-imx8mn_android_defconfig'
-    TARGET_DEVICE=edm_g_imx8mn
-    TARGET_DEVICE_NAME=imx8mn
-    UBOOT_TARGET=imx8mn-edm-g
-    export TN_DEFAULT_CAMERA="TEVI_OV564X"
-    export SIM8202_MODEM_ACTIVE=false
-  elif [[ "$CPU_MODULE" == "pico-imx8mm" ]]; then
-    if [[ "$BASEBOARD" == "pi" ]]; then
-      export EXPORT_BASEBOARD_NAME="PI"
-      UBOOT_TARGET=imx8mm-pico-pi
-    elif [[ "$BASEBOARD" == "wizard" ]]; then
-      export EXPORT_BASEBOARD_NAME="WIZARD"
-      UBOOT_TARGET=imx8mm-pico-wizard
-    fi
-
-    KERNEL_IMAGE='Image'
-    KERNEL_CONFIG='tn_imx8_android_defconfig'
-    UBOOT_CONFIG='pico-imx8mm_android_defconfig'
-    TARGET_DEVICE=pico_imx8mm
-    TARGET_DEVICE_NAME=imx8mm
-    export TN_DEFAULT_CAMERA="TEVI_OV564X"
-    export SIM8202_MODEM_ACTIVE=false
-  elif [[ "$CPU_MODULE" == "pico-imx8m" ]]; then
-    if [[ "$BASEBOARD" == "pi" ]]; then
-      export EXPORT_BASEBOARD_NAME="PI"
-      UBOOT_TARGET=imx8mq-pico-pi
-    elif [[ "$BASEBOARD" == "wizard" ]]; then
-      export EXPORT_BASEBOARD_NAME="WIZARD"
-      UBOOT_TARGET=imx8mq-pico-wizard
-    fi
-
-    KERNEL_IMAGE='Image'
-    KERNEL_CONFIG='tn_imx8_android_defconfig'
-    UBOOT_CONFIG='pico-imx8mq_android_defconfig'
-    TARGET_DEVICE=pico_imx8m
-    TARGET_DEVICE_NAME=imx8mq
-    export TN_DEFAULT_CAMERA="TEVI_OV564X"
-    export SIM8202_MODEM_ACTIVE=false
-    if [[ "$TN_DEFAULT_CAMERA" == "TEVI_OV564X" ]]; then
-      sed -i "$BASE_LINE s/Wall\"/Wall\",/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
-      sed -i "$BASE_LINE_OV564X s/.*/\t\t\ \ \"-DOV564X_8MQ\"/" ${TOP}/vendor/nxp-opensource/imx/camera/Android.bp
-    fi
   fi
 fi
 
@@ -208,30 +134,25 @@ throw() {
 }
 
 merge_restricted_extras() {
-  wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/11.0/proprietary-package/imx-android-11.0.0_1.2.0.tar.gz
-  tar zxvf imx-android-11.0.0_1.2.0.tar.gz
+  wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/12.0/proprietary-package/imx-android-12.0.0_1.0.0.tar.gz
+  tar zxvf imx-android-12.0.0_1.0.0.tar.gz
   # prebuilt libraries
-  cp -rv imx-android-11.0.0_1.2.0/EULA.txt .
+  cp -rv imx-android-12.0.0_1.0.0/EULA.txt .
   cat EULA.txt
 
   while true; do
     read -p $'\e[31mCould you agree this EULA and keep install packages?' yn
     case $yn in
         [Yy]* ) break;;
-        [Nn]* ) rm -rf imx-android-10.0.0-2.5.0.tar.gz imx-android-11.0.0_1.2.0 fsl_aacp_dec_4.5.6; sync; exit;;
+        [Nn]* ) rm -rf imx-android-12.0.0_1.0.0.tar.gz imx-android-12.0.0_1.0.0; sync; exit;;
         * ) echo "Please answer yes or no.";;
     esac
   done
 
-  cp -rv imx-android-11.0.0_1.2.0/vendor/nxp/* vendor/nxp/
-  cp -rv imx-android-11.0.0_1.2.0/SCR* .
-  # prebuilt audio codec files
-  cp -rv imx-android-11.0.0_1.2.0/fsl_aacp_dec_4.5.6/fsl_aacp_dec external
+  cp -rv imx-android-12.0.0_1.0.0/vendor/nxp/* vendor/nxp/
+  cp -rv imx-android-12.0.0_1.0.0/SCR* .
 
-  # fix compile bug
-  cp -rv vendor/nxp/imx_android_mm/mediacodec-profile/imx8mp/media_codecs_c2.xml vendor/nxp/imx_android_mm/mediacodec-profile/imx8mp/media_codecs_c2_temp.xml
-
-  rm -rf imx-android-11.0.0_1.2.0.tar.gz imx-android-11.0.0_1.2.0
+  rm -rf imx-android-12.0.0_1.0.0.tar.gz imx-android-12.0.0_1.0.0
   sync
 
   # download toolchain
@@ -241,6 +162,31 @@ merge_restricted_extras() {
   mv gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu prebuilts/gcc/linux-x86/aarch64/
   rm -rf gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz
   sync
+
+  # download m4 toolchain
+  wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/12.0/proprietary-package/gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2
+  tar jxvf gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2
+  rm -rf gcc-arm-none-eabi-7-2018-q2-update-linux.tar.bz2
+  sync
+}
+
+get_tn_firmware() {
+  git clone https://oauth2:SbtQ_mC4fvJRA88_9jB7@gitlab.com/technexion-imx/qca_firmware.git
+  cd qca_firmware
+  git checkout caf-wlan/CNSS.LEA.NRT_3.0
+  cd -
+
+  # WiFi
+  mkdir -p "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/
+  cp -rv qca_firmware/qca9377 "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/
+  cp -rv qca_firmware/wlan/cfg.dat "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
+  cp -rv qca_firmware/wlan "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
+
+  # BT
+  cp -rv qca_firmware/qca "${TOP}"/device/nxp/imx8mp/"$TARGET_DEVICE"/bluetooth/
+  sync
+
+  rm -rf qca_firmware
 }
 
 gen_mp_images() {

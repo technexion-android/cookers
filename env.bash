@@ -183,7 +183,7 @@ get_tn_firmware() {
   cp -rv qca_firmware/wlan "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
 
   # BT
-  cp -rv qca_firmware/qca "${TOP}"/device/nxp/imx8mp/"$TARGET_DEVICE"/bluetooth/
+  cp -rv qca_firmware/qca "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/bluetooth/
   sync
 
   rm -rf qca_firmware

@@ -41,6 +41,17 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
       TARGET_DEVICE=edm_g_imx8mp
       TARGET_DEVICE_NAME=imx8mp
       UBOOT_TARGET=imx8mp-edm-g
+
+    elif [[ "$CPU_MODULE" == "edm-g-imx8mm" ]]; then
+    if [[ "$BASEBOARD" == "wandboard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WANDBOARD"
+    fi
+    KERNEL_IMAGE='Image'
+    KERNEL_CONFIG='tn_imx8_android_defconfig'
+    UBOOT_CONFIG='edm-g-imx8mm_android_defconfig'
+    TARGET_DEVICE=edm_g_imx8mm
+    TARGET_DEVICE_NAME=imx8mm
+    UBOOT_TARGET=imx8mm-edm-g-wb
   fi
 fi
 

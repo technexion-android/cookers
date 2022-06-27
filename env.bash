@@ -45,6 +45,8 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
     elif [[ "$CPU_MODULE" == "edm-g-imx8mm" ]]; then
     if [[ "$BASEBOARD" == "wandboard" ]]; then
       export EXPORT_BASEBOARD_NAME="WANDBOARD"
+    elif [[ "$BASEBOARD" == "wizard" ]]; then
+      export EXPORT_BASEBOARD_NAME="WIZARD"
     fi
     KERNEL_IMAGE='Image'
     KERNEL_CONFIG='tn_imx8_android_defconfig'

@@ -3,6 +3,8 @@
 # Technexion
 #############################
 
+[[ -z ${BASH_SOURCE} ]] && { echo -e "\nPlase execute $0 with bash ....\n"; return 1; }
+
 TOP="${PWD}"
 PATH_KERNEL="${PWD}/vendor/nxp-opensource/kernel_imx"
 PATH_UBOOT="${PWD}/vendor/nxp-opensource/uboot-imx"
@@ -210,6 +212,7 @@ merge_restricted_extras() {
 	local _imx_android_ver="android-${_android_ver}.0_1.2.0"
 	local _toolchain_ver="9.2-2019.12"
 	local _imx_rel_pkg="imx-${_imx_android_ver}"
+
 	wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/${_android_ver}/proprietary-package/${_imx_rel_pkg}.tar.gz
 	tar zxf ${_imx_rel_pkg}.tar.gz && sync
 	# prebuilt libraries
@@ -217,7 +220,7 @@ merge_restricted_extras() {
 	cat EULA.txt
 
 	while true; do
-		read -p $'\e[31mCould you agree this EULA and keep install packages?' yn
+		read -p $'\e[31mCould you agree this EULA and keep install packages?\e[0m(yes/no) ' yn
 		case $yn in
 			[Yy]* ) break;;
 			[Nn]* ) rm -rf ${_imx_rel_pkg}.tar.gz ${_imx_rel_pkg}; sync; exit;;
@@ -232,14 +235,15 @@ merge_restricted_extras() {
 
 	unset _imx_rel_pkg
 
+	local _arm_toolchain="gcc-arm-${_toolchain_ver}-x86_64-aarch64-none-linux-gnu"
 	local _dest="${TOP}/prebuilts/gcc/linux-x86/aarch64"
 	mkdir -p "${_dest}"
 	# download toolchain
-	local _arm_toolchain_site="https://developer.arm.com/-/media/Files/downloads/gnu-a/${_toolchain_ver}/binrel"
-	wget -c -t 0 --timeout=60 --waitretry=60 -P ${_dest} ${_arm_toolchain_site}/${_arm_toolchain}.tar.xz
+	local _arm_toolchain_url="https://developer.arm.com/-/media/Files/downloads/gnu-a/${_toolchain_ver}/binrel"
+	wget -c -t 0 --timeout=60 --waitretry=60 -P ${_dest} ${_arm_toolchain_url}/${_arm_toolchain}.tar.xz
 	tar xf ${_dest}/${_arm_toolchain}.tar.xz -C "${_dest}" && sync
 	rm -rf ${_dest}/${_arm_toolchain}.tar.xz
-	unset _arm_toolchain_site
+	unset _arm_toolchain_url
 
 
 	unset _imx_android_ver _toolchain_ver _arm_toolchain _dest

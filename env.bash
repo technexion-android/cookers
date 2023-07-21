@@ -214,7 +214,7 @@ merge_restricted_extras() {
 	local _imx_rel_pkg="imx-${_imx_android_ver}"
 
 	wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/${_android_ver}/proprietary-package/${_imx_rel_pkg}.tar.gz
-	tar zxf ${_imx_rel_pkg}.tar.gz && sync
+	tar -zxf ${_imx_rel_pkg}.tar.gz && sync
 	# prebuilt libraries
 	cp -rv ${_imx_rel_pkg}/EULA.txt ${TOP}
 	cat EULA.txt
@@ -241,7 +241,7 @@ merge_restricted_extras() {
 	# download toolchain
 	local _arm_toolchain_url="https://developer.arm.com/-/media/Files/downloads/gnu-a/${_toolchain_ver}/binrel"
 	wget -c -t 0 --timeout=60 --waitretry=60 -P ${_dest} ${_arm_toolchain_url}/${_arm_toolchain}.tar.xz
-	tar xf ${_dest}/${_arm_toolchain}.tar.xz -C "${_dest}" && sync
+	tar -xf ${_dest}/${_arm_toolchain}.tar.xz -C "${_dest}" && sync
 	rm -rf ${_dest}/${_arm_toolchain}.tar.xz
 	unset _arm_toolchain_url
 

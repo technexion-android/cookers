@@ -136,9 +136,7 @@ build_uboot() {
 	export CROSS_COMPILE=${AARCH64_GCC_CROSS_COMPILE}
 	echo "PATH_UBOOT = ${PATH_UBOOT}"
 	cd "${PATH_UBOOT}"
-	echo "CMD: ${_make_cmd} $UBOOT_CONFIG"
 	${_make_cmd} $UBOOT_CONFIG || return $?
-	echo "CMD: ${_make_cmd}"
 	${_make_cmd} || return $?
 
 	gen_flash_bin
@@ -147,11 +145,11 @@ build_uboot() {
 }
 
 build_kernel() {
-	./imx-make.sh kernel "$@"
+	${TOP}/imx-make.sh kernel "$@"
 	return $?
 }
 cook() {
-	local TMP_PWD="${PWD}"
+	local TMP_PWD="$(pwd)"
 
 	toolchain_setup
 
@@ -159,20 +157,17 @@ cook() {
 		"${TOP}")
 			[[ -z ${TARGET_DEVICE} ]] && _error_exit "Variable TARGET_DEVICE can not empty"
 			cd ${PATH_UBOOT} && throw "$@" || return $?
-			cd "${TMP_PWD}"
+			cd "${TOP}"
 			source build/envsetup.sh
 			lunch "$TARGET_DEVICE"-userdebug
 			./imx-make.sh "$@" || return $?
+			gen_flash_bin
 			;;
 		"${PATH_KERNEL}"*)
-			cd "${TMP_PWD}"
 			build_kernel "$@" || _error_exit "Build Kernel Fail"
-			#./imx-make.sh kernel "$@" || return $?
 			;;
 		"${PATH_UBOOT}"*)
-			cd "${TMP_PWD}"
 			build_uboot "$@" || _error_exit "Build U-Boot Fail"
-			#make "$@" || return $?
 			;;
 		*)
 			echo -e "Error: outside the project" >&2
@@ -283,9 +278,9 @@ gen_mp_images() {
 	cp -rv "${PATH_OUT}"/system*.img ${_workdir}
 	cp -rv "${PATH_OUT}"/product.img ${_workdir}
 	cp -rv "${PATH_OUT}"/super*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/flash.bin ${_workdir}
 	cp -rv "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx ${_workdir}
 	cp -rv "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx ${_workdir}
+	cp -rv "${PATH_OUT}"/flash.bin ${_workdir}
 	cp -rv "${PATH_OUT}"/u-boot.bin ${_workdir}
 
 	cp -rv device/nxp/common/tools/uuu_imx_android_flash.sh ${_workdir}

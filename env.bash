@@ -264,7 +264,6 @@ get_tn_firmware() {
 }
 
 gen_mp_images() {
-
 	PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
 	local _workdir="auto_test/"
 
@@ -283,11 +282,17 @@ gen_mp_images() {
 	cp -rv "${PATH_OUT}"/flash.bin ${_workdir}
 	cp -rv "${PATH_OUT}"/u-boot.bin ${_workdir}
 
-	cp -rv device/nxp/common/tools/uuu_imx_android_flash.sh ${_workdir}
-	cp -rv device/nxp/common/tools/uuu_imx_android_flash.bat ${_workdir}
-	cp -rv device/nxp/common/tools/imx-sdcard-partition-gen_image.sh ${_workdir}
-	cp -rv device/nxp/common/tools/imx-sdcard-partition.sh ${_workdir}
+	cp -rv ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.sh ${_workdir}
+	cp -rv ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.bat ${_workdir}
+	cp -rv ${TOP}/device/nxp/common/tools/imx-sdcard-partition.sh ${_workdir}
+
+	cp -rv ${TOP}/vendor/technexion/utils/imx-sdcard-partition-gen_image.sh ${_workdir}
+	cp -rv ${TOP}/vendor/technexion/utils/mfgtools/uuu ${_workdir}
+	cp -rv ${TOP}/vendor/technexion/utils/mfgtools/uuu.exe ${_workdir}
+	cp -rv ${TOP}/vendor/technexion/utils/mfgtools/UUU-3.pdf ${_workdir}
 	sync
+
+	chmod a+x ${_workdir}/uuu
 
 	unset _workdir
 }

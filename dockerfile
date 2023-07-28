@@ -45,7 +45,7 @@ RUN apt-get -q update &&\
  kmod cgpt bsdmainutils lzip hdparm\
  && ln -fs /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
  && dpkg-reconfigure -f noninteractive tzdata\
- && apt-get -q autoremove
+ && apt-get -q autoremove\
  && apt-get -q clean -y && rm -rf /var/lib/apt/lists/* && rm -f /var/cache/apt/*.bin
 
 RUN curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/bin/repo && \

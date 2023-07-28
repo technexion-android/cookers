@@ -211,7 +211,7 @@ merge_restricted_extras() {
 	wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/${_android_ver}/proprietary-package/${_imx_rel_pkg}.tar.gz
 	tar -zxf ${_imx_rel_pkg}.tar.gz && sync
 	# prebuilt libraries
-	cp -rv ${_imx_rel_pkg}/EULA.txt ${TOP}
+	cp -r ${_imx_rel_pkg}/EULA.txt ${TOP}
 	cat EULA.txt
 
 	while true; do
@@ -223,8 +223,8 @@ merge_restricted_extras() {
 		esac
 	done
 
-	cp -rv ${_imx_rel_pkg}/vendor/nxp/* ${TOP}/vendor/nxp/
-	cp -rv ${_imx_rel_pkg}/SCR* ${TOP}
+	cp -r ${_imx_rel_pkg}/vendor/nxp/* ${TOP}/vendor/nxp/
+	cp -r ${_imx_rel_pkg}/SCR* ${TOP}
 	sync
 	rm -rf ${_imx_rel_pkg}.tar.gz ${_imx_rel_pkg}
 
@@ -252,12 +252,12 @@ get_tn_firmware() {
 
 	# WiFi
 	mkdir -p "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/
-	cp -rv qca_firmware/qca9377 "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/
-	cp -rv qca_firmware/wlan/cfg.dat "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
-	cp -rv qca_firmware/wlan "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
+	cp -r qca_firmware/qca9377 "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/
+	cp -r qca_firmware/wlan/cfg.dat "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
+	cp -r qca_firmware/wlan "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
 
 	# BT
-	cp -rv qca_firmware/qca "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/bluetooth/
+	cp -r qca_firmware/qca "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/bluetooth/
 	sync
 
 	rm -rf qca_firmware
@@ -268,28 +268,28 @@ gen_mp_images() {
 	local _workdir="auto_test/"
 
 	mkdir -p ${_workdir}
-	cp -rv "${PATH_OUT}"/init_boot*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/boot*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/dtbo*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/partition-table*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/vbmeta*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/vendor*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/system*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/product.img ${_workdir}
-	cp -rv "${PATH_OUT}"/super*.img ${_workdir}
-	cp -rv "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx ${_workdir}
-	cp -rv "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx ${_workdir}
-	cp -rv "${PATH_OUT}"/flash.bin ${_workdir}
-	cp -rv "${PATH_OUT}"/u-boot.bin ${_workdir}
+	cp -r "${PATH_OUT}"/init_boot*.img ${_workdir}
+	cp -r "${PATH_OUT}"/boot*.img ${_workdir}
+	cp -r "${PATH_OUT}"/dtbo*.img ${_workdir}
+	cp -r "${PATH_OUT}"/partition-table*.img ${_workdir}
+	cp -r "${PATH_OUT}"/vbmeta*.img ${_workdir}
+	cp -r "${PATH_OUT}"/vendor*.img ${_workdir}
+	cp -r "${PATH_OUT}"/system*.img ${_workdir}
+	cp -r "${PATH_OUT}"/product.img ${_workdir}
+	cp -r "${PATH_OUT}"/super*.img ${_workdir}
+	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx ${_workdir}
+	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx ${_workdir}
+	cp -r "${PATH_OUT}"/flash.bin ${_workdir}
+	cp -r "${PATH_OUT}"/u-boot.bin ${_workdir}
 
-	cp -rv ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.sh ${_workdir}
-	cp -rv ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.bat ${_workdir}
-	cp -rv ${TOP}/device/nxp/common/tools/imx-sdcard-partition.sh ${_workdir}
+	cp -r ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.sh ${_workdir}
+	cp -r ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.bat ${_workdir}
+	cp -r ${TOP}/device/nxp/common/tools/imx-sdcard-partition.sh ${_workdir}
 
-	cp -rv ${TOP}/vendor/technexion/utils/imx-sdcard-partition-gen_image.sh ${_workdir}
-	cp -rv ${TOP}/vendor/technexion/utils/mfgtools/uuu ${_workdir}
-	cp -rv ${TOP}/vendor/technexion/utils/mfgtools/uuu.exe ${_workdir}
-	cp -rv ${TOP}/vendor/technexion/utils/mfgtools/UUU-3.pdf ${_workdir}
+	cp -r ${TOP}/vendor/technexion/utils/imx-sdcard-partition-gen_image.sh ${_workdir}
+	cp -r ${TOP}/vendor/technexion/utils/mfgtools/uuu ${_workdir}
+	cp -r ${TOP}/vendor/technexion/utils/mfgtools/uuu.exe ${_workdir}
+	cp -r ${TOP}/vendor/technexion/utils/mfgtools/UUU-3.pdf ${_workdir}
 	sync
 
 	chmod a+x ${_workdir}/uuu

@@ -245,19 +245,23 @@ merge_restricted_extras() {
 }
 
 get_tn_firmware() {
+	local _tn_fw_dir="${TOP}/vendor/technexion"
+
 	git clone https://oauth2:SbtQ_mC4fvJRA88_9jB7@gitlab.com/technexion-imx/qca_firmware.git
 	cd qca_firmware
 	git checkout caf-wlan/CNSS.LEA.NRT_3.0
 	cd -
 
 	# WiFi
-	mkdir -p "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/
-	cp -r qca_firmware/qca9377 "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/
-	cp -r qca_firmware/wlan/cfg.dat "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
-	cp -r qca_firmware/wlan "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/wifi-firmware/qca9377/
+	local _tn_wifi_dir="${_tn_fw_dir}/wifi/qcom/firmware"
+	mkdir -p "${_tn_wifi_dir}"
+	cp -rv qca_firmware/qca9377 "${_tn_wifi_dir}/"
+	cp -rv qca_firmware/wlan "${_tn_wifi_dir}/qca9377/"
+	#cp -rv qca_firmware/wlan/cfg.dat "${_tn_wifi_dir}/qca9377/wlan/"
 
 	# BT
-	cp -r qca_firmware/qca "${TOP}"/device/nxp/imx8m/"$TARGET_DEVICE"/bluetooth/
+	local _tn_bt_dir="${_tn_fw_dir}/bt/qcom/firmware"
+	cp -rv qca_firmware/qca "${_tn_bt_dir}/"
 	sync
 
 	rm -rf qca_firmware

@@ -261,10 +261,13 @@ get_tn_firmware() {
 
 	# BT
 	local _tn_bt_dir="${_tn_fw_dir}/bt/qcom/firmware"
+	mkdir -p "${_tn_bt_dir}"
 	cp -rv qca_firmware/qca "${_tn_bt_dir}/"
 	sync
 
 	rm -rf qca_firmware
+
+	unset _tn_bt_dir _tn_wifi_dir _tn_fw_dir
 }
 
 gen_mp_images() {

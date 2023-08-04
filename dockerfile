@@ -42,7 +42,7 @@ RUN apt-get -q update &&\
  fontconfig uuid uuid-dev liblzo2-2 liblzo2-dev lzop u-boot-tools mtd-utils android-sdk-libsparse-utils android-sdk-ext4-utils\
  device-tree-compiler gdisk m4 make libssl-dev libghc-gnutls-dev swig libdw-dev dwarves python bc cpio tar lz4 rsync ninja-build clang\
  android-tools-adb gperf software-properties-common sshpass ssh-askpass xz-utils kpartx vim screen sudo wget locales openjdk-8-jdk python3\
- kmod cgpt bsdmainutils lzip hdparm\
+ kmod cgpt bsdmainutils lzip hdparm python3-protobuf\
  && ln -fs /usr/share/zoneinfo/Asia/Taipei /etc/localtime \
  && dpkg-reconfigure -f noninteractive tzdata\
  && apt-get -q autoremove\

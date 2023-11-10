@@ -209,13 +209,13 @@ throw() {
 
 merge_restricted_extras() {
   wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/11.0/proprietary-package/imx-android-11.0.0_1.2.0.tar.gz
-  tar zxvf imx-android-11.0.0_1.2.0.tar.gz
+  tar -zxvf imx-android-11.0.0_1.2.0.tar.gz
   # prebuilt libraries
   cp -rv imx-android-11.0.0_1.2.0/EULA.txt .
   cat EULA.txt
 
   while true; do
-    read -p $'\e[31mCould you agree this EULA and keep install packages?' yn
+    read -p $'\e[31mCould you agree this EULA and keep install packages?\e[0m(yes/no) ' yn
     case $yn in
         [Yy]* ) break;;
         [Nn]* ) rm -rf imx-android-10.0.0-2.5.0.tar.gz imx-android-11.0.0_1.2.0 fsl_aacp_dec_4.5.6; sync; exit;;
@@ -237,7 +237,7 @@ merge_restricted_extras() {
   # download toolchain
   wget -c -t 0 --timeout=60 --waitretry=60 "https://developer.arm.com/-/media/Files/downloads/gnu-a/8.3-2019.03/binrel/gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz?revision=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9&la=en&hash=167687FADA00B73D20EED2A67D0939A197504ACD"
   mv gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz\?revision\=2e88a73f-d233-4f96-b1f4-d8b36e9bb0b9\&la\=en\&hash\=167687FADA00B73D20EED2A67D0939A197504ACD gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz
-  tar Jxvf gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz
+  tar -Jxvf gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz
   mv gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu prebuilts/gcc/linux-x86/aarch64/
   rm -rf gcc-arm-8.3-2019.03-x86_64-aarch64-linux-gnu.tar.xz
   sync

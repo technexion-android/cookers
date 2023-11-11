@@ -267,6 +267,15 @@ gen_mp_images() {
   cp -rv device/nxp/common/tools/imx-sdcard-partition-gen_image.sh auto_test/
   cp -rv device/nxp/common/tools/imx-sdcard-partition.sh auto_test/
   sync
+
+  # Copy TechNexion utilities
+  echo "---->>> Copy TechNexion utilities to auto_test"
+  local _tn_tools_dir="${TOP}/vendor/technexion/utils/mfgtools"
+  local _lst="uuu uuu.exe UUU-3.pdf"
+  for _f in ${_lst}; do
+    cp -rv ${_tn_tools_dir}/${_f} auto_test/
+  done
+  sync
 }
 
 gen_local_images() {

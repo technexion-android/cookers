@@ -294,7 +294,9 @@ gen_mp_images() {
 	cp -r ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.bat ${_workdir}
 	cp -r ${TOP}/device/nxp/common/tools/imx-sdcard-partition.sh ${_workdir}
 
-	cp -r ${TOP}/vendor/technexion/utils/imx-sdcard-partition-gen_image.sh ${_workdir}
+	cp -r ${TOP}/vendor/technexion/utils/gen_sd_image.sh ${_workdir}
+	cp -r ${TOP}/vendor/technexion/utils/tn-imx-sdcard-partition.sh ${_workdir}
+	cp -r ${TOP}/vendor/technexion/utils/tn-android13_14GB.gpt ${_workdir}
 	cp -r ${TOP}/vendor/technexion/utils/mfgtools/uuu ${_workdir}
 	cp -r ${TOP}/vendor/technexion/utils/mfgtools/uuu.exe ${_workdir}
 	cp -r ${TOP}/vendor/technexion/utils/mfgtools/UUU-3.pdf ${_workdir}
@@ -305,29 +307,19 @@ gen_mp_images() {
 	unset _workdir
 }
 
-gen_local_images() {
-	PATH_OUT="${TOP}/out/target/product/${TARGET_DEVICE}"
+gen_sd_image() {
+	local _workdir=${1:-"auto_test"}
+	local _soc=${2:-${TARGET_DEVICE_NAME}}
+	local _sd_size=${3:-"16"}
 
-	img_size="$@"
+	[[ -d ${_workdir} ]] || { _error_msg "Directory ${_workdir} not found, maybe do gen_mp_images first."; return 1; }
+	[[ -z ${_soc} ]] && { _error_msg "SOC name is required."; return 1; }
+	[[ ${_sd_size} -eq 16 || ${_sd_size} -eq 32 ]] || { _error_msg "SD card size is 16 or 32."; return 1; }
+	[[ -f "${_workdir}/dtbo-${_soc}.img" ]] || { _error_msg "Invalid SOC ${_soc}."; return 1; }
 
-	if [[ "$img_size" == "" ]];then
-		img_size=13
-	fi
+	cd ${_workdir}
+	./gen_sd_image.sh ${_soc} ${_sd_size}
+	cd - > /dev/null
 
-	cd "${PATH_OUT}"
-	sudo dd if=/dev/zero of=test.img bs="$img_size"M count=1024
-	sudo kpartx -av test.img
-	loop_dev=$(losetup | grep "test.img" | awk  '{print $1}')
-	sudo ./imx-sdcard-partition-gen_image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
-	sudo kpartx -d test.img
-	sudo kpartx -d "${loop_dev}"
-	sudo losetup -d "${loop_dev}"
-	sync
-	sudo kpartx -av test.img
-	sudo ./imx-sdcard-partition-gen_image.sh -f "$TARGET_DEVICE_NAME" -c "$img_size" "${loop_dev}"
-	sudo kpartx -d test.img
-	sudo kpartx -d "${loop_dev}"
-	sudo losetup -d "${loop_dev}"
-	sync
-#	cd "${TMP_PWD}"
+	unset _workdir _soc _sd_size
 }

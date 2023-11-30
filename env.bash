@@ -256,14 +256,14 @@ get_tn_firmware() {
 	# WiFi
 	local _tn_wifi_dir="${_tn_fw_dir}/wifi/qcom/firmware"
 	mkdir -p "${_tn_wifi_dir}"
-	cp -rv qca_firmware/qca9377 "${_tn_wifi_dir}/"
-	cp -rv qca_firmware/wlan "${_tn_wifi_dir}/qca9377/"
-	#cp -rv qca_firmware/wlan/cfg.dat "${_tn_wifi_dir}/qca9377/wlan/"
+	cp -r qca_firmware/qca9377 "${_tn_wifi_dir}/"
+	cp -r qca_firmware/wlan "${_tn_wifi_dir}/qca9377/"
+	#cp -r qca_firmware/wlan/cfg.dat "${_tn_wifi_dir}/qca9377/wlan/"
 
 	# BT
 	local _tn_bt_dir="${_tn_fw_dir}/bt/qcom/firmware"
 	mkdir -p "${_tn_bt_dir}"
-	cp -rv qca_firmware/qca "${_tn_bt_dir}/"
+	cp -r qca_firmware/qca "${_tn_bt_dir}/"
 	sync
 
 	rm -rf qca_firmware

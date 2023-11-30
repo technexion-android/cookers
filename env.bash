@@ -72,9 +72,8 @@ fi
 PATH_UBOOT_OUTPUT="${PWD}/out/target/product/${TARGET_DEVICE}/obj/UBOOT_OBJ"
 PATH_KERNEL_OUTPUT="${PWD}/out/target/product/${TARGET_DEVICE}/obj/KERNEL_OBJ"
 
-_error_exit() {
-	echo -e "ERROR: ${1}"
-	exit 1
+_error_msg() {
+	echo -e "\033[0;31mERROR: ${1}\033[0;0m"
 }
 
 recipe() {
@@ -125,7 +124,8 @@ gen_flash_bin() {
 			cp -rfv "${_uuu_imx}" "${_prod_out_dir}/${_f}"
 		done
 	else
-		_error_exit "${_uuu_imx} not found"
+		_error_msg "${_uuu_imx} not found"
+		return 1
 	fi
 	unset _f _uuu_imx _prod_out_dir
 }
@@ -148,6 +148,7 @@ build_kernel() {
 	${TOP}/imx-make.sh kernel "$@"
 	return $?
 }
+
 cook() {
 	local TMP_PWD="$(pwd)"
 
@@ -155,7 +156,7 @@ cook() {
 
 	case "${PWD}" in
 		"${TOP}")
-			[[ -z ${TARGET_DEVICE} ]] && _error_exit "Variable TARGET_DEVICE can not empty"
+			[[ -z ${TARGET_DEVICE} ]] && { _error_msg "Variable TARGET_DEVICE can not empty"; return 1; }
 			cd ${PATH_UBOOT} && throw "$@" || return $?
 			cd "${TOP}"
 			source build/envsetup.sh
@@ -164,10 +165,10 @@ cook() {
 			gen_flash_bin
 			;;
 		"${PATH_KERNEL}"*)
-			build_kernel "$@" || _error_exit "Build Kernel Fail"
+			build_kernel "$@" || { _error_msg "Build Kernel Fail"; return 1; }
 			;;
 		"${PATH_UBOOT}"*)
-			build_uboot "$@" || _error_exit "Build U-Boot Fail"
+			build_uboot "$@" || { _error_msg "Build U-Boot Fail"; return 1; }
 			;;
 		*)
 			echo -e "Error: outside the project" >&2

@@ -257,7 +257,7 @@ get_tn_firmware() {
 	local _tn_wifi_dir="${_tn_fw_dir}/wifi/qcom/firmware"
 	mkdir -p "${_tn_wifi_dir}"
 	cp -r qca_firmware/qca9377 "${_tn_wifi_dir}/"
-	cp -r qca_firmware/wlan "${_tn_wifi_dir}/qca9377/"
+	cp -r qca_firmware/wlan "${_tn_wifi_dir}/"
 	#cp -r qca_firmware/wlan/cfg.dat "${_tn_wifi_dir}/qca9377/wlan/"
 
 	# BT

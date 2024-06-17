@@ -28,6 +28,14 @@ export EXPORT_BASEBOARD_NAME=$(tr '[:lower:]' '[:upper:]' <<< ${BASEBOARD})
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
 	case ${CPU_MODULE} in
+		'tek-imx8mp')
+			TARGET_DEVICE_NAME=imx8mp
+			TARGET_DEVICE="tek_${TARGET_DEVICE_NAME}"
+			KERNEL_IMAGE="Image"
+			KERNEL_CONFIG="tn_${CPU_TYPE}_android_defconfig"
+			UBOOT_CONFIG="${CPU_MODULE}_android_defconfig"
+			UBOOT_TARGET="${TARGET_DEVICE_NAME}-tek_android"
+			;;
 		'axon-imx8mp')
 			TARGET_DEVICE_NAME=imx8mp
 			TARGET_DEVICE="axon_${TARGET_DEVICE_NAME}"
@@ -276,6 +284,17 @@ get_tn_firmware() {
 
 	rm -rf qca_firmware
 
+	# Wifi - QCA9377-5 ath10k
+	git clone https://git.codelinaro.org/clo/ath-firmware/ath10k-firmware.git
+	local _tn_wifi_dir="${_tn_fw_dir}/wifi/qcom/firmware/ath10k/QCA9377/hw1.0"
+	mkdir -p "${_tn_wifi_dir}"
+	cp ath10k-firmware/QCA9377/hw1.0/board.bin "${_tn_wifi_dir}/"
+	cp ath10k-firmware/QCA9377/hw1.0/board-2.bin "${_tn_wifi_dir}/"
+	cp ath10k-firmware/QCA9377/hw1.0/CNSS.TF.1.0/firmware-5.bin_CNSS.TF.1.0-00267-QCATFSWPZ-1 "${_tn_wifi_dir}/firmware-5.bin"
+	cp ath10k-firmware/LICENSE.qca_firmware "${_tn_wifi_dir}/"
+
+	rm -rf ath10k-firmware
+
 	unset _tn_bt_dir _tn_wifi_dir _tn_fw_dir
 }
 
@@ -295,6 +314,9 @@ gen_mp_images() {
 	cp -r "${PATH_OUT}"/super*.img ${_workdir}
 	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx ${_workdir}
 	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx ${_workdir}
+	if [[ "$CPU_MODULE" == "tek-imx8mp" ]]; then
+		cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu-fspi.imx ${_workdir}
+	fi
 	cp -r "${PATH_OUT}"/flash.bin ${_workdir}
 	cp -r "${PATH_OUT}"/u-boot.bin ${_workdir}
 

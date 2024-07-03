@@ -36,6 +36,14 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
 			UBOOT_CONFIG="${CPU_MODULE}_android_defconfig"
 			UBOOT_TARGET="${TARGET_DEVICE_NAME}-tek_android"
 			;;
+		'tep-imx8mp')
+			TARGET_DEVICE_NAME=imx8mp
+			TARGET_DEVICE="tep_${TARGET_DEVICE_NAME}"
+			KERNEL_IMAGE="Image"
+			KERNEL_CONFIG="tn_${CPU_TYPE}_android_defconfig"
+			UBOOT_CONFIG="${CPU_MODULE}_android_defconfig"
+			UBOOT_TARGET="${TARGET_DEVICE_NAME}-tep_android"
+			;;
 		'axon-imx8mp')
 			TARGET_DEVICE_NAME=imx8mp
 			TARGET_DEVICE="axon_${TARGET_DEVICE_NAME}"
@@ -314,7 +322,7 @@ gen_mp_images() {
 	cp -r "${PATH_OUT}"/super*.img ${_workdir}
 	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx ${_workdir}
 	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx ${_workdir}
-	if [[ "$CPU_MODULE" == "tek-imx8mp" ]]; then
+	if [[ "$CPU_MODULE" == "tek-imx8mp" ]] || [[ "$CPU_MODULE" == "tep-imx8mp" ]]; then
 		cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu-fspi.imx ${_workdir}
 	fi
 	cp -r "${PATH_OUT}"/flash.bin ${_workdir}

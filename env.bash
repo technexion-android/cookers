@@ -132,7 +132,7 @@ toolchain_setup() {
 	local _toolchain_ver="9.2-2019.12"
 	local _toolchain_trg="${_trg_arch}-none-linux-gnu"
 
-	ARM_TOOLCAIN="${TOP}/prebuilts/gcc/linux-x86/aarch64/gcc-arm-${_toolchain_ver}-x86_64-${_toolchain_trg}"
+	export ARM_TOOLCAIN="${TOP}/prebuilts/gcc/linux-x86/aarch64/gcc-arm-${_toolchain_ver}-x86_64-${_toolchain_trg}"
 	export AARCH64_GCC_CROSS_COMPILE="${ARM_TOOLCAIN}/bin/${_toolchain_trg}-"
 	export CLANG_PATH="${TOP}/prebuilts/clang/host/linux-x86"
 

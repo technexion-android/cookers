@@ -28,6 +28,14 @@ export EXPORT_BASEBOARD_NAME=$(tr '[:lower:]' '[:upper:]' <<< ${BASEBOARD})
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
 	case ${CPU_MODULE} in
+		'pico-imx8mq')
+			TARGET_DEVICE_NAME=imx8mq
+			TARGET_DEVICE="pico_${TARGET_DEVICE_NAME}"
+			KERNEL_IMAGE="Image"
+			KERNEL_CONFIG="tn_${CPU_TYPE}_android_defconfig"
+			UBOOT_CONFIG="${CPU_MODULE}_android_defconfig"
+			UBOOT_TARGET="${TARGET_DEVICE_NAME}-pico-${BASEBOARD}_android"
+			;;
 		'pico-imx8mm')
 			TARGET_DEVICE_NAME=imx8mm
 			TARGET_DEVICE="pico_${TARGET_DEVICE_NAME}"

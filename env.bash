@@ -27,6 +27,7 @@ OUTPUT_DISPLAY=$(echo $MODULE | awk -F. '{print $6}')
 export EXPORT_BASEBOARD_NAME=$(tr '[:lower:]' '[:upper:]' <<< ${BASEBOARD})
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
+	QSPI_SUPPORT="no"
 	case ${CPU_MODULE} in
 		'pico-imx8mq')
 			TARGET_DEVICE_NAME=imx8mq
@@ -51,6 +52,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
 			KERNEL_CONFIG="tn_${CPU_TYPE}_android_defconfig"
 			UBOOT_CONFIG="${CPU_MODULE}_android_defconfig"
 			UBOOT_TARGET="${TARGET_DEVICE_NAME}-tek_android"
+			QSPI_SUPPORT="yes"
 			;;
 		'tep-imx8mp')
 			TARGET_DEVICE_NAME=imx8mp
@@ -59,6 +61,7 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
 			KERNEL_CONFIG="tn_${CPU_TYPE}_android_defconfig"
 			UBOOT_CONFIG="${CPU_MODULE}_android_defconfig"
 			UBOOT_TARGET="${TARGET_DEVICE_NAME}-tep_android"
+			QSPI_SUPPORT="yes"
 			;;
 		'axon-imx8mp')
 			TARGET_DEVICE_NAME=imx8mp
@@ -338,7 +341,7 @@ gen_mp_images() {
 	cp -r "${PATH_OUT}"/super*.img ${_workdir}
 	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx ${_workdir}
 	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx ${_workdir}
-	if [[ "$CPU_MODULE" == "tek-imx8mp" ]] || [[ "$CPU_MODULE" == "tep-imx8mp" ]]; then
+	if [[ "$QSPI_SUPPORT" == "yes" ]]; then
 		cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu-fspi.imx ${_workdir}
 	fi
 	cp -r "${PATH_OUT}"/flash.bin ${_workdir}

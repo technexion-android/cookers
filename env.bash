@@ -145,10 +145,10 @@ toolchain_setup() {
 	PATH="$JAVA_HOME/bin:${PATH}"
 
 	local _trg_arch="aarch64"
-	local _toolchain_ver="9.2-2019.12"
+	local _toolchain_ver="12.3.rel1"
 	local _toolchain_trg="${_trg_arch}-none-linux-gnu"
 
-	export ARM_TOOLCAIN="${TOP}/prebuilts/gcc/linux-x86/aarch64/gcc-arm-${_toolchain_ver}-x86_64-${_toolchain_trg}"
+	export ARM_TOOLCAIN="${TOP}/prebuilts/gcc/linux-x86/aarch64/arm-gnu-toolchain-${_toolchain_ver}-x86_64-${_toolchain_trg}"
 	export AARCH64_GCC_CROSS_COMPILE="${ARM_TOOLCAIN}/bin/${_toolchain_trg}-"
 	export CLANG_PATH="${TOP}/prebuilts/clang/host/linux-x86"
 
@@ -200,7 +200,7 @@ cook() {
 			cd ${PATH_UBOOT} && throw "$@" || return $?
 			cd "${TOP}"
 			source build/envsetup.sh
-			lunch "$TARGET_DEVICE"-userdebug
+			lunch "$TARGET_DEVICE"-trunk_staging-userdebug
 			./imx-make.sh "$@" || return $?
 			gen_flash_bin
 			;;
@@ -244,9 +244,9 @@ throw() {
 }
 
 merge_restricted_extras() {
-	local _android_ver="13.0"
-	local _imx_android_ver="android-${_android_ver}.0_1.2.0"
-	local _toolchain_ver="9.2-2019.12"
+	local _android_ver="14.0"
+	local _imx_android_ver="android-${_android_ver}.0_2.2.0"
+	local _toolchain_ver="12.3.rel1"
 	local _imx_rel_pkg="imx-${_imx_android_ver}"
 
 	wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/${_android_ver}/proprietary-package/${_imx_rel_pkg}.tar.gz
@@ -271,11 +271,11 @@ merge_restricted_extras() {
 
 	unset _imx_rel_pkg
 
-	local _arm_toolchain="gcc-arm-${_toolchain_ver}-x86_64-aarch64-none-linux-gnu"
+	local _arm_toolchain="arm-gnu-toolchain-${_toolchain_ver}-x86_64-aarch64-none-linux-gnu"
 	local _dest="${TOP}/prebuilts/gcc/linux-x86/aarch64"
 	mkdir -p "${_dest}"
 	# download toolchain
-	local _arm_toolchain_url="https://developer.arm.com/-/media/Files/downloads/gnu-a/${_toolchain_ver}/binrel"
+	local _arm_toolchain_url="https://developer.arm.com/-/media/Files/downloads/gnu/${_toolchain_ver}/binrel"
 	wget -c -t 0 --timeout=60 --waitretry=60 -P ${_dest} ${_arm_toolchain_url}/${_arm_toolchain}.tar.xz
 	tar -xf ${_dest}/${_arm_toolchain}.tar.xz -C "${_dest}" && sync
 	rm -rf ${_dest}/${_arm_toolchain}.tar.xz

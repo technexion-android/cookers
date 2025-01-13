@@ -1,4 +1,4 @@
-# Technexion Android 13 BSP for i.MX8 Platforms
+# Technexion Android 14 BSP
 
 **How to generate the Android images?**
-Please refer to TechNexion Android13 Document - [Setup, Build, and Flashing](https://developer.technexion.com/docs/android13-setup-build-and-flashing)
+Please refer to TechNexion Android14 Document - [Setup, Build, and Flashing](https://developer.technexion.com/docs/android14-setup-build-and-flashing)

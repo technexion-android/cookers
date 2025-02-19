@@ -353,7 +353,6 @@ gen_mp_images() {
 
 	cp -r ${TOP}/vendor/technexion/utils/gen_sd_image.sh ${_workdir}
 	cp -r ${TOP}/vendor/technexion/utils/tn-imx-sdcard-partition.sh ${_workdir}
-	cp -r ${TOP}/vendor/technexion/utils/tn-android13_14GB.gpt ${_workdir}
 	cp -r ${TOP}/vendor/technexion/utils/mfgtools/uuu ${_workdir}
 	cp -r ${TOP}/vendor/technexion/utils/mfgtools/uuu.exe ${_workdir}
 	cp -r ${TOP}/vendor/technexion/utils/mfgtools/UUU-3.pdf ${_workdir}

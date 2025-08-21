@@ -204,7 +204,9 @@ cook() {
 			cd ${PATH_UBOOT} && throw "$@" || return $?
 			cd "${TOP}"
 			source build/envsetup.sh
-			lunch "$TARGET_DEVICE"-trunk_staging-userdebug
+			export TARGET_RELEASE=nxp_stable
+			build_build_var_cache
+			lunch "$TARGET_DEVICE"-nxp_stable-userdebug
 			./imx-make.sh "$@" || return $?
 			gen_flash_bin
 			;;

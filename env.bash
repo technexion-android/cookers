@@ -284,6 +284,13 @@ merge_restricted_extras() {
 	rm -rf ${_dest}/${_arm_toolchain}.tar.xz
 	unset _arm_toolchain_url
 
+	# kernel 6.12 build tools
+	local _kernel_ver="6.12"
+	local _kernel_tool="android-kernel-prebuilts-${_kernel_ver}.tar.gz"
+	wget -c -t 0 --timeout=60 --waitretry=60 https://download.technexion.com/development_resources/NXP/android/${_android_ver}/${_kernel_tool}
+	sudo tar -zxf ${_kernel_tool} -C "/opt/" && sync
+	rm -rf ${_kernel_tool}
+	unset _kernel_ver _kernel_tool
 
 	unset _imx_android_ver _toolchain_ver _arm_toolchain _dest
 }

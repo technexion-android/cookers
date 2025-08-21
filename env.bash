@@ -247,12 +247,12 @@ throw() {
 }
 
 merge_restricted_extras() {
-	local _android_ver="14.0"
-	local _imx_android_ver="android-${_android_ver}.0_2.2.0"
+	local _android_ver="15.0"
+	local _imx_android_ver="android-${_android_ver}.0_2.0.0"
 	local _toolchain_ver="12.3.rel1"
 	local _imx_rel_pkg="imx-${_imx_android_ver}"
 
-	wget -c -t 0 --timeout=60 --waitretry=60 https://ftp.technexion.com/development_resources/NXP/android/${_android_ver}/proprietary-package/${_imx_rel_pkg}.tar.gz
+	wget -c -t 0 --timeout=60 --waitretry=60 https://download.technexion.com/development_resources/NXP/android/${_android_ver}/proprietary-package/${_imx_rel_pkg}.tar.gz
 	tar -zxf ${_imx_rel_pkg}.tar.gz && sync
 	# prebuilt libraries
 	cp -r ${_imx_rel_pkg}/EULA.txt ${TOP}

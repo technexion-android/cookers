@@ -150,12 +150,13 @@ toolchain_setup() {
 	local _trg_arch="aarch64"
 	local _toolchain_ver="12.3.rel1"
 	local _toolchain_trg="${_trg_arch}-none-linux-gnu"
+	local _kernel_ver="6.12"
 
 	export ARM_TOOLCAIN="${TOP}/prebuilts/gcc/linux-x86/aarch64/arm-gnu-toolchain-${_toolchain_ver}-x86_64-${_toolchain_trg}"
 	export AARCH64_GCC_CROSS_COMPILE="${ARM_TOOLCAIN}/bin/${_toolchain_trg}-"
-	export CLANG_PATH="${TOP}/prebuilts/clang/host/linux-x86"
+	export KERNEL_PREBUILTS_PATH="/opt/android-kernel-prebuilts-${_kernel_ver}"
 
-	unset _toolchain_ver _toolchain_trg _trg_arch
+	unset _toolchain_ver _toolchain_trg _trg_arch _kernel_ver
 }
 
 gen_flash_bin() {

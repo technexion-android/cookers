@@ -354,8 +354,6 @@ gen_mp_images() {
 	if [[ "$QSPI_SUPPORT" == "yes" ]]; then
 		cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu-fspi.imx ${_workdir}
 	fi
-	cp -r "${PATH_OUT}"/flash.bin ${_workdir}
-	cp -r "${PATH_OUT}"/u-boot.bin ${_workdir}
 
 	cp -r ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.sh ${_workdir}
 	cp -r ${TOP}/device/nxp/common/tools/uuu_imx_android_flash.bat ${_workdir}

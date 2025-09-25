@@ -156,7 +156,11 @@ toolchain_setup() {
 	export AARCH64_GCC_CROSS_COMPILE="${ARM_TOOLCAIN}/bin/${_toolchain_trg}-"
 	export KERNEL_PREBUILTS_PATH="/opt/android-kernel-prebuilts-${_kernel_ver}"
 
-	unset _toolchain_ver _toolchain_trg _trg_arch _kernel_ver
+	local _toolchain32_trg="arm-none-eabi"
+	export ARM32_TOOLCHAIN="${TOP}/prebuilts/gcc/linux-x86/aarch32/arm-gnu-toolchain-${_toolchain_ver}-x86_64-${_toolchain32_trg}"
+	export AARCH32_GCC_CROSS_COMPILE="${ARM32_TOOLCHAIN}/bin/${_toolchain32_trg}-"
+
+	unset _toolchain_ver _toolchain_trg _trg_arch _kernel_ver _toolchain32_trg
 }
 
 gen_flash_bin() {
@@ -277,11 +281,20 @@ merge_restricted_extras() {
 
 	unset _imx_rel_pkg
 
+	# arm64
 	local _arm_toolchain="arm-gnu-toolchain-${_toolchain_ver}-x86_64-aarch64-none-linux-gnu"
 	local _dest="${TOP}/prebuilts/gcc/linux-x86/aarch64"
 	mkdir -p "${_dest}"
 	# download toolchain
 	local _arm_toolchain_url="https://developer.arm.com/-/media/Files/downloads/gnu/${_toolchain_ver}/binrel"
+	wget -c -t 0 --timeout=60 --waitretry=60 -P ${_dest} ${_arm_toolchain_url}/${_arm_toolchain}.tar.xz
+	tar -xf ${_dest}/${_arm_toolchain}.tar.xz -C "${_dest}" && sync
+	rm -rf ${_dest}/${_arm_toolchain}.tar.xz
+
+	# arm32
+	local _arm_toolchain="arm-gnu-toolchain-${_toolchain_ver}-x86_64-arm-none-eabi"
+	local _dest="${TOP}/prebuilts/gcc/linux-x86/aarch32"
+	mkdir -p "${_dest}"
 	wget -c -t 0 --timeout=60 --waitretry=60 -P ${_dest} ${_arm_toolchain_url}/${_arm_toolchain}.tar.xz
 	tar -xf ${_dest}/${_arm_toolchain}.tar.xz -C "${_dest}" && sync
 	rm -rf ${_dest}/${_arm_toolchain}.tar.xz

@@ -309,6 +309,12 @@ merge_restricted_extras() {
 	unset _kernel_ver _kernel_tool
 
 	unset _imx_android_ver _toolchain_ver _arm_toolchain _dest
+
+	# WA: IW612 fw
+	local _iw612_fw="sduart_nw61x_v1.bin.se"
+	wget -c -t 0 --timeout=60 --waitretry=60 https://download.technexion.com/development_resources/NXP/android/${_android_ver}/imx-firmware/${_iw612_fw}
+	mv ${_iw612_fw} ${TOP}/vendor/nxp/imx-firmware/nxp/FwImage_IW612_SD/${_iw612_fw}
+	unset _iw612_fw
 }
 
 get_tn_firmware() {

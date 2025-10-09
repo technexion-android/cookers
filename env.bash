@@ -345,6 +345,7 @@ gen_mp_images() {
 	cp -r "${PATH_OUT}"/dtbo*.img ${_workdir}
 	cp -r "${PATH_OUT}"/partition-table*.img ${_workdir}
 	cp ${_workdir}/partition-table.img ${_workdir}/partition-table-28GB.img
+	cp ${_workdir}/partition-table-dual.img ${_workdir}/partition-table-28GB-dual.img
 	cp -r "${PATH_OUT}"/vbmeta*.img ${_workdir}
 	cp -r "${PATH_OUT}"/vendor*.img ${_workdir}
 	cp -r "${PATH_OUT}"/system*.img ${_workdir}

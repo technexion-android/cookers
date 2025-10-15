@@ -28,6 +28,7 @@ export EXPORT_BASEBOARD_NAME=$(tr '[:lower:]' '[:upper:]' <<< ${BASEBOARD})
 
 if [[ "$CPU_TYPE" == "imx8" ]]; then
 	QSPI_SUPPORT="no"
+	CPU_TYPE=imx_v8
 	case ${CPU_MODULE} in
 		'pico-imx8mq')
 			TARGET_DEVICE_NAME=imx8mq

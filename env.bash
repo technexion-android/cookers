@@ -106,6 +106,14 @@ if [[ "$CPU_TYPE" == "imx8" ]]; then
 			UBOOT_CONFIG='imx8mm_evk_android_defconfig'
 			UBOOT_TARGET=evk_8mm
 			;;
+		'edm-imx95')
+			TARGET_DEVICE_NAME=imx95
+			TARGET_DEVICE="edm_${TARGET_DEVICE_NAME}"
+			KERNEL_IMAGE="Image"
+			KERNEL_CONFIG="tn_${CPU_TYPE}_android_defconfig"
+			UBOOT_CONFIG="${CPU_MODULE}_android_defconfig"
+			UBOOT_TARGET="${TARGET_DEVICE_NAME}-edm-${BASEBOARD}_android"
+			;;
 		*)
 			echo "ERROR: Unsupported ${CPU_MODULE}"
 			exit 1

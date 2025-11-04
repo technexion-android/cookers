@@ -158,6 +158,7 @@ toolchain_setup() {
 
 	local _trg_arch="aarch64"
 	local _toolchain_ver="12.3.rel1"
+	local _toolchain_ver_32="14.2.rel1"
 	local _toolchain_trg="${_trg_arch}-none-linux-gnu"
 	local _kernel_ver="6.12"
 
@@ -166,10 +167,10 @@ toolchain_setup() {
 	export KERNEL_PREBUILTS_PATH="/opt/android-kernel-prebuilts-${_kernel_ver}"
 
 	local _toolchain32_trg="arm-none-eabi"
-	export ARM32_TOOLCHAIN="${TOP}/prebuilts/gcc/linux-x86/aarch32/arm-gnu-toolchain-${_toolchain_ver}-x86_64-${_toolchain32_trg}"
+	export ARM32_TOOLCHAIN="${TOP}/prebuilts/gcc/linux-x86/aarch32/arm-gnu-toolchain-${_toolchain_ver_32}-x86_64-${_toolchain32_trg}"
 	export AARCH32_GCC_CROSS_COMPILE="${ARM32_TOOLCHAIN}/bin/${_toolchain32_trg}-"
 
-	unset _toolchain_ver _toolchain_trg _trg_arch _kernel_ver _toolchain32_trg
+	unset _toolchain_ver _toolchain_ver_32 _toolchain_trg _trg_arch _kernel_ver _toolchain32_trg
 }
 
 gen_flash_bin() {
@@ -266,6 +267,7 @@ merge_restricted_extras() {
 	local _android_ver="15.0"
 	local _imx_android_ver="android-${_android_ver}.0_2.0.0"
 	local _toolchain_ver="12.3.rel1"
+	local _toolchain_ver_32="14.2.rel1"
 	local _imx_rel_pkg="imx-${_imx_android_ver}"
 
 	wget -c -t 0 --timeout=60 --waitretry=60 https://download.technexion.com/development_resources/NXP/android/${_android_ver}/proprietary-package/${_imx_rel_pkg}.tar.gz
@@ -299,11 +301,13 @@ merge_restricted_extras() {
 	wget -c -t 0 --timeout=60 --waitretry=60 -P ${_dest} ${_arm_toolchain_url}/${_arm_toolchain}.tar.xz
 	tar -xf ${_dest}/${_arm_toolchain}.tar.xz -C "${_dest}" && sync
 	rm -rf ${_dest}/${_arm_toolchain}.tar.xz
+	unset _arm_toolchain_url
 
 	# arm32
-	local _arm_toolchain="arm-gnu-toolchain-${_toolchain_ver}-x86_64-arm-none-eabi"
+	local _arm_toolchain="arm-gnu-toolchain-${_toolchain_ver_32}-x86_64-arm-none-eabi"
 	local _dest="${TOP}/prebuilts/gcc/linux-x86/aarch32"
 	mkdir -p "${_dest}"
+	local _arm_toolchain_url="https://developer.arm.com/-/media/Files/downloads/gnu/${_toolchain_ver_32}/binrel"
 	wget -c -t 0 --timeout=60 --waitretry=60 -P ${_dest} ${_arm_toolchain_url}/${_arm_toolchain}.tar.xz
 	tar -xf ${_dest}/${_arm_toolchain}.tar.xz -C "${_dest}" && sync
 	rm -rf ${_dest}/${_arm_toolchain}.tar.xz
@@ -317,7 +321,7 @@ merge_restricted_extras() {
 	rm -rf ${_kernel_tool}
 	unset _kernel_ver _kernel_tool
 
-	unset _imx_android_ver _toolchain_ver _arm_toolchain _dest
+	unset _imx_android_ver _toolchain_ver _toolchain_ver_32 _arm_toolchain _dest
 
 	# WA: IW612 fw
 	local _iw612_fw="sduart_nw61x_v1.bin.se"

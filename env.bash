@@ -383,8 +383,7 @@ gen_mp_images() {
 	cp -r "${PATH_OUT}"/system*.img ${_workdir}
 	cp -r "${PATH_OUT}"/product.img ${_workdir}
 	cp -r "${PATH_OUT}"/super*.img ${_workdir}
-	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}".imx ${_workdir}
-	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu.imx ${_workdir}
+	cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"*.imx ${_workdir}
 	if [[ "$QSPI_SUPPORT" == "yes" ]]; then
 		cp -r "${PATH_OUT}"/u-boot-"${TARGET_DEVICE_NAME}"-evk-uuu-fspi.imx ${_workdir}
 	fi

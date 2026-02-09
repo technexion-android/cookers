@@ -264,8 +264,8 @@ throw() {
 }
 
 merge_restricted_extras() {
-	local _android_ver="15.0"
-	local _imx_android_ver="android-${_android_ver}.0_2.0.0"
+	local _android_ver="16.0"
+	local _imx_android_ver="android-${_android_ver}.0_1.2.0"
 	local _toolchain_ver="12.3.rel1"
 	local _toolchain_ver_32="14.2.rel1"
 	local _imx_rel_pkg="imx-${_imx_android_ver}"
